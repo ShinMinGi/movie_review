@@ -18,9 +18,14 @@ public class BoardController {
     }
 
     @PostMapping("/index")
-    public String mvreview(BoardDTO boardDTO) {
+    public String index(BoardDTO boardDTO) {
         System.out.println("boardDTO = " + boardDTO);
         boardService.mvreview(boardDTO);
+        return "index";
+    }
+
+    @GetMapping("/i")
+    public String index() {
         return "index";
     }
 }
