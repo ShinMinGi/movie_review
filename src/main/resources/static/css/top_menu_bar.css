@@ -14,3 +14,7 @@
 #customFooter {
     z-index: -100;
 }
+
+.no-underline {
+    text-decoration: none !important;
+}
