@@ -14,7 +14,7 @@ public class BoardController {
 
     @GetMapping("/mr")
     public String mvreview() {
-        return "mvreview";
+        return "mv_review";
     }
 
     @PostMapping("/index")
@@ -28,4 +28,9 @@ public class BoardController {
     public String index() {
         return "index";
     }
-}
+
+    @GetMapping("event")
+    public String event() {
+        return "event";
+    }
+    }
