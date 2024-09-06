@@ -1,20 +1,35 @@
-.html {
-    height: 100%;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-}
-.body {
-    height: 100%;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-}
-
-#customFooter {
-    z-index: -100;
-}
+/*.html {*/
+/*    height: 100%;*/
+/*    margin: 0;*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*}*/
+/*#customFooter {*/
+/*    z-index: -100;*/
+/*}*/
 
 .no-underline {
-    text-decoration: none !important;
+    text-decoration: none;
+}
+
+.event_img {
+    width: 40%;
+    height: 40%;
+}
+
+.event_img2 {
+    margin-left: 30px;
+    width: 40%;
+    height: 40%;
+}
+
+
+.event1 {
+    text-decoration: none;
+    color: white;
+}
+
+.event2 {
+    text-decoration: none;
+    color: white;
 }

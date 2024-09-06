@@ -10,14 +10,13 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="/css/top_menu_bar.css" th:href="@{/css/top_menu_bar.css}">
 
-
 </head>
 <body class="d-flex flex-column min-vh-100">
 <!-- header !-->
 <header>
-    <nav class="navbar navbar-expand-md navbar-dark bg-white fixed-top border border-1">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top border border-1">
         <div class="container-fluid">
-            <a class="navbar-brand text-black" href="#">Movie Review</a>
+            <a class="navbar-brand text-white" href="#">Movie Review</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -26,13 +25,13 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active text-black" aria-current="page" href="#">Home</a>
+                        <a class="nav-link active text-white" aria-current="page" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active text-black" href="#">영화</a>
+                        <a class="nav-link active text-white" href="#">영화</a>
                     </li>
-                    <li class="nav-item dropdown text-black">
-                        <a class="nav-link dropdown-toggle active text-black" href="#" role="button"
+                    <li class="nav-item dropdown text-white">
+                        <a class="nav-link dropdown-toggle active text-white" href="#" role="button"
                            data-bs-toggle="dropdown"
                            aria-expanded="false">
                             시리즈
@@ -47,10 +46,10 @@
                 </ul>
                 <ul class="nav justify-content-end">
                     <li class="nav-item">
-                        <a class="nav-link active text-black" aria-current="page" href="#">로그인</a>
+                        <a class="nav-link active text-white" aria-current="page" href="#">로그인</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active text-black" href="#">회원가입</a>
+                        <a class="nav-link active text-white" href="#">회원가입</a>
                     </li>
                 </ul>
             </div>
@@ -72,6 +71,8 @@
             </div>
         </nav>
     </div>
+
+    <!-- Movie Review 순위 !-->
     <div class="container">
         <div class="row">
             <div class="fs-5 fw-semibold border border-0">Movie Review 순위</div>
@@ -153,7 +154,119 @@
             </div>
         </div>
     </div>
+
+    <!-- Movie Review Top 10 영화 !-->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="fs-5 fw-semibold border border-0">Movie Review Top 10 영화</div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row row-cols-md-5">
+
+            <div class="col-3 text-start">
+
+                <div class="card text-start  border-0" style="width: 15rem;">
+                    <a href="/i" class="no-underline">
+                        <img src="/img/cross.jpg" class="card-img-top" alt="...">
+                        <div class="card-text fw-semibold mt-2 text-dark" href="#">
+                            크로스
+                        </div>
+                        <div class="d-flex fs-7 text-dark">2024
+                            <div class="mx-2">• Korea</div>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+            <div class="col-3">
+                <div class="card text-start border-0 h-100" style="width: 15rem;">
+                    <a href="/i" class="no-underline">
+                        <img src="/img/deliverance.jpg" class="card-img-top" alt="...">
+                        <div class="card-text fw-semibold mt-2 text-dark">
+                            딜리버런스
+                        </div>
+                        <div class="d-flex fs-7 text-dark">2024
+                            <div class="mx-2">• United States</div>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+            <div class="col-3">
+                <div class="card text-start border-0" style="width: 15rem;">
+                    <a href="/i" class="no-underline">
+                        <img src="/img/the_union.jpg" class="card-img-top" alt="...">
+                        <div class="card-text fw-semibold mt-2 text-dark">
+                            더 유니온
+                        </div>
+                        <div class="d-flex fs-7 text-dark">2024
+                            <div class="mx-2">• United States</div>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+            <div class="col-3">
+                <div class="card text-start border-0" style="width: 15rem;">
+                    <a href="/i" class="no-underline">
+                        <img src="/img/graveyard.jpg" class="card-img-top" alt="...">
+                        <div class="card-text fw-semibold mt-2 text-dark">
+                            파묘
+                        </div>
+                        <div class="d-flex fs-7 text-dark">2024
+                            <div class="mx-2">• Korea</div>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+            <div class="col-3">
+                <div class="card text-start border-0" style="width: 15rem;">
+                    <a href="/i" class="no-underline">
+                        <img src="/img/rampage.jpg" class="card-img-top" alt="...">
+                        <div class="card-text fw-semibold mt-2 text-dark">
+                            램페이지
+                        </div>
+                        <div class="d-flex fs-7 text-dark">2024
+                            <div class="mx-2">• United States</div>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- 이벤트 !-->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="fs-5 fw-semibold border border-0">이벤트</div>
+        </div>
+    </div>
+    <div class="container ">
+        <div class="row row-cols-md-2 mb-5">
+            <div class="event_img card text-bg-dark">
+                <img src="/img/event1.jpg" class="" alt="...">
+                <a href="/i" class="event1">
+                <div class="card-img-overlay"></div>
+                <div class="card-footer bg-transparent border-white">[베테랑2] IMAX 포스터 이벤트</div>
+                </a>
+            </div>
+
+            <div class="event_img2 card text-bg-dark">
+
+                <img src="/img/event2.jpg" class="" alt="...">
+                <a href="/i" class="event2">
+                <div class="card-img-overlay"></div>
+                <div class="card-footer bg-transparent border-white">[Movie Review] 심야 특가 이벤트 </div>
+                </a>
+            </div>
+        </div>
+    </div>
 </main>
+
+
 <!-- footer !-->
 <footer class="bg-dark mt-auto py-3 text-light-emphasis border-top">
     <div class="container-fluid mr-5">
