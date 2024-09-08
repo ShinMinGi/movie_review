@@ -24,9 +24,9 @@ public class BoardController {
         return "index";
     }
 
-    @GetMapping("/i")
+    @GetMapping("/movie/board")
     public String index() {
-        return "index";
+        return "mv_review_board";
     }
 
     @GetMapping("event")
