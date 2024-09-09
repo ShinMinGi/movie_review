@@ -1,31 +1,34 @@
 package com.movieboard.movie_review.controller;
 
-import com.movieboard.movie_review.dto.BoardDTO;
-import com.movieboard.movie_review.service.BoardService;
-import lombok.RequiredArgsConstructor;
+
+import com.movieboard.movie_review.domain.Review;
+import com.movieboard.movie_review.mapper.BoardMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
-@RequiredArgsConstructor
+@RequestMapping("/")
 public class BoardController {
-    private final BoardService boardService;
 
-    @GetMapping("/mr")
+    @Autowired
+    private BoardMapper mapper;
+
+    @GetMapping({"/","MovieReview"})
     public String mvreview() {
         return "mv_review";
     }
 
-    @PostMapping("/index")
-    public String index(BoardDTO boardDTO) {
-        System.out.println("boardDTO = " + boardDTO);
-        boardService.mvreview(boardDTO);
-        return "index";
-    }
 
     @GetMapping("/movie/board")
-    public String index() {
+    public String list(Model model) {
+        List<Review> list = mapper.selectAll();
+        model.addAttribute("reviewList", list);
+        System.out.println(list.size());
         return "mv_review_board";
     }
 
@@ -33,4 +36,15 @@ public class BoardController {
     public String event() {
         return "event";
     }
+
+
+    @GetMapping("event2")
+    public String event2() {
+        return "event2";
     }
+
+    @GetMapping("write")
+    public String write() {
+        return "write";
+    }
+}
