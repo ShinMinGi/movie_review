@@ -1,12 +1,12 @@
-package com.movieboard.movie_review.domain;
+package com.movie_board.movie_review.dto;
 
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-public class Review {
-    private Integer id;
+public class ReviewBoardDto {
+    private Long id;
     private String title;
     private String body;
     private String writer;

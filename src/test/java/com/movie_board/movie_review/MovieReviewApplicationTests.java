@@ -1,4 +1,4 @@
-package com.movieboard.movie_review;
+package com.movie_board.movie_review;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

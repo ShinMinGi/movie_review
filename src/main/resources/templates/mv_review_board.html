@@ -24,19 +24,19 @@
             <tr class="border">
                 <th class="fw-bold">번호</th>
                 <th class="fw-bold">제목</th>
-                <th class="fw-bold">날짜</th>
+                <th class="fw-bold">본문</th>
                 <th class="fw-bold">아이디</th>
                 <th class="fw-bold">조회수</th>
             </tr>
             </thead>
 
             <tbody>
-            <tr th:each="qnaList : ${qnaListBoard}">
-                <td th:text="${qnaList.category}">예매 취소</td>
-                <td><a th:href="@{'/board/user/write'+${qnaList.id}}" th:text="${qnaList.title}">예매취소 부탁드립니다</a></td>
-                <td th:text="${qnaList.cratedAt}">9999.99.99</td>
-                <td th:text="${qnaList.userId}">user1</td>
-                <td th:text="${qnaList.responseYn}">응답여부</td>
+            <tr th:each="review : ${reviewList}">
+                <td th:text="${review.id}"></td>
+                <td th:text="${review.title}"></td>
+                <td th:text="${review.body}"></td>
+                <td th:text="${review.writer}"></td>
+                <td th:text="${review.inserted}"></td>
             </tr>
             </tbody>
 
