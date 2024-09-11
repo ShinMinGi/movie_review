@@ -32,6 +32,14 @@ public class BoardController {
 //    public String list(Model model) {
 //        return "mv_review_board";
 //    }
+    @PostMapping("/movie/board")
+    public String submitForm(ReviewBoardDto reviewBoardDto) {
+        // 폼 데이터를 처리하는 로직 (예: 데이터베이스에 저장)
+
+        // 데이터를 처리한 후 다시 mv_review_board로 리다이렉트
+        return "redirect:/movie/board";
+    }
+
 
     @GetMapping("event")
     public String event() {
@@ -44,7 +52,7 @@ public class BoardController {
         return "event2";
     }
 
-    @GetMapping("write")
+    @GetMapping("/write")
     public String write() {
         return "write";
     }
@@ -59,7 +67,7 @@ public class BoardController {
 
     // Read All (GET 요청으로 모든 리뷰 조회)
     @GetMapping("/movie/board")
-    public String getAllReviews(Model model) {
+    public String getAllReviewss(Model model) {
         List<ReviewBoardDto> reviews = reviewBoardService.getAllReviews();
         model.addAttribute("reviewList", reviews);
         return "mv_review_board";  // mv_review_board.html 파일로 연결

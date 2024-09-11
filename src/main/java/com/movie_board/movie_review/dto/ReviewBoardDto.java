@@ -1,6 +1,7 @@
 package com.movie_board.movie_review.dto;
 
 import lombok.Data;
+import org.springframework.web.ErrorResponse;
 
 import java.time.LocalDateTime;
 
@@ -11,4 +12,7 @@ public class ReviewBoardDto {
     private String body;
     private String writer;
     private LocalDateTime inserted;
+
+
+
 }

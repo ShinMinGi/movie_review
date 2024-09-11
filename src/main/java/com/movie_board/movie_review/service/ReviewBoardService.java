@@ -12,17 +12,17 @@ public class ReviewBoardService {
 
     @Autowired
     private ReviewBoardMapper reviewBoardMapper;
-//
-//    // Create
-//    public void createReview(ReviewBoardDto review) {
-//        reviewBoardMapper.createReview(review);
-//    }
+
 
     // Read All
     public List<ReviewBoardDto> getAllReviews() {
         return reviewBoardMapper.getAllReviews();
     }
-
+//
+//    // Create
+//    public void createReview(ReviewBoardDto review) {
+//        reviewBoardMapper.createReview(review);
+//    }
 //    // Read By ID
 //    public ReviewBoardDto getReviewById(Long id) {
 //        return reviewBoardMapper.getReviewById(id);
