@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class BoardController {
     public String getAllReviewss(Model model) {
         List<ReviewBoardDto> reviews = reviewBoardService.findAllReviews();
         model.addAttribute("reviewList", reviews);
+//        log.info("reviewList = {}",reviews);
         return "mv_review_board";  // mv_review_board.html 파일로 연결
     }
 
@@ -53,11 +55,39 @@ public class BoardController {
 
         reviewBoardService.createReview(review);
         // 폼 데이터를 처리하는 로직 (예: 데이터베이스에 저장)
-
+        log.info("createReview={}",review);
         // 데이터를 처리한 후 다시 mv_review_board로 리다이렉트
         return "redirect:/movie/board";
     }
 
+    // 게시글 상세 보기 Read
+    @GetMapping("/movie/read")
+    public String read(@RequestParam("id") Long id, Model model) {
+        ReviewBoardDto review = reviewBoardService.selectOne(id);
+        model.addAttribute("review", review); // "review"라는 이름으로 모델에 추가
+        return "mv_review_board_detail"; // 해당 HTML 파일을 렌더링
+    }
+
+    // 게시글 삭제
+    @PostMapping("/movie/board/remove/{id}")
+    public String remove(@PathVariable Long id, RedirectAttributes redirectAttributes){
+        reviewBoardService.deleteReview(id);
+        log.info("-------------------------remove------------------------------");
+        log.info("id : " + id);
+        return "redirect:/movie/board";
+    }
+    // 게시글 수정 edit
+    @GetMapping("/edit/{id}")
+    public String editReview(@PathVariable Long id, Model model) {
+        ReviewBoardDto review = reviewBoardService.selectOne(id); // 리뷰 조회
+        model.addAttribute("review", review); // 모델에 리뷰 추가
+        return "edit"; // 수정 폼 템플릿
+    }
+    @PostMapping("/edit")
+    public String updateReview(@ModelAttribute ReviewBoardDto reviewBoardDto) {
+        reviewBoardService.editReview(reviewBoardDto);
+        return "redirect:/movie/read?id=" + reviewBoardDto.getId();
+    }
 
 
     @GetMapping("event")
@@ -89,18 +119,6 @@ public class BoardController {
 //        return ResponseEntity.ok(review);
 //    }
 //
-//    // Update (POST 요청으로 리뷰 업데이트)
-//    @PostMapping("/update/{id}")
-//    public ResponseEntity<Void> updateReview(@PathVariable Long id, @RequestBody ReviewBoardDto review) {
-//        review.setId(id);
-//        reviewBoardService.updateReview(review);
-//        return ResponseEntity.ok().build();
-//    }
-//
-//    // Delete (POST 요청으로 리뷰 삭제)
-//    @PostMapping("/delete/{id}")
-//    public ResponseEntity<Void> deleteReview(@PathVariable Long id) {
-//        reviewBoardService.deleteReview(id);
-//        return ResponseEntity.noContent().build();
-//    }
+
+
 }

@@ -14,4 +14,18 @@
     <select id="createReview">
         insert into review (writer, title, body) values (#{writer},#{title},#{body})
     </select>
+
+    <select id="findById" resultType="com.movie_board.movie_review.dto.ReviewBoardDto">
+        select * from review where id = #{id}
+    </select>
+
+    <delete id="deleteReview">
+        delete from review where id = #{id}
+    </delete>
+
+
+    <update id="updateReview">
+        update review set writer = #{writer}, title = #{title}, body = #{body} where id = #{id}
+    </update>
+
 </mapper>

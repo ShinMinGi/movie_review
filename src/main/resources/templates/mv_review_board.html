@@ -26,17 +26,19 @@
                 <th class="fw-bold">제목</th>
                 <th class="fw-bold">본문</th>
                 <th class="fw-bold">아이디</th>
-                <th class="fw-bold">조회수</th>
+                <th class="fw-bold">날짜</th>
             </tr>
             </thead>
 
             <tbody>
             <tr th:each="review : ${reviewList}">
                 <td th:text="${review.id}"></td>
-                <td th:text="${review.title}"></td>
+                <td>
+                    <a th:href="@{/movie/read(id=${review.id})}" th:text="${review.title}"></a>
+                </td>
                 <td th:text="${review.body}"></td>
                 <td th:text="${review.writer}"></td>
-                <td th:text="${review.inserted}"></td>
+                <td th:text="${#temporals.format(review.inserted, 'yyyy-MM-dd HH:mm')}"></td>
             </tr>
             </tbody>
 
