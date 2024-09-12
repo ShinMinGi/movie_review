@@ -5,13 +5,13 @@
 <!-- ReviewBoardMapper.xml -->
 <mapper namespace="com.movie_board.movie_review.repository.ReviewBoardMapper">
 
-    <select id="getAllReviews" resultType="com.movie_board.movie_review.dto.ReviewBoardDto">
+    <select id="findAllReviews" resultType="com.movie_board.movie_review.dto.ReviewBoardDto">
         SELECT id, title, body, writer, inserted
         FROM review
         ORDER BY id DESC
     </select>
 
-<!--    <select id="getTime" resultType="string">-->
-<!--        select now()-->
-<!--    </select>-->
+    <select id="createReview">
+        insert into review (writer, title, body) values (#{writer},#{title},#{body})
+    </select>
 </mapper>

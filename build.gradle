@@ -31,15 +31,14 @@ dependencies {
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.security:spring-security-core'
+	implementation 'mysql:mysql-connector-java:8.0.32'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+	implementation 'ch.qos.logback:logback-classic:1.4.14'
+	implementation 'org.slf4j:slf4j-api:2.0.13'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
-
-	implementation 'org.slf4j:slf4j-api:1.7.36'
-	implementation 'org.slf4j:slf4j-simple:1.7.36'
 }
 
 

@@ -15,14 +15,14 @@ public class ReviewBoardService {
 
 
     // Read All
-    public List<ReviewBoardDto> getAllReviews() {
-        return reviewBoardMapper.getAllReviews();
+    public List<ReviewBoardDto> findAllReviews() {
+        return reviewBoardMapper.findAllReviews();
     }
 //
-//    // Create
-//    public void createReview(ReviewBoardDto review) {
-//        reviewBoardMapper.createReview(review);
-//    }
+    // Create
+    public void createReview(ReviewBoardDto review) {
+        reviewBoardMapper.createReview(review);
+    }
 //    // Read By ID
 //    public ReviewBoardDto getReviewById(Long id) {
 //        return reviewBoardMapper.getReviewById(id);

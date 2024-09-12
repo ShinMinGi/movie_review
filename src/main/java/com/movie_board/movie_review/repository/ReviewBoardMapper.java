@@ -7,6 +7,8 @@ import java.util.List;
 
 @Mapper
 public interface ReviewBoardMapper {
-    List<ReviewBoardDto> getAllReviews();
+    List<ReviewBoardDto> findAllReviews();
+
+    void createReview(ReviewBoardDto reviewBoardDto);
 
 }
