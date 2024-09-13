@@ -44,7 +44,7 @@
                 <div class="d-flex justify-content-end">
 
                     <input type="submit" class="btn btn-success me-2" value="수정" />
-                    <a class="btn btn-danger" th:href="@{/movie/read/{id}(id=${review.id})}">취소</a>
+                    <a class="btn btn-danger" th:href="@{/movie/read(id=${review.id})}">취소</a>
                 </div>
             </div>
         </form>

@@ -1,7 +1,7 @@
 package com.movie_board.movie_review.controller;
 
 
-
+import com.movie_board.movie_review.dto.PageDto;
 import com.movie_board.movie_review.dto.ReviewBoardDto;
 
 import com.movie_board.movie_review.service.ReviewBoardService;
@@ -23,19 +23,38 @@ public class BoardController {
     @Autowired
     private ReviewBoardService reviewBoardService;
 
-    @GetMapping({"/","MovieReview"})
+    @GetMapping({"/", "MovieReview"})
     public String mvreview() {
         return "mv_review";
     }
 
-    // Read All (GET 요청으로 모든 리뷰 조회)
+
+    // Read All (GET 요청으로 모든 리뷰 조회)  ,  페이징 기능도 동시에 구현
     @GetMapping("/movie/board")
-    public String getAllReviewss(Model model) {
-        List<ReviewBoardDto> reviews = reviewBoardService.findAllReviews();
+    public String getAllReviews(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(value = "searchKeyword", defaultValue = "") String searchKeyword,
+            @RequestParam(value = "filter", defaultValue = "") String filter,
+            Model model) {
+
+        // 전체 게시글 수 가져오기
+        int totalReviews = reviewBoardService.getTotalReviews(searchKeyword, filter);
+
+        PageDto pageDto = new PageDto(totalReviews, page, pageSize, searchKeyword, filter);
+        // 현재 페이지의 게시글 목록 가져오기
+        List<ReviewBoardDto> reviews = reviewBoardService.getPagedList(page, pageSize, searchKeyword,filter);
+
+        // PageDto를 이용한 페이징 처리
+
+
+        // 모델에 데이터 추가
         model.addAttribute("reviewList", reviews);
-//        log.info("reviewList = {}",reviews);
+        model.addAttribute("pageDto", pageDto);
+
         return "mv_review_board";  // mv_review_board.html 파일로 연결
     }
+
 
     // 글쓰기 등록/삭제/수정 페이지 화면
     @GetMapping("/board/write")
@@ -55,7 +74,7 @@ public class BoardController {
 
         reviewBoardService.createReview(review);
         // 폼 데이터를 처리하는 로직 (예: 데이터베이스에 저장)
-        log.info("createReview={}",review);
+        log.info("createReview={}", review);
         // 데이터를 처리한 후 다시 mv_review_board로 리다이렉트
         return "redirect:/movie/board";
     }
@@ -70,12 +89,13 @@ public class BoardController {
 
     // 게시글 삭제
     @PostMapping("/movie/board/remove/{id}")
-    public String remove(@PathVariable Long id, RedirectAttributes redirectAttributes){
+    public String remove(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         reviewBoardService.deleteReview(id);
         log.info("-------------------------remove------------------------------");
         log.info("id : " + id);
         return "redirect:/movie/board";
     }
+
     // 게시글 수정 edit
     @GetMapping("/edit/{id}")
     public String editReview(@PathVariable Long id, Model model) {
@@ -83,6 +103,7 @@ public class BoardController {
         model.addAttribute("review", review); // 모델에 리뷰 추가
         return "edit"; // 수정 폼 템플릿
     }
+
     @PostMapping("/edit")
     public String updateReview(@ModelAttribute ReviewBoardDto reviewBoardDto) {
         reviewBoardService.editReview(reviewBoardDto);
@@ -100,25 +121,6 @@ public class BoardController {
     public String event2() {
         return "event2";
     }
-
-
-
-    // Create (POST 요청으로 새 리뷰 생성)
-//    @PostMapping("/create")
-//    public ResponseEntity<Void> createReview(@RequestBody ReviewBoardDto review) {
-//        reviewBoardService.createReview(review);
-//        return ResponseEntity.status(HttpStatus.CREATED).build();
-//    }
-
-
-//
-//    // Read By ID (GET 요청으로 특정 리뷰 조회)
-//    @GetMapping("/movie/board/{id}")
-//    public ResponseEntity<ReviewBoardDto> getReviewById(@PathVariable Long id) {
-//        ReviewBoardDto review = reviewBoardService.getReviewById(id);
-//        return ResponseEntity.ok(review);
-//    }
-//
 
 
 }

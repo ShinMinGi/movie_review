@@ -52,22 +52,33 @@
 
         <div class="text-center mt-5 pt-2">
             <ul class="pagination pagination-sm justify-content-center">
-                <li class="page-item"><a class="page-link text-black" href="#">Previous</a>
+
+                <!-- 이전 페이지 링크 -->
+                <li class="page-item" th:classappend="${!pageDto.prevPage} ? 'disabled' : ''">
+                    <a class="page-link text-black" th:href="@{/movie/board(page=${pageDto.pageStart - 1}, pageSize=${pageDto.pageSize})}" th:if="${pageDto.prevPage}">
+                        Previous
+                    </a>
+                    <a class="page-link text-black" href="#" th:unless="${pageDto.prevPage}">Previous</a>
                 </li>
-                <li class="page-item"><a class="page-link text-black" href="#">1</a>
+
+                <!-- 각 페이지 번호 링크 -->
+                <li class="page-item" th:each="i : ${#numbers.sequence(pageDto.pageStart, pageDto.pageEnd)}"
+                    th:classappend="${i == pageDto.currentPage} ? 'active' : ''">
+                    <a class="page-link text-black" th:href="@{/movie/board(page=${i}, pageSize=${pageDto.pageSize})}"
+                       th:text="${i}">1</a>
                 </li>
-                <li class="page-item"><a class="page-link text-black" href="#">2</a>
+
+                <!-- 다음 페이지 링크 -->
+                <li class="page-item" th:classappend="${!pageDto.nextPage} ? 'disabled' : ''">
+                    <a class="page-link text-black" th:href="@{/movie/board(page=${pageDto.pageEnd + 1}, pageSize=${pageDto.pageSize})}" th:if="${pageDto.nextPage}">
+                        Next
+                    </a>
+                    <a class="page-link text-black" href="#" th:unless="${pageDto.nextPage}">Next</a>
                 </li>
-                <li class="page-item"><a class="page-link text-black" href="#">3</a>
-                </li>
-                <li class="page-item"><a class="page-link text-black" href="#">4</a>
-                </li>
-                <li class="page-item"><a class="page-link text-black" href="#">5</a>
-                </li>
-                <li class="page-item"><a class="page-link text-black" href="#">Next</a>
-                </li>
+
             </ul>
         </div>
+
 
 
 
@@ -75,20 +86,28 @@
             <div class="row">
                 <div class="col-md-15 mt-4 mb-5">
                     <div class="box-body">
-                        <form class="d-flex justify-content-center">
-                            <select id='search_type' class="form-select me-1 w-auto border">
+                        <form class="d-flex justify-content-center" method="get" action="/movie/board">
+                            <!-- 검색 타입 선택 -->
+                            <select id="search_type" name="filter" class="form-select me-1 w-auto border">
                                 <option value="title">제목</option>
+                                <option value="writer">작성자</option>
                                 <option value="content">내용</option>
-                            </select> <input class="form-control me-1 search-bar w-auto border"
-                                             type="search" placeholder="Search" aria-label="Search">
-                            <button
-                                    class="btn btn-outline-success custom-button btn-outline-dark border"
-                                    type="submit">Search</button>
+                            </select>
+
+                            <!-- 검색어 입력 -->
+                            <input name="searchKeyword" class="form-control me-1 search-bar w-auto border"
+                                   type="search" placeholder="Search" aria-label="Search">
+
+                            <!-- 검색 버튼 -->
+                            <button class="btn btn-outline-success custom-button btn-outline-dark border"
+                                    type="submit">Search
+                            </button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 </main>
 

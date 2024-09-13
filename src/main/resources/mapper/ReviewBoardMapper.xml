@@ -28,4 +28,61 @@
         update review set writer = #{writer}, title = #{title}, body = #{body} where id = #{id}
     </update>
 
+    <!-- 페이징된 리뷰 목록 조회 -->
+    <select id="selectPagedList" resultType="com.movie_board.movie_review.dto.ReviewBoardDto">
+        SELECT *
+        FROM review
+        <where>
+            <if test="searchKeyword != null and searchKeyword != ''">
+                <choose>
+                    <when test="filter == 'title'">
+                        AND title LIKE CONCAT('%', #{searchKeyword}, '%')
+                    </when>
+                    <when test="filter == 'writer'">
+                        AND writer LIKE CONCAT('%', #{searchKeyword}, '%')
+                    </when>
+                    <when test="filter == 'body'">
+                        AND body LIKE CONCAT('%', #{searchKeyword}, '%')
+                    </when>
+                    <otherwise>
+                        <!-- 기본적으로 title 검색 -->
+                        AND title LIKE CONCAT('%', #{searchKeyword}, '%')
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+        ORDER BY inserted DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 전체 게시글 수 조회 -->
+    <select id="selectTotalCount" resultType="int">
+        SELECT COUNT(*)
+        FROM review
+    </select>
+
+   <!-- 총 리뷰 수를 가져오는 메서드 추가 (-서칭)  !-->
+    <select id="countReviews" resultType="int">
+        SELECT COUNT(*)
+        FROM review
+        <where>
+            <if test="searchKeyword != null and searchKeyword != ''">
+                <choose>
+                    <when test="filter == 'title'">
+                        AND title LIKE CONCAT('%', #{searchKeyword}, '%')
+                    </when>
+                    <when test="filter == 'writer'">
+                        AND writer LIKE CONCAT('%', #{searchKeyword}, '%')
+                    </when>
+                    <when test="filter == 'body'">
+                        AND body LIKE CONCAT('%', #{searchKeyword}, '%')
+                    </when>
+                    <otherwise>
+                        <!-- 기본적으로 title 검색 -->
+                        AND title LIKE CONCAT('%', #{searchKeyword}, '%')
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+    </select>
 </mapper>
