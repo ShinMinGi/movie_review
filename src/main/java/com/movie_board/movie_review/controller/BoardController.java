@@ -8,6 +8,7 @@ import com.movie_board.movie_review.service.ReviewBoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -57,6 +58,7 @@ public class BoardController {
 
 
     // 글쓰기 등록/삭제/수정 페이지 화면
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/board/write")
     public String write() {
         return "write";
@@ -80,6 +82,7 @@ public class BoardController {
     }
 
     // 게시글 상세 보기 Read
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/movie/read")
     public String read(@RequestParam("id") Long id, Model model) {
         ReviewBoardDto review = reviewBoardService.selectOne(id);
@@ -123,4 +126,21 @@ public class BoardController {
     }
 
 
+    // login page
+    @GetMapping("/login")
+    public String loginGET(String error, String logout, Model model) {
+        if (error != null) {
+            model.addAttribute("error", "로그인에 실패했습니다. 아이디나 비밀번호를 확인하세요.");
+        }
+
+        if (logout != null) {
+            model.addAttribute("logout", "성공적으로 로그아웃되었습니다.");
+        }
+
+        return "login"; // login.html 파일을 반환
+    }
+    @GetMapping("/sign_up")
+    public String signUp() {
+        return "sign_up";
+    }
 }

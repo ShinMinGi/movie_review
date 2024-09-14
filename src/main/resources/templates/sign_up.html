@@ -10,7 +10,7 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="/css/top_menu_bar.css" th:href="@{/css/top_menu_bar.css}">
     <link rel="stylesheet" href="/css/mv_review.css" th:href="@{/css/mv_review.css}">
-    <link rel="stylesheet" href="/css/login.css" th:href="@{/css/login.css}">
+    <link rel="stylesheet" href="/css/sign_up.css" th:href="@{/css/sign_up.css}">
 
 
 </head>
@@ -18,26 +18,32 @@
 <header th:replace="fragment/header :: header"></header>
 
 <main>
-    <div class="container">
-        <div class="wrapper">
-            <div class="title"><span>Movie Review</span></div>
-            <!-- 로그인 폼 -->
-            <form th:action="@{/login}" method="post">
-                <div class="row">
-                    <i class="fas fa-user"></i>
-                    <input type="text" name="username" placeholder="이메일" required>
-                </div>
-                <div class="row">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" name="password" placeholder="비밀번호" required>
-                </div>
-                <div class="pass"><a href="#">비밀번호 찾기</a></div>
-                <div class="row button">
-                    <input type="submit" value="Login">
-                </div>
-                <div class="signup-link">계정이 없으신가요? <a th:href="@{/signup}">회원가입</a></div>
-            </form>
-        </div>
+    <div class="wrapper container">
+        <h2>Movie Review</h2>
+        <form action="#">
+            <div class="input-box">
+                <input type="text" placeholder="이름" required>
+            </div>
+            <div class="input-box">
+                <input type="text" placeholder="이메일" required>
+            </div>
+            <div class="input-box">
+                <input type="password" placeholder="비밀번호" required>
+            </div>
+            <div class="input-box">
+                <input type="password" placeholder="비밀번호 확인" required>
+            </div>
+            <div class="policy">
+                <input type="checkbox">
+                <h3 class="checkboxButton">모든 약관 및 조건을 동의합니다</h3>
+            </div>
+            <div class="input-box button">
+                <input type="Submit" value="회원가입">
+            </div>
+            <div class="text">
+                <h3>이미 가입하셨나요? <a href="#">로그인</a></h3>
+            </div>
+        </form>
     </div>
 </main>
 

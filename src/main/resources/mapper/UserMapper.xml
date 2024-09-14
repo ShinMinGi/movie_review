@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- ReviewBoardMapper.xml -->
+<mapper namespace="com.movie_board.movie_review.repository.UserMapper">
+    <insert id="insertUser">
+        INSERT INTO users (user_name, password, email_Id)
+        VALUES (#{userName}, #{password}, #{emailId})
+    </insert>
+
+    <select id="findByUsername" resultType="com.movie_board.movie_review.dto.UserDto">
+        SELECT user_name, password, email_Id
+        FROM users
+        WHERE email_Id = #{email_Id}
+    </select>
+</mapper>
+
