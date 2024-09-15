@@ -21,15 +21,18 @@
     <div class="container">
         <div class="wrapper">
             <div class="title"><span>Movie Review</span></div>
+            <th:block th:if="${param.logout != null}">
+                <div>Logout..............</div>
+            </th:block>
             <!-- 로그인 폼 -->
-            <form th:action="@{/login}" method="post">
+            <form th:action="@{/login}" method="post" th:if="${param.logout == null}">
                 <div class="row">
                     <i class="fas fa-user"></i>
-                    <input type="text" name="username" placeholder="이메일" required>
+                    <input type="text" name="username" placeholder="이메일-user" required>
                 </div>
                 <div class="row">
                     <i class="fas fa-lock"></i>
-                    <input type="password" name="password" placeholder="비밀번호" required>
+                    <input type="password" name="password" placeholder="비밀번호-1234" required>
                 </div>
                 <div class="pass"><a href="#">비밀번호 찾기</a></div>
                 <div class="row button">

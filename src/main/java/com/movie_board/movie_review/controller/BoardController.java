@@ -126,19 +126,21 @@ public class BoardController {
     }
 
 
+
     // login page
     @GetMapping("/login")
-    public String loginGET(String error, String logout, Model model) {
-        if (error != null) {
-            model.addAttribute("error", "로그인에 실패했습니다. 아이디나 비밀번호를 확인하세요.");
-        }
+    public String loginGET(String errorCode, String logout) {
+        log.info("login get..........................");
+        log.info("logout: " + logout);
 
         if (logout != null) {
-            model.addAttribute("logout", "성공적으로 로그아웃되었습니다.");
+            log.info("user logout...................................");
         }
-
         return "login"; // login.html 파일을 반환
     }
+
+
+
     @GetMapping("/sign_up")
     public String signUp() {
         return "sign_up";
