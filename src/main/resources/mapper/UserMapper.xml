@@ -4,15 +4,29 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- ReviewBoardMapper.xml -->
 <mapper namespace="com.movie_board.movie_review.repository.UserMapper">
+
     <insert id="insertUser">
-        INSERT INTO users (user_name, password, email_Id)
-        VALUES (#{userName}, #{password}, #{emailId})
+        INSERT INTO users (userName, emailId, password)
+        VALUES (#{userName}, #{emailId}, #{password} )
     </insert>
 
     <select id="findByUsername" resultType="com.movie_board.movie_review.dto.UserDto">
         SELECT user_name, password, email_Id
         FROM users
         WHERE email_Id = #{email_Id}
+    </select>
+
+    <!-- 회원 생성 -->
+    <insert id="createUser" parameterType="com.movie_board.movie_review.dto.UserDto">
+        INSERT INTO users (user_name, email_id, password, created_at)
+        VALUES (#{userName}, #{emailId}, #{password}, NOW())
+    </insert>
+
+    <!-- 이메일로 회원 찾기 -->
+    <select id="findByEmail" resultType="com.movie_board.movie_review.dto.UserDto">
+        SELECT id, user_name, email_id, password, created_at
+        FROM users
+        WHERE email_id = #{emailId}
     </select>
 </mapper>
 

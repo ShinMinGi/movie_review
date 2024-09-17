@@ -9,7 +9,7 @@
           integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="/css/top_menu_bar.css" th:href="@{/css/top_menu_bar.css}">
-    <link rel="stylesheet" href="/css/mv_review.css" th:href="@{/css/mv_review.css}">
+    <link rel="stylesheet" href="/css/mvBoard.css" th:href="@{/css/mvBoard.css}">
 
 
 </head>
@@ -36,7 +36,7 @@
             <tr th:each="review : ${reviewList}">
                 <td th:text="${review.id}"></td>
                 <td>
-                    <a th:href="@{/movie/read(id=${review.id})}" th:text="${review.title}"></a>
+                    <a class="boardTitle" th:href="@{/movie/read(id=${review.id})}" th:text="${review.title}"></a>
                 </td>
                 <td th:text="${review.body}"></td>
                 <td th:text="${review.writer}"></td>

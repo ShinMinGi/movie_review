@@ -3,12 +3,15 @@ package com.movie_board.movie_review.controller;
 
 import com.movie_board.movie_review.dto.PageDto;
 import com.movie_board.movie_review.dto.ReviewBoardDto;
-
+import com.movie_board.movie_review.dto.UserDto;
 import com.movie_board.movie_review.service.ReviewBoardService;
+import com.movie_board.movie_review.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +26,8 @@ public class BoardController {
 
     @Autowired
     private ReviewBoardService reviewBoardService;
-
+    @Autowired
+    private UserService userService;
     @GetMapping({"/", "MovieReview"})
     public String mvreview() {
         return "mv_review";
@@ -63,6 +67,20 @@ public class BoardController {
     public String write() {
         return "write";
     }
+
+//    // 로그인 된 정보 세션을 이용한 게시글 작성
+//    @PostMapping("write")
+//    public String writeBoard(ReviewBoardDto reviewBoardDto, HttpSession session) {
+//        UserDto loggedInUser = (UserDto) session.getAttribute("user");
+//
+//        if (loggedInUser == null) {
+//            return "redirect:/login";
+//        }
+//        reviewBoardDto.setWriter(loggedInUser.getUserName());
+//
+//        reviewBoardService.createReview(reviewBoardDto);
+//        return "redirect:/movie/board";
+//    }
 
     // 글쓰기 등록 구현
     @PostMapping("/movie/board")
@@ -144,8 +162,5 @@ public class BoardController {
         return "redirect:/login?logout"; // 로그아웃 후 로그인 페이지로 리다이렉트
     }
 
-    @GetMapping("/sign_up")
-    public String signUp() {
-        return "sign_up";
-    }
+
 }
