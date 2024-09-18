@@ -22,7 +22,7 @@ public class UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;  // 비밀번호 암호화를 위한 PasswordEncoder
 
-    private final JavaMailSender mailSender;
+    private final JavaMailSender javaMailSender;
 
     // 회원가입 처리 메소드
     public void registerUser(UserDto userDto) {
@@ -73,10 +73,16 @@ public class UserService {
     private void sendTemporaryPasswordEmail(String email, String temporaryPassword) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
 
+        mailMessage.setFrom("mingi0418@naver.com"); // 발신자 주소
         mailMessage.setTo(email);
         mailMessage.setSubject("임시 비밀번호 발급 안내");
         mailMessage.setText("안녕하세요,\n\n임시 비밀번호는 다음과 같습니다 : " + temporaryPassword + "\n\n로그인 후 비밀번호를 변경해 주세요");
 
-        mailSender.send(mailMessage);
+        try {
+            javaMailSender.send(mailMessage);
+        } catch (Exception e) {
+            // 예외 처리
+            e.printStackTrace();
+        }
     }
 }
