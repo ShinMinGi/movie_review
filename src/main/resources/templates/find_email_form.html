@@ -18,33 +18,19 @@
 <header th:replace="fragment/header :: header"></header>
 
 <main>
-    <div class="container">
-        <div class="wrapper">
-            <div class="title"><span>Movie Review</span></div>
-            <th:block th:if="${param.logout != null}">
-                <div>Logout..............</div>
-            </th:block>
-            <!-- 로그인 폼 -->
-            <form th:action="@{/login}" method="post" th:if="${param.logout == null}">
-                <div class="row">
-                    <i class="fas fa-user"></i>
-                    <input type="text" name="username" placeholder="이메일-user1" required>
-                </div>
-                <div class="row">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" name="password" placeholder="비밀번호-1234" required>
-                </div>
-                <div class="d-flex flex-colum justify-content-end">
-                    <div class="mail "><a href="/find/email">이메일 찾기</a></div>
-                    <div class="pass"><a href="/find/email">비밀번호 찾기</a></div>
-                </div>
-                    <div class="row button">
-                    <input type="submit" value="Login">
-                </div>
-                <div class="signup-link">계정이 없으신가요? <a th:href="@{/signup}">회원가입</a></div>
-            </form>
-        </div>
-    </div>
+    <h1>비밀번호 찾기</h1>
+
+    <div th:if="${message}" th:text="${message}" style="color: green;"></div>
+    <div th:if="${error}" th:text="${error}" style="color: red;"></div>
+
+    <form action="/find/email" method="post">
+        <label for="email">이메일:</label>
+        <input type="email" id="email" name="email" required>
+
+        <button type="submit">임시 비밀번호 발송</button>
+    </form>
+
+    <a href="/login">로그인 페이지로 돌아가기</a>
 </main>
 
 <!-- footer !-->

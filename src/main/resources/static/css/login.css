@@ -73,15 +73,32 @@ form .row input::placeholder{
 }
 .wrapper form .pass{
     margin: -8px 0 20px 0;
+    margin-left: 10px;
+}
+.wrapper form .mail {
+    margin: -8px 0 20px 0;
+
 }
 .wrapper form .pass a{
     color: rgb(33,37,41);
-    font-size: 17px;
+    font-size: 13px;
     text-decoration: none;
 }
+.wrapper form .mail a{
+    color: rgb(33,37,41);
+    font-size: 13px;
+    text-decoration: none;
+}
+
+
 .wrapper form .pass a:hover{
     text-decoration: underline;
 }
+
+.wrapper form .mail a:hover{
+    text-decoration: underline;
+}
+
 .wrapper form .button input{
     color: #fff;
     font-size: 20px;

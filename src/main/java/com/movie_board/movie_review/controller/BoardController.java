@@ -43,22 +43,19 @@ public class BoardController {
             @RequestParam(value = "filter", defaultValue = "") String filter,
             Model model) {
 
-        // 전체 게시글 수 가져오기
         int totalReviews = reviewBoardService.getTotalReviews(searchKeyword, filter);
-
         PageDto pageDto = new PageDto(totalReviews, page, pageSize, searchKeyword, filter);
-        // 현재 페이지의 게시글 목록 가져오기
-        List<ReviewBoardDto> reviews = reviewBoardService.getPagedList(page, pageSize, searchKeyword,filter);
 
-        // PageDto를 이용한 페이징 처리
+        // 페이지에 맞는 리뷰 가져오기
+        List<ReviewBoardDto> reviews = reviewBoardService.getPagedList(page, pageSize, searchKeyword, filter);
 
-
-        // 모델에 데이터 추가
+        // 모델에 추가
         model.addAttribute("reviewList", reviews);
         model.addAttribute("pageDto", pageDto);
 
         return "mv_review_board";  // mv_review_board.html 파일로 연결
     }
+
 
 
     // 글쓰기 등록/삭제/수정 페이지 화면
@@ -101,10 +98,10 @@ public class BoardController {
 
     // 게시글 상세 보기 Read
     @PreAuthorize("hasRole('USER')")
-    @GetMapping("/movie/read")
-    public String read(@RequestParam("id") Long id, Model model) {
+    @GetMapping("/movie/read/{id}")
+    public String read(@PathVariable Long id, Model model) {
         ReviewBoardDto review = reviewBoardService.selectOne(id);
-        model.addAttribute("review", review); // "review"라는 이름으로 모델에 추가
+        model.addAttribute("review", review);
         return "mv_review_board_detail"; // 해당 HTML 파일을 렌더링
     }
 
@@ -162,5 +159,16 @@ public class BoardController {
         return "redirect:/login?logout"; // 로그아웃 후 로그인 페이지로 리다이렉트
     }
 
+    // 영화의 리뷰 목록을 가져오는 메서드
+    @GetMapping("/movie/review/{movieId}")
+    public String getReviewsByMovieId(@PathVariable Long movieId, Model model) {
+        System.out.println("Received movieId: " + movieId); // movieId가 제대로 전달되는지 확인
+        List<ReviewBoardDto> reviews = reviewBoardService.getReviewsByMovieId(movieId);
+        if (reviews == null || reviews.isEmpty()) {
+            System.out.println("No reviews found for movieId: " + movieId); // 리뷰가 없을 때 처리
+        }
+        model.addAttribute("reviewList", reviews);
+        return "mv_review_board"; // HTML 파일 이름과 일치
+    }
 
 }

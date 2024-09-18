@@ -35,4 +35,6 @@ public interface ReviewBoardMapper {
 
     // 총 리뷰 수를 가져오는 메서드 추가 (-서칭)
     int countReviews(@Param("searchKeyword") String searchKeyword, @Param("filter") String filter);
+
+    List<ReviewBoardDto> getReviewsByMovieId(Long movieId);
 }

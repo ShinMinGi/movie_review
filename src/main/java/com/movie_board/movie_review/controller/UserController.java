@@ -9,11 +9,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 @Controller
 @RequiredArgsConstructor
 
 public class UserController {
-    @Autowired
+
     private final UserService userService;
 
     @GetMapping("/signup")
@@ -27,18 +30,25 @@ public class UserController {
         userService.registerUser(userDto);
         return "redirect:/login";
     }
+
+    // 이메일 입력 폼
+    @GetMapping("/find/email")
+    public String findEmailForm() {
+        return "find_email_form";
+    }
+
+    // 이메일을 통한 비밀번호 재설정 요청 처리
+    @PostMapping("/find/email")
+    public String resetPassword(@RequestParam String email, RedirectAttributes redirectAttributes) {
+        try {
+            // 비밀번호 재설정 서비스 호출
+            userService.resetUserPassword(email);
+            redirectAttributes.addFlashAttribute("message", "임시 비밀번호가 이메일로 전송되었습니다.");
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("error", "해당 이메일을 가진 사용자가 없습니다.");
+        }
+        return "redirect:/find/email";
+    }
+
 }
-
-
-    // 회원가입 처리
-//    @PostMapping("/signup")
-//    public String signUp(@ModelAttribute UserDto userDto, Model model) {
-//        try {
-//            userService.signUp(userDto);
-//            return "redirect:/login";  // 회원가입 성공 시 로그인 페이지로 리다이렉트
-//        } catch (IllegalArgumentException e) {
-//            model.addAttribute("errorMessage", e.getMessage());
-//            return "sign_up";  // 회원가입 실패 시 에러 메시지와 함께 폼 재렌더링
-//        }
-//    }
 

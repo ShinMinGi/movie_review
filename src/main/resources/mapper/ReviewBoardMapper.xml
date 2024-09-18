@@ -6,10 +6,17 @@
 <mapper namespace="com.movie_board.movie_review.repository.ReviewBoardMapper">
 
     <select id="findAllReviews" resultType="com.movie_board.movie_review.dto.ReviewBoardDto">
-        SELECT id, title, body, writer, inserted
+        SELECT id, title, body, writer, inserted, movieId
         FROM review
         ORDER BY id DESC
     </select>
+
+    <!-- 특정 영화에 대한 리뷰를 가져오는 sql 문 -->
+    <select id="getReviewsByMovieId" resultType="com.movie_board.movie_review.dto.ReviewBoardDto">
+        SELECT * FROM review WHERE movieId = #{movieId}
+    </select>
+
+
 
     <select id="createReview">
         insert into review (writer, title, body) values (#{writer},#{title},#{body})
@@ -61,7 +68,7 @@
         FROM review
     </select>
 
-   <!-- 총 리뷰 수를 가져오는 메서드 추가 (-서칭)  !-->
+    <!-- 총 리뷰 수를 가져오는 메서드 추가 (-서칭)  !-->
     <select id="countReviews" resultType="int">
         SELECT COUNT(*)
         FROM review

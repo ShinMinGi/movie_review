@@ -22,7 +22,7 @@ public class ReviewBoardService {
     public List<ReviewBoardDto> findAllReviews() {
         return reviewBoardMapper.findAllReviews();
     }
-//
+    //
     // Create
     public void createReview(ReviewBoardDto review) {
         reviewBoardMapper.createReview(review);
@@ -33,7 +33,7 @@ public class ReviewBoardService {
         return reviewBoardMapper.findById(id);
     }
 
-   // Delete
+    // Delete
     public void deleteReview(Long id) {
         reviewBoardMapper.deleteReview(id);
     }
@@ -60,6 +60,9 @@ public class ReviewBoardService {
         return reviewBoardMapper.countReviews(searchKeyword,filter);
     }
 
-
+    // 영화마다 해당 영화에대한 게시판 생성
+    public List<ReviewBoardDto> getReviewsByMovieId(Long movieId) {
+        return reviewBoardMapper.getReviewsByMovieId(movieId);
+    }
 
 }

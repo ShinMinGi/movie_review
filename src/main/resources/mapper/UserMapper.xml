@@ -28,5 +28,18 @@
         FROM users
         WHERE email_id = #{emailId}
     </select>
+
+    <!--  이메일로 사용자 정보를 찾는 쿼리  -->
+    <select id="findUserByEmail" resultType="com.movie_board.movie_review.dto.FindPasswordDto">
+        SELECT * FROM findpassword WHERE email = #{email}
+    </select>
+
+<!--   사용자 비밀번호를 업데이트하는 쿼리  -->
+    <update id="updateUserPassword">
+        UPDATE findpassword
+        SET newPassword = #{newPassword}
+        WHERE email = #{email}
+    </update>
+
 </mapper>
 
