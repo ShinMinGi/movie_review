@@ -27,8 +27,8 @@ public class ReviewBoardService {
     }
 
     //SelectOne
-    public ReviewBoardDto selectOne(Long id) {
-        return reviewBoardMapper.findById(id);
+    public ReviewBoardDto selectOne(Long id, int movieId) {
+        return reviewBoardMapper.findById(id, movieId);
     }
 
     // Delete

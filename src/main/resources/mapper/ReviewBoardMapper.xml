@@ -32,12 +32,13 @@
 
 
 
-    <select id="createReview">
-        insert into review (writer, title, body) values (#{writer},#{title},#{body})
-    </select>
+    <insert id="createReview">
+        INSERT INTO review (writer, title, body, movieId)
+        VALUES (#{writer}, #{title}, #{body}, #{movieId})
+    </insert>
 
     <select id="findById" resultType="com.movie_board.movie_review.dto.ReviewBoardDto">
-        select * from review where id = #{id}
+        select * from review where id = #{id} AND movieId = #{movieId}
     </select>
 
     <delete id="deleteReview">

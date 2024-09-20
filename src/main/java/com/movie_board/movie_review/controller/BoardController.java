@@ -55,6 +55,7 @@ public class BoardController {
     }
 
     // Read All (GET 요청으로 모든 리뷰 조회)  ,  페이징 기능도 동시에 구현
+
     @GetMapping("/movie/board/{movieId}")
     public String getAllReviews(
             @PathVariable int movieId, //movie를 PathVariable로 받아옴
@@ -81,8 +82,9 @@ public class BoardController {
 
 
     // 글쓰기 등록/삭제/수정 페이지 화면
+    // 글쓰기 페이지 화면 (영화별로 글을 쓸 수 있도록 movieId 필요)
     @PreAuthorize("hasRole('USER')")
-    @GetMapping("/board/write/{movieId}")
+    @GetMapping("/movie/{movieId}/write")
     public String write(@PathVariable int movieId, Model model) {
         model.addAttribute("movieId", movieId);
         // 다른 필요한 모델 속성 추가
@@ -94,11 +96,15 @@ public class BoardController {
 
 
     // 글쓰기 등록 구현
-    @PostMapping("/movie/board")
-    public String createReview(@RequestParam String writer,
+    // 글쓰기 등록 (movieId를 받아서 그 영화에 맞는 리뷰 작성)
+    @PostMapping("/movie/{movieId}/board")
+    public String createReview(
+                               @PathVariable int movieId,
+                               @RequestParam String writer,
                                @RequestParam String title,
                                @RequestParam String body) {
         ReviewBoardDto review = new ReviewBoardDto();
+        review.setMovieId(movieId);
         review.setWriter(writer);
         review.setTitle(title);
         review.setBody(body);
@@ -107,39 +113,46 @@ public class BoardController {
         // 폼 데이터를 처리하는 로직 (예: 데이터베이스에 저장)
         log.info("createReview={}", review);
         // 데이터를 처리한 후 다시 mv_review_board로 리다이렉트
-        return "redirect:/movie/board";
+//        return "redirect:/movie/board";
+        return "redirect:/movie/board/" + movieId;
     }
 
     // 게시글 상세 보기 Read
     @PreAuthorize("hasRole('USER')")
-    @GetMapping("/movie/read/{id}")
-    public String read(@PathVariable Long id, Model model) {
-        ReviewBoardDto review = reviewBoardService.selectOne(id);
+    @GetMapping("/movie/read/{movieId}/{id}")
+    public String read(@PathVariable int movieId, @PathVariable Long id, Model model) {
+        ReviewBoardDto review = reviewBoardService.selectOne(id, movieId);
         model.addAttribute("review", review);
+        model.addAttribute("movieId", movieId);
         return "mv_review_board_detail"; // 해당 HTML 파일을 렌더링
     }
 
     // 게시글 삭제
-    @PostMapping("/movie/board/remove/{id}")
-    public String remove(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    @PostMapping("/movie/{movieId}/remove/{id}")
+    public String remove(@PathVariable int movieId, @PathVariable Long id, RedirectAttributes redirectAttributes) {
         reviewBoardService.deleteReview(id);
         log.info("-------------------------remove------------------------------");
         log.info("id : " + id);
-        return "redirect:/movie/board";
+        return "redirect:/movie/board/" + movieId;
+        //return "redirect:/movie/board";
     }
 
+
+
     // 게시글 수정 edit
-    @GetMapping("/edit/{id}")
-    public String editReview(@PathVariable Long id, Model model) {
-        ReviewBoardDto review = reviewBoardService.selectOne(id); // 리뷰 조회
+    @GetMapping("/edit/{movieId}/{id}")
+    public String editReview(@PathVariable int movieId, @PathVariable Long id, Model model) {
+        ReviewBoardDto review = reviewBoardService.selectOne(id, movieId); // 리뷰 조회
         model.addAttribute("review", review); // 모델에 리뷰 추가
+        model.addAttribute("movieId", movieId);
         return "edit"; // 수정 폼 템플릿
     }
 
-    @PostMapping("/edit")
-    public String updateReview(@ModelAttribute ReviewBoardDto reviewBoardDto) {
+    // 게시글 수정 처리 (movieId를 받아서 수정 후 다시 그 영화의 리뷰 페이지로 리다이렉트)
+    @PostMapping("/{movieId}/edit/{id}")
+    public String updateReview(@PathVariable int movieId, @PathVariable Long id, @ModelAttribute ReviewBoardDto reviewBoardDto) {
         reviewBoardService.editReview(reviewBoardDto);
-        return "redirect:/movie/read?id=" + reviewBoardDto.getId();
+        return "redirect:/movie/read/" + movieId + "/" + id;
     }
 
 

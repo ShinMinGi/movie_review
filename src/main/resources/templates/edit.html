@@ -16,7 +16,7 @@
 
 <main>
     <div class="container w-75 my-2 py-4">
-        <form action="/edit" method="post" class="edit-form">
+        <form th:action="@{/{movieId}/edit/{id}(movieId=${movieId}, id=${review.id})}" method="post" class="edit-form">
             <!-- hidden 필드로 기존 게시글의 id 값을 전달 -->
             <input type="hidden" name="id" th:value="${review.id}" />
 
