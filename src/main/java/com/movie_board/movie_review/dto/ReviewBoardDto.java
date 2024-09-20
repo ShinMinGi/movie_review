@@ -12,7 +12,6 @@ public class ReviewBoardDto {
     private String body;
     private String writer;
     private LocalDateTime inserted;
-    private Long movieId;
 
-
+    private int movieId; // 추가
 }

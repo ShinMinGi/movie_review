@@ -49,34 +49,36 @@
         <hr>
 
 
-        <a href="/board/write"
-           class="btn float-end btn-dark text-white">글쓰기</a>
+        <a th:href="@{/board/write/{movieId}(movieId=${movieId})}" class="btn float-end btn-dark text-white">글쓰기</a>
+
+
 
         <div class="text-center mt-5 pt-2">
             <ul class="pagination pagination-sm justify-content-center">
 
-                <!-- 이전 페이지 링크 -->
+<!--                 이전 페이지 링크-->
                 <li class="page-item" th:classappend="${!pageDto.prevPage} ? 'disabled' : ''">
-                    <a class="page-link text-black" th:href="@{/movie/board(page=${pageDto.pageStart - 1}, pageSize=${pageDto.pageSize})}" th:if="${pageDto.prevPage}">
-                        Previous
+                    <a class="page-link text-black" th:href="@{/movie/board/{movieId}(movieId=${movieId}, page=${pageDto.pageStart - 1}, pageSize=${pageDto.pageSize})}" th:if="${pageDto.prevPage}">
+                        &laquo;
                     </a>
-                    <a class="page-link text-black" href="#" th:unless="${pageDto.prevPage}">Previous</a>
+                    <a class="page-link text-black" href="#" th:unless="${pageDto.prevPage}">&laquo;</a>
                 </li>
 
                 <!-- 각 페이지 번호 링크 -->
                 <li class="page-item" th:each="i : ${#numbers.sequence(pageDto.pageStart, pageDto.pageEnd)}"
                     th:classappend="${i == pageDto.currentPage} ? 'active' : ''">
-                    <a class="page-link text-black" th:href="@{/movie/board(page=${i}, pageSize=${pageDto.pageSize})}"
-                       th:text="${i}">1</a>
+                    <a class="page-link text-black" th:href="@{/movie/board/{movieId}(movieId=${movieId}, page=${i}, pageSize=${pageDto.pageSize})}"
+                       th:text="${i}">${i}</a>
                 </li>
 
                 <!-- 다음 페이지 링크 -->
                 <li class="page-item" th:classappend="${!pageDto.nextPage} ? 'disabled' : ''">
-                    <a class="page-link text-black" th:href="@{/movie/board(page=${pageDto.pageEnd + 1}, pageSize=${pageDto.pageSize})}" th:if="${pageDto.nextPage}">
-                        Next
+                    <a class="page-link text-black" th:href="@{/movie/board/{movieId}(movieId=${movieId}, page=${pageDto.pageEnd + 1}, pageSize=${pageDto.pageSize})}" th:if="${pageDto.nextPage}">
+                        &raquo;
                     </a>
-                    <a class="page-link text-black" href="#" th:unless="${pageDto.nextPage}">Next</a>
+                    <a class="page-link text-black" href="#" th:unless="${pageDto.nextPage}">&raquo;</a>
                 </li>
+
 
             </ul>
         </div>
@@ -88,7 +90,7 @@
             <div class="row">
                 <div class="col-md-15 mt-4 mb-5">
                     <div class="box-body">
-                        <form class="d-flex justify-content-center" method="get" action="/movie/board">
+                        <form class="d-flex justify-content-center" method="get" th:action="@{/movie/board/{movieId}(movieId=${movieId})}">
                             <!-- 검색 타입 선택 -->
                             <select id="search_type" name="filter" class="form-select me-1 w-auto border">
                                 <option value="title">제목</option>

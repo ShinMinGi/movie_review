@@ -1,5 +1,6 @@
 package com.movie_board.movie_review.repository;
 
+import com.movie_board.movie_review.dto.MovieDto;
 import com.movie_board.movie_review.dto.PageDto;
 import com.movie_board.movie_review.dto.ReviewBoardDto;
 import org.apache.ibatis.annotations.Mapper;
@@ -25,7 +26,9 @@ public interface ReviewBoardMapper {
     int updateReview(ReviewBoardDto reviewBoardDto);
 
     // 페이징된 리뷰 목록 조회
-    List<ReviewBoardDto> selectPagedList(@Param("offset") int offset,
+    List<ReviewBoardDto> selectPagedList(
+                                         @Param("movieId") int movieId,
+                                         @Param("offset") int offset,
                                          @Param("limit") int limit,
                                          @Param("searchKeyword") String searchKeyword,
                                          @Param("filter") String filter);
@@ -34,7 +37,15 @@ public interface ReviewBoardMapper {
     int selectTotalCount();
 
     // 총 리뷰 수를 가져오는 메서드 추가 (-서칭)
-    int countReviews(@Param("searchKeyword") String searchKeyword, @Param("filter") String filter);
+    int countReviews(@Param("movieId") int movieId, @Param("searchKeyword") String searchKeyword, @Param("filter") String filter);
 
-    List<ReviewBoardDto> getReviewsByMovieId(Long movieId);
+    // 특정 영화의 리뷰 리스트 가져오기
+    List<ReviewBoardDto> getReviewsByMovieId(@Param("movieId") int movieId);
+
+    // 특정 영화 정보 가져오기
+    MovieDto getMovieById(@Param("movieId") int movieId);
+
+
+    // 모든 영화 리스트 가져오기
+    List<MovieDto> selectAllMovies();
 }

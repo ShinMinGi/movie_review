@@ -26,7 +26,7 @@
     <select id="findByEmail" resultType="com.movie_board.movie_review.dto.UserDto">
         SELECT id, userName, emailId, password, createdAt
         FROM users
-        WHERE email_id = #{emailId}
+        WHERE emailid = #{emailId}
     </select>
 
     <!--  이메일로 사용자 정보를 찾는 쿼리  -->

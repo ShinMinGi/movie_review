@@ -1,14 +1,12 @@
 package com.movie_board.movie_review.service;
 
+import com.movie_board.movie_review.dto.MovieDto;
 import com.movie_board.movie_review.dto.ReviewBoardDto;
 import com.movie_board.movie_review.repository.ReviewBoardMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -44,9 +42,9 @@ public class ReviewBoardService {
     }
 
     // 총 게시글 수 가져오기,체 게시글 수를 계산하는 메서드 , 서칭,필터링 동시구현
-    public List<ReviewBoardDto> getPagedList(int page, int pageSize, String searchKeyword, String filter) {
+    public List<ReviewBoardDto> getPagedList(int movieId, int page, int pageSize, String searchKeyword, String filter) {
         int offset = (page - 1) * pageSize;  // OFFSET 계산
-        return reviewBoardMapper.selectPagedList(offset, pageSize, searchKeyword, filter);  // 명시적으로 전달
+        return reviewBoardMapper.selectPagedList(movieId, offset, pageSize, searchKeyword, filter);  // 명시적으로 전달
     }
 
     // 전체 게시글 수 가져오기
@@ -56,13 +54,26 @@ public class ReviewBoardService {
 
 
     // 총 리뷰 수를 가져오는 메서드 추가 (-서칭)
-    public int getTotalReviews(String searchKeyword, String filter) {
-        return reviewBoardMapper.countReviews(searchKeyword,filter);
+    public int getTotalReviews(int movieId, String searchKeyword, String filter) {
+        return reviewBoardMapper.countReviews(movieId, searchKeyword,filter);
     }
 
-    // 영화마다 해당 영화에대한 게시판 생성
-    public List<ReviewBoardDto> getReviewsByMovieId(Long movieId) {
+
+
+
+    // 특정 영화에 대한 리뷰 리스트 가져오기 (동적 게시판구현)
+    public List<ReviewBoardDto> getReviewsByMovieId(int movieId) {
         return reviewBoardMapper.getReviewsByMovieId(movieId);
+    }
+
+    // 특정 영화 정보 가져오기
+    public MovieDto getMovieById(int movieId) {
+        return reviewBoardMapper.getMovieById(movieId);
+    }
+
+    // 모든 영화 리스트 가져오기
+    public List<MovieDto> getAllMovies() {
+        return reviewBoardMapper.selectAllMovies();
     }
 
 }

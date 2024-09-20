@@ -22,6 +22,7 @@ public class PageDto{
     private String filter; // 필터링 조건
 
 
+
     public PageDto(int total, int currentPage, int pageSize, String searchKeyword, String filter) {
         this.total = total;
         this.currentPage = currentPage;
@@ -31,7 +32,7 @@ public class PageDto{
 
 
         // 페이지 끝 번호 계산
-        this.pageEnd = (int) (Math.ceil(currentPage/ 5.0)) * 5;
+        this.pageEnd = (int) (Math.ceil((double) currentPage/ 5.0)) * 5;
 
         // 페이지 시작 시 번호 계산
         this.pageStart = this.pageEnd - 4;

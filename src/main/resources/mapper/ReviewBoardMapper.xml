@@ -11,10 +11,24 @@
         ORDER BY id DESC
     </select>
 
-    <!-- 특정 영화에 대한 리뷰를 가져오는 sql 문 -->
+
+    <!--  전체 영화 조회 쿼리  -->
+    <select id="selectAllMovies" resultType="com.movie_board.movie_review.dto.MovieDto">
+        SELECT * FROM movie;  <!-- 전체 영화 -->
+    </select>
+
+
+
+    <!-- 특정 영화에 대한 리뷰를 가져오는 sql문 동적표현 -->
     <select id="getReviewsByMovieId" resultType="com.movie_board.movie_review.dto.ReviewBoardDto">
         SELECT * FROM review WHERE movieId = #{movieId}
+        ORDER BY inserted DESC
     </select>
+    <!-- 특정 영화의 정보를 가져오는 쿼리 -->
+    <select id="getMovieById" resultType="com.movie_board.movie_review.dto.MovieDto">
+        SELECT * FROM movie WHERE movieId = #{movieId}
+    </select>
+
 
 
 
@@ -40,6 +54,8 @@
         SELECT *
         FROM review
         <where>
+            movieId = #{movieId}
+
             <if test="searchKeyword != null and searchKeyword != ''">
                 <choose>
                     <when test="filter == 'title'">
@@ -73,6 +89,8 @@
         SELECT COUNT(*)
         FROM review
         <where>
+            movieId = #{movieId}
+
             <if test="searchKeyword != null and searchKeyword != ''">
                 <choose>
                     <when test="filter == 'title'">

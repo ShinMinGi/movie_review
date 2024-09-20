@@ -1,17 +1,15 @@
 package com.movie_board.movie_review.controller;
 
 
+import com.movie_board.movie_review.dto.MovieDto;
 import com.movie_board.movie_review.dto.PageDto;
 import com.movie_board.movie_review.dto.ReviewBoardDto;
-import com.movie_board.movie_review.dto.UserDto;
 import com.movie_board.movie_review.service.ReviewBoardService;
 import com.movie_board.movie_review.service.UserService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,32 +24,56 @@ public class BoardController {
 
     @Autowired
     private ReviewBoardService reviewBoardService;
-    @Autowired
-    private UserService userService;
-    @GetMapping({"/", "MovieReview"})
-    public String mvreview() {
+
+
+    @GetMapping("/")
+    public String mvreview(Model model) {
+        // 영화 리스트 가져오기
+        List<MovieDto> movies = reviewBoardService.getAllMovies();
+
+        model.addAttribute("movies", movies);
         return "mv_review";
     }
 
+    // 영화별 리뷰 게시판으로 이동
+    @GetMapping("/movie/review/{movieId}")
+    public String getMovieReviews(
+            @PathVariable int movieId,
+            Model model) {
+
+        // 해당 영화에 대한 리뷰 리스트 가져오기
+        List<ReviewBoardDto> reviews = reviewBoardService.getReviewsByMovieId(movieId);
+
+        // 해당 영화 정보 가져오기
+        MovieDto movie = reviewBoardService.getMovieById(movieId);
+
+        // 모델에 리뷰와 영화 정보 추가
+        model.addAttribute("reviewList", reviews);
+        model.addAttribute("movie", movie);
+
+        return "mv_review_board"; // 동적 리뷰 게시판 템플릿
+    }
 
     // Read All (GET 요청으로 모든 리뷰 조회)  ,  페이징 기능도 동시에 구현
-    @GetMapping("/movie/board")
+    @GetMapping("/movie/board/{movieId}")
     public String getAllReviews(
+            @PathVariable int movieId, //movie를 PathVariable로 받아옴
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "searchKeyword", defaultValue = "") String searchKeyword,
             @RequestParam(value = "filter", defaultValue = "") String filter,
             Model model) {
 
-        int totalReviews = reviewBoardService.getTotalReviews(searchKeyword, filter);
+        int totalReviews = reviewBoardService.getTotalReviews(movieId, searchKeyword, filter);
         PageDto pageDto = new PageDto(totalReviews, page, pageSize, searchKeyword, filter);
 
         // 페이지에 맞는 리뷰 가져오기
-        List<ReviewBoardDto> reviews = reviewBoardService.getPagedList(page, pageSize, searchKeyword, filter);
+        List<ReviewBoardDto> reviews = reviewBoardService.getPagedList(movieId, page, pageSize, searchKeyword, filter);
 
         // 모델에 추가
         model.addAttribute("reviewList", reviews);
         model.addAttribute("pageDto", pageDto);
+        model.addAttribute("movieId", movieId);
 
         return "mv_review_board";  // mv_review_board.html 파일로 연결
     }
@@ -60,24 +82,16 @@ public class BoardController {
 
     // 글쓰기 등록/삭제/수정 페이지 화면
     @PreAuthorize("hasRole('USER')")
-    @GetMapping("/board/write")
-    public String write() {
-        return "write";
+    @GetMapping("/board/write/{movieId}")
+    public String write(@PathVariable int movieId, Model model) {
+        model.addAttribute("movieId", movieId);
+        // 다른 필요한 모델 속성 추가
+        return "write"; // write.html로 연결
     }
 
-//    // 로그인 된 정보 세션을 이용한 게시글 작성
-//    @PostMapping("write")
-//    public String writeBoard(ReviewBoardDto reviewBoardDto, HttpSession session) {
-//        UserDto loggedInUser = (UserDto) session.getAttribute("user");
-//
-//        if (loggedInUser == null) {
-//            return "redirect:/login";
-//        }
-//        reviewBoardDto.setWriter(loggedInUser.getUserName());
-//
-//        reviewBoardService.createReview(reviewBoardDto);
-//        return "redirect:/movie/board";
-//    }
+
+
+
 
     // 글쓰기 등록 구현
     @PostMapping("/movie/board")
@@ -159,16 +173,9 @@ public class BoardController {
         return "redirect:/login?logout"; // 로그아웃 후 로그인 페이지로 리다이렉트
     }
 
-    // 영화의 리뷰 목록을 가져오는 메서드
-    @GetMapping("/movie/review/{movieId}")
-    public String getReviewsByMovieId(@PathVariable Long movieId, Model model) {
-        System.out.println("Received movieId: " + movieId); // movieId가 제대로 전달되는지 확인
-        List<ReviewBoardDto> reviews = reviewBoardService.getReviewsByMovieId(movieId);
-        if (reviews == null || reviews.isEmpty()) {
-            System.out.println("No reviews found for movieId: " + movieId); // 리뷰가 없을 때 처리
-        }
-        model.addAttribute("reviewList", reviews);
-        return "mv_review_board"; // HTML 파일 이름과 일치
-    }
+
+
+
+
 
 }

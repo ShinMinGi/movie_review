@@ -22,174 +22,27 @@
             <div class="fs-5 fw-semibold border border-0">Movie Review 순위</div>
         </div>
     </div>
+
     <div class="container">
         <div class="row row-cols-md-5">
-
-            <div class="col-3 text-start">
-<!--                <div class="card text-start  border-0" style="width: 15rem;">-->
-<!--                    <a th:href="@{/movie/review/{movieId}(movieId=${movieId})}" class="no-underline">-->
-<!--                        <img th:src="@{/img/veteran2.jpg}" class="card-img-top" alt="Veteran Poster">-->
-<!--                        <div class="card-text fw-semibold mt-2 text-dark d-flex" href="#">-->
-<!--                            베테랑-->
-<!--                        </div>-->
-<!--                        <div class="d-flex fs-7 text-dark">2024-->
-<!--                            <div class="mx-2">• Korea</div>-->
-<!--                        </div>-->
-<!--                    </a>-->
-<!--                </div>-->
-<!--            </div>-->
-
-            <div class="card text-start  border-0" style="width: 15rem;">
-                <a href="/movie/board" class="no-underline">
-                    <img src="/img/veteran2.jpg" class="card-img-top" alt="...">
-                    <div class="card-text fw-semibold mt-2 text-dark d-flex" href="#">
-                        베테랑
-                    </div>
-                    <div class="d-flex fs-7 text-dark">2024
-                        <div class="mx-2">• Korea</div>
-                    </div>
-                </a>
-            </div>
-
-        </div>
-        <div class="col-3">
-            <div class="card text-start border-0 h-100" style="width: 15rem;">
-                <a href="/movie/board" class="no-underline">
-                    <img src="/img/escape.jpg" class="card-img-top" alt="...">
-                    <div class="card-text fw-semibold mt-2 text-dark">
-                        탈주
-                    </div>
-                    <div class="d-flex fs-7 text-dark">2024
-                        <div class="mx-2">• Korea</div>
-                    </div>
-                </a>
-            </div>
-
-        </div>
-        <div class="col-3">
-            <div class="card text-start border-0" style="width: 15rem;">
-                <a href="/movie/board" class="no-underline">
-                    <img src="/img/superbad4.jpg" class="card-img-top" alt="...">
-                    <div class="card-text fw-semibold mt-2 text-dark">
-                        슈퍼배드4
-                    </div>
-                    <div class="d-flex fs-7 text-dark">2024
-                        <div class="mx-2">• United States</div>
-                    </div>
-                </a>
-            </div>
-
-        </div>
-        <div class="col-3">
-            <div class="card text-start border-0" style="width: 15rem;">
-                <a href="/movie/board" class="no-underline">
-                    <img src="/img/pilot.jpg" class="card-img-top" alt="...">
-                    <div class="card-text fw-semibold mt-2 text-dark">
-                        파일럿
-                    </div>
-                    <div class="d-flex fs-7 text-dark">2024
-                        <div class="mx-2">• Korea</div>
-                    </div>
-                </a>
-            </div>
-
-        </div>
-        <div class="col-3">
-            <div class="card text-start border-0" style="width: 15rem;">
-                <a href="/movie/board" class="no-underline">
-                    <img src="/img/twisters.jpg" class="card-img-top" alt="...">
-                    <div class="card-text fw-semibold mt-2 text-dark">
-                        트위스터스
-                    </div>
-                    <div class="d-flex fs-7 text-dark">2024
-                        <div class="mx-2">• United States</div>
-                    </div>
-                </a>
-            </div>
-
-        </div>
-    </div>
-    </div>
-
-    <!-- Movie Review Top 10 영화 !-->
-    <div class="container mt-5">
-        <div class="row">
-            <div class="fs-5 fw-semibold border border-0">Movie Review Top 10 영화</div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row row-cols-md-5">
-
-            <div class="col-3 text-start">
-
-                <div class="card text-start  border-0" style="width: 15rem;">
-                    <a href="/movie/board" class="no-underline">
-                        <img src="/img/cross.jpg" class="card-img-top" alt="...">
-                        <div class="card-text fw-semibold mt-2 text-dark" href="#">
-                            크로스
-                        </div>
-                        <div class="d-flex fs-7 text-dark">2024
-                            <div class="mx-2">• Korea</div>
-                        </div>
-                    </a>
-                </div>
-
-            </div>
-            <div class="col-3">
-                <div class="card text-start border-0 h-100" style="width: 15rem;">
-                    <a href="/movie/board" class="no-underline">
-                        <img src="/img/deliverance.jpg" class="card-img-top" alt="...">
-                        <div class="card-text fw-semibold mt-2 text-dark">
-                            딜리버런스
-                        </div>
-                        <div class="d-flex fs-7 text-dark">2024
-                            <div class="mx-2">• United States</div>
-                        </div>
-                    </a>
-                </div>
-
-            </div>
-            <div class="col-3">
+            <div class="col-3" th:each="movie : ${movies}">
                 <div class="card text-start border-0" style="width: 15rem;">
-                    <a href="/movie/board" class="no-underline">
-                        <img src="/img/the_union.jpg" class="card-img-top" alt="...">
+                    <a th:href="@{/movie/board/{movieId}(movieId=${movie.movieId})}" class="no-underline">
+                        <!-- 영화 포스터 이미지 -->
+                        <img th:src="${movie.posterPath}" class="card-img-top" alt="Movie Poster">
+                        <!-- 영화 제목 -->
                         <div class="card-text fw-semibold mt-2 text-dark">
-                            더 유니온
+                            <span th:text="${movie.title}"></span>
                         </div>
-                        <div class="d-flex fs-7 text-dark">2024
-                            <div class="mx-2">• United States</div>
+                        <!-- 영화 개봉 연도와 국가 -->
+                        <div class="d-flex fs-7 text-dark">
+                            <span th:text="${movie.releaseYear}"></span>
+                            <div class="mx-2">• <span th:text="${movie.country}"></span></div>
                         </div>
                     </a>
                 </div>
+            </div>
 
-            </div>
-            <div class="col-3">
-                <div class="card text-start border-0" style="width: 15rem;">
-                    <a href="/movie/board" class="no-underline">
-                        <img src="/img/graveyard.jpg" class="card-img-top" alt="...">
-                        <div class="card-text fw-semibold mt-2 text-dark">
-                            파묘
-                        </div>
-                        <div class="d-flex fs-7 text-dark">2024
-                            <div class="mx-2">• Korea</div>
-                        </div>
-                    </a>
-                </div>
-
-            </div>
-            <div class="col-3">
-                <div class="card text-start border-0" style="width: 15rem;">
-                    <a href="/movie/board" class="no-underline">
-                        <img src="/img/rampage.jpg" class="card-img-top" alt="...">
-                        <div class="card-text fw-semibold mt-2 text-dark">
-                            램페이지
-                        </div>
-                        <div class="d-flex fs-7 text-dark">2024
-                            <div class="mx-2">• United States</div>
-                        </div>
-                    </a>
-                </div>
-            </div>
         </div>
     </div>
 
