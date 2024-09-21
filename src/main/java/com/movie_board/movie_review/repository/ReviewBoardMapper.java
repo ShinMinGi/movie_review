@@ -17,7 +17,8 @@ public interface ReviewBoardMapper {
     ReviewBoardDto findById(@Param("id") Long id, @Param("movieId") int movieId);
 
     // 등록
-    void createReview(@Param("reviewBoardDto") ReviewBoardDto reviewBoardDto);
+//    void createReview(@Param("reviewBoardDto") ReviewBoardDto reviewBoardDto);
+    void createReview(ReviewBoardDto reviewBoardDto);
 
     // 삭제
     void deleteReview(Long id);

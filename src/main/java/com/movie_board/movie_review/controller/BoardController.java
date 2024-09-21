@@ -84,11 +84,11 @@ public class BoardController {
     // 글쓰기 등록/삭제/수정 페이지 화면
     // 글쓰기 페이지 화면 (영화별로 글을 쓸 수 있도록 movieId 필요)
     @PreAuthorize("hasRole('USER')")
-    @GetMapping("/movie/{movieId}/write")
+    @GetMapping("/movie/write/{movieId}")
     public String write(@PathVariable int movieId, Model model) {
         model.addAttribute("movieId", movieId);
         // 다른 필요한 모델 속성 추가
-        return "write"; // write.html로 연결
+        return "write";
     }
 
 
@@ -97,7 +97,7 @@ public class BoardController {
 
     // 글쓰기 등록 구현
     // 글쓰기 등록 (movieId를 받아서 그 영화에 맞는 리뷰 작성)
-    @PostMapping("/movie/{movieId}/board")
+    @PostMapping("/movie/board/{movieId}")
     public String createReview(
                                @PathVariable int movieId,
                                @RequestParam String writer,
@@ -108,14 +108,18 @@ public class BoardController {
         review.setWriter(writer);
         review.setTitle(title);
         review.setBody(body);
+        log.info("Creating review with movieId: {}, writer: {}, title: {}, body: {}", movieId, writer, title, body);
 
         reviewBoardService.createReview(review);
         // 폼 데이터를 처리하는 로직 (예: 데이터베이스에 저장)
         log.info("createReview={}", review);
         // 데이터를 처리한 후 다시 mv_review_board로 리다이렉트
-//        return "redirect:/movie/board";
+
         return "redirect:/movie/board/" + movieId;
+
     }
+
+
 
     // 게시글 상세 보기 Read
     @PreAuthorize("hasRole('USER')")
@@ -134,7 +138,6 @@ public class BoardController {
         log.info("-------------------------remove------------------------------");
         log.info("id : " + id);
         return "redirect:/movie/board/" + movieId;
-        //return "redirect:/movie/board";
     }
 
 

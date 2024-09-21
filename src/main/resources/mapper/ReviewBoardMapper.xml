@@ -32,9 +32,10 @@
 
 
 
+
     <insert id="createReview">
-        INSERT INTO review (writer, title, body, movieId)
-        VALUES (#{writer}, #{title}, #{body}, #{movieId})
+        INSERT INTO review (movieId, writer, title, body)
+        VALUES (#{movieId}, #{writer}, #{title}, #{body})
     </insert>
 
     <select id="findById" resultType="com.movie_board.movie_review.dto.ReviewBoardDto">

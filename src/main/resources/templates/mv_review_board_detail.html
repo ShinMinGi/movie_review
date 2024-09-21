@@ -36,7 +36,7 @@
 
 
                 <!-- 삭제 버튼: 게시글 삭제 요청을 전송 -->
-                <form th:action="@{/movie/board/remove/{id}(id=${review.id})}" method="post" style="display:inline;">
+                <form th:action="@{/movie/{movieId}/remove/{id}(movieId=${movieId}, id=${review.id})}" method="post" style="display:inline;">
                     <button type="submit" class="btn btn-danger me-1">삭제</button>
                 </form>
 
