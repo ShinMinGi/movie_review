@@ -24,7 +24,19 @@
     color: white;
 }
 
-.merch {
+.store {
     width: 100%;
     height: 500px;
+}
+
+.merch {
+    width: 510px;
+    height: 510px;
+}
+
+.merch_center {
+    display: flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+
 }
