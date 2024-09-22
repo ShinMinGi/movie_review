@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.List;
 
 @Slf4j
@@ -86,7 +87,13 @@ public class BoardController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/movie/write/{movieId}")
     public String write(@PathVariable int movieId, Model model) {
+//        if (principal != null) {
+//            System.out.println("Logged in user: " + principal.getName());
+//        } else {
+//            System.out.println("No user is logged in.");
+//        }
         model.addAttribute("movieId", movieId);
+//        model.addAttribute("writer", principal.getName());
         // 다른 필요한 모델 속성 추가
         return "write";
     }
