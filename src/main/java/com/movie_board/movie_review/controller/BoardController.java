@@ -84,7 +84,8 @@ public class BoardController {
 
     // 글쓰기 등록/삭제/수정 페이지 화면
     // 글쓰기 페이지 화면 (영화별로 글을 쓸 수 있도록 movieId 필요)
-    @PreAuthorize("hasRole('USER')")
+    //    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/movie/write/{movieId}")
     public String write(@PathVariable int movieId, Model model) {
 //        if (principal != null) {
@@ -129,7 +130,8 @@ public class BoardController {
 
 
     // 게시글 상세 보기 Read
-    @PreAuthorize("hasRole('USER')")
+//    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/movie/read/{movieId}/{id}")
     public String read(@PathVariable int movieId, @PathVariable Long id, Model model) {
         ReviewBoardDto review = reviewBoardService.selectOne(id, movieId);
