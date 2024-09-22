@@ -193,6 +193,7 @@ public class BoardController {
         return "login"; // login.html 파일을 반환
     }
 
+
     @GetMapping("/logout")
     public String logout() {
         return "redirect:/login?logout"; // 로그아웃 후 로그인 페이지로 리다이렉트
@@ -200,6 +201,11 @@ public class BoardController {
 
 
 
+    // 스토어
+    @GetMapping("/store")
+    public String store() {
+        return "store";
+    }
 
 
 

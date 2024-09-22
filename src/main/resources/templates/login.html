@@ -21,9 +21,17 @@
     <div class="container">
         <div class="wrapper">
             <div class="title"><span>Movie Review</span></div>
+
+            <!-- 로그아웃 후 메시지 -->
             <th:block th:if="${param.logout != null}">
-                <div>Logout..............</div>
+                <div class="alert alert-success">로그아웃되었습니다.</div>
             </th:block>
+
+            <!-- 로그인 실패 후 메시지 -->
+            <th:block th:if="${param.error != null}">
+                <div class="alert alert-danger">로그인 실패. 아이디나 비밀번호를 확인하세요.</div>
+            </th:block>
+
             <!-- 로그인 폼 -->
             <form th:action="@{/login}" method="post" th:if="${param.logout == null}">
                 <div class="row">
@@ -34,10 +42,10 @@
                     <i class="fas fa-lock"></i>
                     <input type="password" name="password" placeholder="비밀번호" required>
                 </div>
-                <div class="d-flex flex-colum justify-content-end">
+                <div class="d-flex flex-column justify-content-end">
                     <div class="pass"><a href="/find/email">비밀번호 찾기</a></div>
                 </div>
-                    <div class="row button">
+                <div class="row button">
                     <input type="submit" value="Login">
                 </div>
                 <div class="signup-link">계정이 없으신가요? <a th:href="@{/signup}">회원가입</a></div>

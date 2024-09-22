@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <!-- Font Awesome CDN -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
@@ -12,37 +10,18 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="/css/top_menu_bar.css" th:href="@{/css/top_menu_bar.css}">
     <link rel="stylesheet" href="/css/mv_review.css" th:href="@{/css/mv_review.css}">
-    <link rel="stylesheet" href="/css/store.css" th:href="@{/css/event1.css}">
 </head>
-<body>
-<!-- header -->
+<body class="d-flex flex-column min-vh-100">
+<!-- header !-->
 <header th:replace="fragment/header :: header"></header>
-<!-- header 끝-->
-
-<main class="d-flex justify-content-center align-items-center min-vh-100 mt-4 mb-4">
-    <div class="card">
-        <div class="card-header d-flex">공연 이벤트
-            <div class="">[CGV강남]ALL DAY CINEMA</div>
-            <div class="ms-auto">기간: 2024.09.01 ~ 2025.09.31</div>
-        </div>
-        <img src="/img/event2_detail.jpg" class="event2_detail" alt="...">
-
-        <div class="card-footer d-flex justify-content-end">
-            <a href="/" class="no-underline2 d-flex align-items-center">
-                <div><i class="fa-solid fa-backward"></i></div>
-                <div class="ms-2">목록</div>
-            </a>
-        </div>
+<!-- main !-->
+<main>
 
 
-    </div>
 </main>
-
-
-<!-- footer -->
+<!-- footer !-->
 <footer th:replace="fragment/footer :: footer"></footer>
-<!-- footer 끝-->
-
+<!-- footer 끝 !-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>

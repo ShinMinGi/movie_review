@@ -1,3 +1,7 @@
+.event_card {
+
+}
+
 .event_img {
     width: 40%;
     height: 40%;
@@ -18,4 +22,9 @@
 .event2 {
     text-decoration: none;
     color: white;
+}
+
+.merch {
+    width: 100%;
+    height: 500px;
 }
