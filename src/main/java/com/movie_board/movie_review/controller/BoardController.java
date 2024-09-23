@@ -201,12 +201,6 @@ public class BoardController {
 
 
 
-    // 스토어
-    @GetMapping("/store")
-    public String store() {
-        return "store";
-    }
-
 
 
 }

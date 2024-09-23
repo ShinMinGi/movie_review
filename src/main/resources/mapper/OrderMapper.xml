@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.movie_board.movie_review.repository.OrderMapper">
+
+<!--    <select id="getOrderWithUserName" parameterType="Long" resultType="com.movie_board.movie_review.dto.OrderDto">-->
+<!--        SELECT o.*, u.userName-->
+<!--        FROM orders o JOIN users u ON o.userId = u.id-->
+<!--        WHERE o.id = #{id}-->
+<!--    </select>-->
+
+
+    <insert id="insertOrder" parameterType="com.movie_board.movie_review.dto.OrderDto">
+        INSERT INTO orders (userId, orderId, amount, status, createdAt)
+        VALUES (#{userId}, #{orderId}, #{amount}, #{status}, NOW())
+    </insert>
+
+
+
+
+</mapper>

@@ -85,4 +85,10 @@ public class UserService {
             e.printStackTrace();
         }
     }
+
+    // 결제 유저네임 가져오기위한 메서드
+    public UserDto findByUsername(String username) {
+        return userMapper.findByUsername(username);
+    }
+
 }

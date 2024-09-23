@@ -1,0 +1,70 @@
+.merch {
+    width: 510px;
+    height: 510px;
+}
+
+/* styles.css */
+.container {
+    display: flex;
+    /*justify-content: space-between; !* 두 섹션 간의 간격을 유지 *!*/
+    /*align-items: flex-start; !* 섹션을 위쪽에 맞춤 *!*/
+    max-width: 1000px; /* 컨테이너 최대 너비 */
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.product-image-section img {
+    width: 100%; /* 이미지의 너비를 섹션에 맞춤 */
+    height: auto;
+}
+
+.payment-section {
+    /*flex: 1; !* 결제 섹션이 전체 너비의 1을 차지 *!*/
+    /*height: 510px;*/
+    width: 510px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+
+}
+
+.merch_center {
+
+
+}
+
+.container_detail {
+    display: flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 (필요 시) */
+    /*height: 100vh; !* 필요시 컨테이너 전체 높이 설정 가능 *!*/
+}
+
+.original-price::before {
+    content: "";
+    position: absolute;
+    top: 28%;
+    left: 66%;
+    width: 4%;
+    height: 1px;
+    background-color: #6c757d; /* 줄 색상 설정 */
+    transform: rotate(-15deg); /* 대각선 줄 설정 */
+}
+
+
+
+.kg_pay_btn {
+    width: 100%;
+    background: #2b7fdf;
+    height: 40px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.ka_pay_btn {
+    width: 100%;
+    height: 40px;
+    background: #fee501;
+}
