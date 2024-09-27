@@ -1,20 +1,16 @@
 function updateTotalPrice() {
-    // 수량 가져오기
-    const quantity = document.getElementById('quantity').value;
+    const quantity = document.getElementById("quantity").value;
+    const unitPrice = 7000; // 개당 가격
+    const deliveryFee = 3000; // 배송비
+    const totalAmount = (unitPrice * quantity) + deliveryFee;
 
-    // 할인된 가격 (7,000원)
-    const price = 7000;
+    // 총 결제 금액을 표시
+    document.getElementById("totalPrice").innerText = totalAmount + "원";
 
-    // 배송비 (고정값 3,000원)
-    const deliveryFee = 3000;
-
-    // 총 상품 금액 계산 (수량 * 가격 + 배송비)
-    const totalPrice = (quantity * price) + deliveryFee;
-
-    // 화면에 총 금액 업데이트
-    document.getElementById('totalPrice').innerText = totalPrice.toLocaleString(); // 천단위 콤마
-    document.getElementById('hiddenTotalPrice').value = totalPrice; // 폼 전송 시 값을 저장하기 위해 hidden 필드 업데이트
+    // 숨겨진 입력 필드에 총 결제 금액 저장
+    document.getElementById("hiddenTotalPrice").value = totalAmount;
 }
+
 
 
 

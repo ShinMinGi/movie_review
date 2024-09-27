@@ -49,9 +49,11 @@
         <table class="info-table">
             <tr>
                 <th class="title">수량</th>
-                <td th:text="${quantity}"></td> <!-- 수량을 표시 -->
+                <td>
+                    <input type="number" id="quantity" name="quantity" th:value="${quantity}" min="1" onchange="updateTotalPrice()" />
+                </td>
             </tr>
-            <input type="hidden" name="quantity" th:value="${quantity}"/>
+
 
             <tr>
                 <th class="title">배송비</th>
@@ -61,9 +63,11 @@
 
             <tr>
                 <th class="title">총결제금액</th>
-                <td class="amount" th:text="${amount}"></td> <!-- 총 결제 금액을 표시 -->
+                <td>
+                    <span id="totalPrice" th:text="${amount}"></span> <!-- 총 결제 금액을 표시 -->
+                </td>
             </tr>
-            <input type="hidden" name="amount" th:value="${amount}"/>
+
         </table>
 
         <div class="kg_pay_div mt-5">

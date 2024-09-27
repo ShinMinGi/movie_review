@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.UUID;
@@ -54,28 +55,27 @@ public class PaymentController {
     }
 
 
-    // 사용자가 orderForm.html에서 결제 정보를 제출하면 처리하는 메서드
     @PostMapping("/processOrder")
-    public String processOrder(@ModelAttribute OrderDto orderDto,
-                               @RequestParam("quantity") int quantity) {
+    public String processOrder(@ModelAttribute OrderDto orderDto, RedirectAttributes redirectAttributes) {
+        // 수량과 총 금액을 설정
+        int unitPrice = 7000; // 개당 가격
+        int deliveryFee = 3000; // 배송비
+        int totalAmount = (unitPrice * orderDto.getQuantity()) + deliveryFee;
 
-        // 고유한 orderId 생성
+        //        // 고유한 orderId 생성
         orderDto.setOrderId(UUID.randomUUID().toString());
-        orderDto.setQuantity(quantity); // quantity를 orderDto에 설정
-        // 주문 처리 로직
-        orderService.createOrder(orderDto);
-
-        return "redirect:/store/form";
-    }
-
-
-
-    // 주문 완료 페이지
-//    @GetMapping("/orderConfirmation")
-//    public String showOrderConfirmation() {
-//        return "orderConfirmation"; // 주문 완료 페이지
-//    }
 //
+//        // 주문 처리 로직
+        orderService.createOrder(orderDto);
+        // DTO에 총 금액 설정
+        orderDto.setAmount(totalAmount);
+
+        // 리다이렉트할 때 수량과 총 금액 추가
+        redirectAttributes.addFlashAttribute("quantity", orderDto.getQuantity());
+        redirectAttributes.addFlashAttribute("amount", totalAmount);
+
+        return "redirect:/store/form"; // 2번 페이지로 리다이렉트
+    }
 
 
 }
