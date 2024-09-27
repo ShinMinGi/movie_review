@@ -13,50 +13,56 @@
     <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 </head>
 <body class="d-flex flex-column min-vh-100" th:object="${user}">
-<input type="hidden" id="userId" th:value="${user != null ? user.id : ''}"/>
-<input type="hidden" id="username" th:value="${user != null ? user.username : ''}"/>
+<!--<input type="hidden" id="userId" th:value="${user != null ? user.id : ''}"/>-->
+<!--<input type="hidden" id="username" th:value="${user != null ? user.username : ''}"/>-->
 
 
 <!-- header -->
 <header th:replace="fragment/header :: header"></header>
 
 <!-- main -->
-<main class="">
+<main>
     <div class="container mt-5">
         <div class="product-image-section">
             <img src="/img/harry_potter_merch.jpg" alt="제품 이미지" class="merch">
         </div>
 
-        <div class="payment-section border border-1">
-            <h3 class="fs-5 fw-semibold">해리포터 랜덤뱃지 ver.3</h3>
-            <p class="price d-flex">
-            <p class="fs-4 discount text-danger d-flex">30% 할인</p>
-            <div class="d-flex justify-content-end">
-                <span class="original-price p-2 text-muted">10,000원</span>
+        <form th:action="@{/processOrder}" method="post" th:object="${orderDto}" class="payment-section border border-1">
+            <h3 class="bb fs-5 fw-semibold">해리포터 랜덤뱃지 ver.3</h3>
+            <hr>
+            <p class="price">
+            <p class="fs-4 discount text-danger fw-semibold">30% 할인</p>
+            <div>
+                <span class="original-price p-2 text-muted fw-semibold">10,000원</span>
                 <span class="discounted-price p-2 text-danger fw-semibold">7,000원</span>
+                <input type="hidden" id="amount" name="amount" th:value="*{amount}"/>
+                <input type="hidden" id="deliveryFee" name="deliveryFee" value="3000"/> <!-- 고정된 배송비 -->
             </div>
+            <hr>
             </p>
 
-            <div class="shipping">
+            <div class="shipping fw-semibold">
                 <p>배송비: 3,000원</p>
             </div>
+            <hr>
 
-            <div class="quantity-selector">
+            <div class="quantity-selector mt-4 fw-semibold">
                 <label for="quantity">수량:</label>
-                <input type="number" id="quantity" value="1" min="1">
+                <input type="number" id="quantity" name="quantity" th:field="*{quantity}" value="1" min="1"
+                       onchange="updateTotalAmount()"/>
             </div>
 
             <div class="total-price fw-semibold mt-5">
-                <p>총 상품 금액: 7,000원</p>
+                <p>총 상품 금액: <span id="totalAmount">7,000</span></p>
+                <input type="hidden" name="amount" id="hiddenTotalAmount" th:value="*{amount}"/>
             </div>
 
-            <div class="kg_pay_div">
-                <button class="kg_pay_btn text-white fw-semibold border-0" type="button" th:onclick="kg_request_pay()">결제하기</button>
+            <div>
+                <button type="submit" class="buy text-white fw-semibold border-0">
+                    바로구매 >
+                </button>
             </div>
-            <div class="ka_pay_div">
-                <button class="ka_pay_btn fw-semibold border-0" type="button" th:onclick="ka_request_pay()">카카오페이</button>
-            </div>
-        </div>
+        </form>
     </div>
 </main>
 

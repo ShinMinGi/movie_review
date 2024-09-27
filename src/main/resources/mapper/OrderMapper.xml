@@ -5,19 +5,16 @@
 
 <mapper namespace="com.movie_board.movie_review.repository.OrderMapper">
 
-<!--    <select id="getOrderWithUserName" parameterType="Long" resultType="com.movie_board.movie_review.dto.OrderDto">-->
-<!--        SELECT o.*, u.userName-->
-<!--        FROM orders o JOIN users u ON o.userId = u.id-->
-<!--        WHERE o.id = #{id}-->
-<!--    </select>-->
-
 
     <insert id="insertOrder" parameterType="com.movie_board.movie_review.dto.OrderDto">
-        INSERT INTO orders (userId, orderId, amount, status, createdAt)
-        VALUES (#{userId}, #{orderId}, #{amount}, #{status}, NOW())
+        INSERT INTO orders (userId, orderId, amount, status, createdAt, quantity, deliveryFee, deliveryAddress, phoneNumber)
+        VALUES (#{userId}, #{orderId}, #{amount}, #{status}, NOW(), #{quantity}, #{deliveryFee}, #{deliveryAddress}, #{phoneNumber})
     </insert>
 
 
+<!--    <select id="getOrderById" parameterType="int" resultType="com.movie_board.movie_review.dto.OrderDto">-->
+<!--        SELECT * FROM orders WHERE id = #{id}-->
+<!--    </select>-->
 
 
 </mapper>
