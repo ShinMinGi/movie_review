@@ -7,14 +7,15 @@
 
 
     <insert id="insertOrder" parameterType="com.movie_board.movie_review.dto.OrderDto">
-        INSERT INTO orders (userId, orderId, amount, status, createdAt, quantity, deliveryFee, deliveryAddress, phoneNumber)
-        VALUES (#{userId}, #{orderId}, #{amount}, #{status}, NOW(), #{quantity}, #{deliveryFee}, #{deliveryAddress}, #{phoneNumber})
+        INSERT INTO orders (userId, orderId, amount, status, createdAt, quantity, deliveryFee, deliveryAddress, phoneNumber, orderName, orderEmail)
+        VALUES (#{userId}, #{orderId}, #{amount}, #{status}, NOW(), #{quantity}, #{deliveryFee}, #{deliveryAddress}, #{phoneNumber}, #{orderName}, #{orderEmail})
     </insert>
 
 
-<!--    <select id="getOrderById" parameterType="int" resultType="com.movie_board.movie_review.dto.OrderDto">-->
-<!--        SELECT * FROM orders WHERE id = #{id}-->
-<!--    </select>-->
+<!--    <insert id="storeOrder" parameterType="com.movie_board.movie_review.dto.OrderDto">-->
+<!--        INSERT INTO orders (userId, orderId, amount, status, createdAt, quantity, deliveryFee, deliveryAddress, phoneNumber, orderName, orderEmail)-->
+<!--        VALUES (#{userId}, #{orderId}, #{amount}, #{status}, NOW(), #{quantity}, #{deliveryFee}, #{deliveryAddress}, #{phoneNumber}, #{orderName}, #{orderEmail})-->
+<!--    </insert>-->
 
 
 </mapper>

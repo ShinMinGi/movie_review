@@ -85,16 +85,11 @@ public class BoardController {
     // 글쓰기 등록/삭제/수정 페이지 화면
     // 글쓰기 페이지 화면 (영화별로 글을 쓸 수 있도록 movieId 필요)
     //    @PreAuthorize("hasRole('USER')")
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/movie/write/{movieId}")
     public String write(@PathVariable int movieId, Model model) {
-//        if (principal != null) {
-//            System.out.println("Logged in user: " + principal.getName());
-//        } else {
-//            System.out.println("No user is logged in.");
-//        }
         model.addAttribute("movieId", movieId);
-//        model.addAttribute("writer", principal.getName());
         // 다른 필요한 모델 속성 추가
         return "write";
     }

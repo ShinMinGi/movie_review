@@ -15,56 +15,65 @@
 <body class="d-flex flex-column min-vh-100" th:object="${user}">
 
 <!-- user가 null일 때 대비 -->
-<input type="hidden" id="userId" th:value="${user != null ? user.id : ''}"/>
-<input type="hidden" id="username" th:value="${user != null ? user.username : ''}"/>
+<!--<input type="hidden" name="userId" th:value="${user.id}" />-->
 
 <!-- header -->
 <header th:replace="fragment/header :: header"></header>
 
-<div class="container mt-5 mb-5">
+<div class="container mt-4 mb-3">
     <h2 class="fw-semibold">주문/결제</h2>
     <hr class="hr">
     <h2>받는 사람 정보</h2>
-    <form method="post" action="/processOrder">
+    <form method="post" th:action="@{/store/order/details}" th:object="${orderDto}">
         <table class="info-table">
             <tr>
-                <th class="title">성함</th>
+                <th class="userId">아이디</th>
+                <td class="content"><input type="text" id="userId" th:value="${#authentication.principal.username}"
+                                           readonly></td>
+            </tr>
+
+            <tr>
+                <th class="title">수신자 성함 *</th>
                 <!-- user가 null일 경우 "로그인 필요" 표시 -->
-                <td class="content"><input type="name" id="name" name="username" required></td>
+                <td class="content"><input type="text" id="orderName" th:field="*{orderName}" required></td>
+            </tr>
+
+            <tr>
+                <th class="email">이메일 *</th>
+                <td class="content"><input type="text" id="orderEmail" th:field="*{orderEmail}" required></td>
             </tr>
             <tr>
-                <th class="email">이메일</th>
-                <td class="content"><input type="email" id="email" name="email" required></td>
+                <th class="title">배송주소 *</th>
+                <td class="content address"><input type="text" id="deliveryAddress" th:field="*{deliveryAddress}"
+                                                   required></td>
             </tr>
             <tr>
-                <th class="title">배송주소</th>
-                <td class="content address"><input type="text" id="address" name="deliveryAddress" required></td>
-            </tr>
-            <tr>
-                <th class="title">연락처</th>
-                <td class="content"><input type="tel" id="number" name="phoneNumber" required></td>
+                <th class="title">연락처 *</th>
+                <td class="content"><input type="text" id="phoneNumber" th:field="*{phoneNumber}" required></td>
             </tr>
         </table>
         <hr>
         <table class="info-table">
-            <tr>
-                <th class="title">수량</th>
+            <tr class="">
+                <th class="title border border-0">수량</th>
                 <td>
-                    <input type="number" id="quantity" name="quantity" th:value="${quantity}" min="1" onchange="updateTotalPrice()" />
+                    <input class="input1 border border-0 fw-bold" type="number" id="quantity" name="quantity"
+                           th:field="*{quantity}" min="1" onchange="updateTotalPrice()" readonly/>
                 </td>
             </tr>
 
 
             <tr>
                 <th class="title">배송비</th>
-                <td class="deliveryFee"><input type="text" id="deliveryFee" name="deliveryFee" value="3000" readonly></td>
-
+                <td class="deliveryFee"><input class="input1 border border-0 fw-bold" type="text" id="deliveryFee"
+                                               name="deliveryFee" value="3000" readonly></td>
             </tr>
 
             <tr>
                 <th class="title">총결제금액</th>
                 <td>
-                    <span id="totalPrice" th:text="${amount}"></span> <!-- 총 결제 금액을 표시 -->
+                    <input class="fw-bold border border-0" id="totalPrice" th:field="*{amount}" readonly>
+                    <!-- 총 결제 금액을 표시 -->
                 </td>
             </tr>
 
@@ -72,17 +81,19 @@
 
         <div class="kg_pay_div mt-5">
             <!-- th:onclick 제거, 일반 onclick으로 수정 -->
-            <button class="kg_pay_btn text-white fw-semibold border-0" type="button" th:onclick="kg_request_pay()">
+            <button class="kg_pay_btn text-white fw-semibold border-0" type="button" onclick="kg_request_pay()">
                 결제하기
             </button>
         </div>
         <div class="ka_pay_div">
             <!-- th:onclick 제거, 일반 onclick으로 수정 -->
-            <button class="ka_pay_btn fw-semibold border-0" type="button" th:onclick="ka_request_pay()">
+            <button class="ka_pay_btn fw-semibold border-0" type="button" onclick="ka_request_pay()">
                 카카오페이
             </button>
         </div>
+
     </form>
+
 </div>
 
 <!-- footer -->

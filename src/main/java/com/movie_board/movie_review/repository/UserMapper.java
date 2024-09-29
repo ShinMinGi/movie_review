@@ -15,7 +15,7 @@ public interface UserMapper {
 
 
     // 사용자 정보조회
-    UserDto findByUsername(String emailId);
+    UserDto findByUsername(String username);
 
     void createUser(UserDto userDto);
 

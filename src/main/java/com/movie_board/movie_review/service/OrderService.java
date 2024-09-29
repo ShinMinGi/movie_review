@@ -14,13 +14,11 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderMapper orderMapper;
+    private final UserService userService;
 
     public void createOrder(OrderDto orderDto) {
         orderMapper.insertOrder(orderDto);
     }
 
-//    public OrderDto getOrderById(int id) {
-//        return orderMapper.getOrderById(id);
-//    }
 
 }

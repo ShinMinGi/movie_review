@@ -17,7 +17,8 @@ public class OrderDto {
     private int deliveryFee;
     private String deliveryAddress; // 추가된 배송 주소 필드
     private String phoneNumber; // 추가된 핸드폰 번호 필드
-
+    private String orderName;
+    private String orderEmail;
 
 //
 //    // 계산 메서드 (필요한 경우)

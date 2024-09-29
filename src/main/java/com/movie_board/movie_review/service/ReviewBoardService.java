@@ -20,7 +20,8 @@ public class ReviewBoardService {
     public List<ReviewBoardDto> findAllReviews() {
         return reviewBoardMapper.findAllReviews();
     }
-    //
+
+
     // Create
     public void createReview(ReviewBoardDto review) {
         reviewBoardMapper.createReview(review);

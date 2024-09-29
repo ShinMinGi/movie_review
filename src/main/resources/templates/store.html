@@ -27,7 +27,7 @@
             <img src="/img/harry_potter_merch.jpg" alt="제품 이미지" class="merch">
         </div>
 
-        <form th:action="@{/processOrder}" method="post" th:object="${orderDto}" class="payment-section border border-1">
+        <form th:action="@{/store/form}" method="post" th:object="${orderDto}" class="payment-section border border-1">
             <h3 class="bb fs-5 fw-semibold">해리포터 랜덤뱃지 ver.3</h3>
             <hr>
             <p class="price">
@@ -54,7 +54,7 @@
 
             <div class="total-price fw-semibold mt-5">
                 <p>총 상품 금액: <span id="totalAmount">7,000</span></p>
-                <input type="hidden" name="amount" id="hiddenTotalAmount" th:value="*{amount}"/>
+                <input type="hidden" name="amount" id="hiddenTotalAmount"/>
             </div>
 
             <div>
