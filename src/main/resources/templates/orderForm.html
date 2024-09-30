@@ -14,9 +14,6 @@
 </head>
 <body class="d-flex flex-column min-vh-100" th:object="${user}">
 
-<!-- user가 null일 때 대비 -->
-<!--<input type="hidden" name="userId" th:value="${user.id}" />-->
-
 <!-- header -->
 <header th:replace="fragment/header :: header"></header>
 
@@ -24,7 +21,7 @@
     <h2 class="fw-semibold">주문/결제</h2>
     <hr class="hr">
     <h2>받는 사람 정보</h2>
-    <form method="post" th:action="@{/store/order/details}" th:object="${orderDto}">
+    <form th:action="@{/store/order/details}" th:object="${orderDto}" onsubmit="submitOrder()">
         <table class="info-table">
             <tr>
                 <th class="userId">아이디</th>
@@ -33,22 +30,21 @@
             </tr>
 
             <tr>
-                <th class="title">수신자 성함 *</th>
-                <!-- user가 null일 경우 "로그인 필요" 표시 -->
+                <th class="title">* 수신자 성함 </th>
                 <td class="content"><input type="text" id="orderName" th:field="*{orderName}" required></td>
             </tr>
 
             <tr>
-                <th class="email">이메일 *</th>
+                <th class="email">* 이메일</th>
                 <td class="content"><input type="text" id="orderEmail" th:field="*{orderEmail}" required></td>
             </tr>
             <tr>
-                <th class="title">배송주소 *</th>
+                <th class="title">* 배송주소</th>
                 <td class="content address"><input type="text" id="deliveryAddress" th:field="*{deliveryAddress}"
                                                    required></td>
             </tr>
             <tr>
-                <th class="title">연락처 *</th>
+                <th class="title">* 연락처</th>
                 <td class="content"><input type="text" id="phoneNumber" th:field="*{phoneNumber}" required></td>
             </tr>
         </table>
@@ -62,7 +58,6 @@
                 </td>
             </tr>
 
-
             <tr>
                 <th class="title">배송비</th>
                 <td class="deliveryFee"><input class="input1 border border-0 fw-bold" type="text" id="deliveryFee"
@@ -73,27 +68,25 @@
                 <th class="title">총결제금액</th>
                 <td>
                     <input class="fw-bold border border-0" id="totalPrice" th:field="*{amount}" readonly>
-                    <!-- 총 결제 금액을 표시 -->
                 </td>
             </tr>
 
+            <!-- 숨겨진 총 결제 금액 입력 필드 추가 -->
+            <input type="hidden" id="hiddenTotalPrice" th:field="*{amount}">
         </table>
 
         <div class="kg_pay_div mt-5">
-            <!-- th:onclick 제거, 일반 onclick으로 수정 -->
             <button class="kg_pay_btn text-white fw-semibold border-0" type="button" onclick="kg_request_pay()">
                 결제하기
             </button>
         </div>
         <div class="ka_pay_div">
-            <!-- th:onclick 제거, 일반 onclick으로 수정 -->
             <button class="ka_pay_btn fw-semibold border-0" type="button" onclick="ka_request_pay()">
                 카카오페이
             </button>
         </div>
 
     </form>
-
 </div>
 
 <!-- footer -->
@@ -103,5 +96,3 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
 <script src="/js/orderForm.js" th:src="@{/js/orderForm.js}"></script>
-</body>
-</html>

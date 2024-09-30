@@ -12,10 +12,9 @@
     </insert>
 
 
-<!--    <insert id="storeOrder" parameterType="com.movie_board.movie_review.dto.OrderDto">-->
-<!--        INSERT INTO orders (userId, orderId, amount, status, createdAt, quantity, deliveryFee, deliveryAddress, phoneNumber, orderName, orderEmail)-->
-<!--        VALUES (#{userId}, #{orderId}, #{amount}, #{status}, NOW(), #{quantity}, #{deliveryFee}, #{deliveryAddress}, #{phoneNumber}, #{orderName}, #{orderEmail})-->
-<!--    </insert>-->
-
+    <!-- 주문 ID로 주문 정보 가져오기 -->
+    <select id="findByOrderId" resultType="com.movie_board.movie_review.dto.OrderDto">
+        SELECT * FROM orders WHERE orderId = #{orderId}
+    </select>
 
 </mapper>

@@ -12,7 +12,6 @@ function updateTotalPrice() {
 }
 
 
-// KG 이니시스 결제
 function kg_request_pay() {
     IMP.init("imp33705720"); // Iamport 고유 코드 초기화
 
@@ -44,7 +43,7 @@ function kg_request_pay() {
         buyer_addr: deliveryAddress,
     }, function (rsp) {
         if (rsp.success) {
-            fetch('/store/order/details', {
+            fetch('/store/order/details', { // 수정된 부분
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -69,7 +68,8 @@ function kg_request_pay() {
                 .then(data => {
                     if (data.success) {
                         alert("결제가 성공적으로 완료되었습니다.");
-                        window.location.href = "/store/order/details";
+                        // orderId를 포함한 URL로 리다이렉트
+                        window.location.href = `/store/order/details/${data.orderId}`; // 수정된 부분
                     } else {
                         alert("주문 처리에 실패했습니다.");
                     }
@@ -142,7 +142,7 @@ function ka_request_pay() {
                 .then(data => {
                     if (data.success) {
                         alert("결제가 완료되었습니다.");
-                        window.location.href = "/store/order/details";
+                        window.location.href = `/store/order/details/${data.orderId}`;
                     } else {
                         alert("주문 처리에 실패했습니다.");
                     }
@@ -157,4 +157,37 @@ function ka_request_pay() {
     });
 }
 
+// submitOrder 함수도 마찬가지로 URL을 수정
+function submitOrder() {
+    const form = document.getElementById("orderForm");
 
+    const orderData = {
+        orderName: document.getElementById("orderName").value,
+        orderEmail: document.getElementById("orderEmail").value,
+        phoneNumber: document.getElementById("phoneNumber").value,
+        deliveryAddress: document.getElementById("deliveryAddress").value,
+        quantity: document.getElementById("quantity").value,
+        deliveryFee: document.getElementById("deliveryFee").value,
+        amount: document.getElementById("hiddenTotalPrice").value // 숨겨진 총 결제 금액
+    };
+
+    fetch("/store/order/details", { // 수정된 부분
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // orderId를 포함한 URL로 리다이렉트
+                window.location.href = `/store/order/details/${data.orderId}`; // 수정된 부분
+            } else {
+                alert("결제에 실패했습니다. 다시 시도해주세요.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+}

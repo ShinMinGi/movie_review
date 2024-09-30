@@ -20,10 +20,4 @@ public class OrderDto {
     private String orderName;
     private String orderEmail;
 
-//
-//    // 계산 메서드 (필요한 경우)
-//    private int calculateTotalPrice(int amount, int quantity, int deliveryFee) {
-//        return (amount * quantity) + deliveryFee;
-//    }
-
 }

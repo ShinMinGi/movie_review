@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -59,7 +60,6 @@ public class PaymentController {
         return "orderForm"; // orderForm.html 템플릿
     }
 
-
     @PostMapping("/store/form")
     public String processOrder(OrderDto orderDto, RedirectAttributes redirectAttributes) {
         int unitPrice = 7000; // 개당 가격
@@ -78,51 +78,30 @@ public class PaymentController {
         return "redirect:/store/form"; // 주문 상세 페이지로 리다이렉트
     }
 
-
-
-    //        결제지불 할 시 post 방식으로 전송
-    @PostMapping("/payment/kg")
-    public String kgPay() {
-        return "redirect:/store/order/details";
+    @GetMapping("/store/order/details/{orderId}")
+    public String detailsHtml(@PathVariable String orderId, Model model) {
+        OrderDto orderDto = orderService.findByOrderId(orderId);
+        log.info("orderDto {} = " + orderDto);
+        model.addAttribute("orderDto", orderDto);
+        return "orderDetails";
     }
-
-    @PostMapping("/payment/ka")
-    public String kaPay(OrderDto orderDto, RedirectAttributes redirectAttributes) {
-
-        orderService.createOrder(orderDto);
-        return "redirect:/store/order/details";
-    }
-
-
-
-
-
-
-
-    // 주문 상세 페이지 표시
-    @GetMapping("/store/order/details")
-    public String orderDetails(@ModelAttribute("orderDto") OrderDto orderDto, Model model) {
-        // orderDto가 null일 경우 새 객체 생성
-        if (orderDto == null) {
-            orderDto = new OrderDto();
-        }
-        model.addAttribute("orderDto", orderDto); // 모델에 orderDto 추가
-        return "orderDetails"; // orderForm.html 반환
-    }
-
 
     @PostMapping("/store/order/details")
-    public ResponseEntity<?> postDetails(@RequestBody OrderDto orderDto, Model model) {
+    public ResponseEntity<?> postDetails(@RequestBody OrderDto orderDto) {
         // 주문 ID 생성 로직
         orderDto.setOrderId(UUID.randomUUID().toString());
+        log.info("orderID {} = " + orderDto);
 
         // OrderDto를 데이터베이스에 저장
         orderService.createOrder(orderDto);
 
         // 주문 상세 페이지로 리다이렉트
-        model.addAttribute("orderDto", orderDto);
-        return ResponseEntity.ok().body(Map.of("success", true, "message", "Order saved successfully"));
+        return ResponseEntity.ok().body(Map.of("success", true, "message", "Order saved successfully", "orderId", orderDto.getOrderId()));
     }
+
+
+
+
 
 }
 

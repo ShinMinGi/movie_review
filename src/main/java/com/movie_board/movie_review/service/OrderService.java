@@ -20,5 +20,16 @@ public class OrderService {
         orderMapper.insertOrder(orderDto);
     }
 
+    // 주문 생성
+    public void saveOrder(OrderDto orderDto) {
+        orderMapper.insertOrder(orderDto);
+    }
+
+    // 주문 ID로 주문 정보 조회 메서드
+    // 주문 ID로 주문 조회
+    public OrderDto findByOrderId(String orderId) {
+        // orderMapper를 통해 orderId에 해당하는 주문 정보를 가져옴
+        return orderMapper.findByOrderId(orderId);
+    }
 
 }
