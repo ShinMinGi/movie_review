@@ -14,7 +14,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
-
 public class UserController {
 
     @Autowired
@@ -50,6 +49,4 @@ public class UserController {
         }
         return "redirect:/find/email";
     }
-
 }
-

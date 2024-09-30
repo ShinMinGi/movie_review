@@ -102,10 +102,10 @@ public class BoardController {
     // 글쓰기 등록 (movieId를 받아서 그 영화에 맞는 리뷰 작성)
     @PostMapping("/movie/board/{movieId}")
     public String createReview(
-                               @PathVariable int movieId,
-                               @RequestParam String writer,
-                               @RequestParam String title,
-                               @RequestParam String body) {
+            @PathVariable int movieId,
+            @RequestParam String writer,
+            @RequestParam String title,
+            @RequestParam String body) {
         ReviewBoardDto review = new ReviewBoardDto();
         review.setMovieId(movieId);
         review.setWriter(writer);

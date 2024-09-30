@@ -171,7 +171,7 @@ function submitOrder() {
         amount: document.getElementById("hiddenTotalPrice").value // 숨겨진 총 결제 금액
     };
 
-    fetch("/store/order/details", { // 수정된 부분
+    fetch("/store/order/details", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -182,7 +182,7 @@ function submitOrder() {
         .then(data => {
             if (data.success) {
                 // orderId를 포함한 URL로 리다이렉트
-                window.location.href = `/store/order/details/${data.orderId}`; // 수정된 부분
+                window.location.href = `/store/order/details/${data.orderId}`;
             } else {
                 alert("결제에 실패했습니다. 다시 시도해주세요.");
             }

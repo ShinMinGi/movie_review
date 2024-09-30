@@ -50,7 +50,7 @@ public class PaymentController {
     }
 
 
-//     store.html에서 수량 선택 후 orderorm.html로 이동
+    //     store.html에서 수량 선택 후 orderorm.html로 이동
     @GetMapping("/store/form")
     public String showOrderForm (@AuthenticationPrincipal UserDetails userDetails) {
         if (userDetails == null) {
@@ -104,5 +104,3 @@ public class PaymentController {
 
 
 }
-
-
