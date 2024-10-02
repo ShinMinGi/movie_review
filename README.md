@@ -9,7 +9,9 @@
 - Spring Security를 이용한 로그인 기능 구현
 - Spring Security를 이용한 회원가입 기능 구현
 - NAVER의 SMTP 서버를 이용한 메일로 비밀번호 찾기 기능 구현
-- CRUD 게시판,서칭,페이징 기능 구현 
+- CRUD 게시판,서칭,페이징 기능 구현
+- Spring Security와 Thymeleaf 를 사용하여 현재 인증된 사용자의 정보로 글쓰기 구현
+- Spring Security와 Thymeleaf를 사용해 글을 작성한 당사자만 수정/삭제가 가능하게 구현 
 - 각 영화마다 동적 게시판 기능 구현
 
 
@@ -47,16 +49,39 @@
 
 <h1>💻화면구성</h1>
 <div align="center">
-<img src="https://github.com/user-attachments/assets/adcd5582-f1b2-411b-87d4-458c289f1dea">
-![2](https://github.com/user-attachments/assets/34dbfd10-9b8d-4479-9f47-b4e959b98142)
-![3](https://github.com/user-attachments/assets/718c2f0e-7ff1-48cc-ac9c-99f5fa9a2a9b)
-![4](https://github.com/user-attachments/assets/82f119e7-b597-449f-b07c-25df52b3ca3f)
-![5](https://github.com/user-attachments/assets/ae9c3f4c-d8bf-4594-b310-b113eb237751)
-![8](https://github.com/user-attachments/assets/4b85438e-d0a2-47c0-8d86-4bbe202a0974)
-![12](https://github.com/user-attachments/assets/20dbb83b-6d43-48a3-a348-dd251675d68d)
-![9](https://github.com/user-attachments/assets/8ce727b5-c563-4fc1-ab28-fbea3dd0230e)
-![6](https://github.com/user-attachments/assets/fca3dd0b-b48b-4e10-8a0c-a91edd676f0e)
-![7](https://github.com/user-attachments/assets/40f3ddfd-4e12-41e6-a1a6-ca373602bdb8)
-![11](https://github.com/user-attachments/assets/f2f9f7e7-4bdc-4802-9d52-7877a9b7209c)
-![10](https://github.com/user-attachments/assets/8bb47a70-4378-4756-bfdb-97284c85d026)
+<img width="30%" src="https://github.com/user-attachments/assets/adcd5582-f1b2-411b-87d4-458c289f1dea">
+<img width="30%" https://github.com/user-attachments/assets/34dbfd10-9b8d-4479-9f47-b4e959b98142">
+<img width="30%" https://github.com/user-attachments/assets/718c2f0e-7ff1-48cc-ac9c-99f5fa9a2a9b">
+<img width="30%" https://github.com/user-attachments/assets/82f119e7-b597-449f-b07c-25df52b3ca3f">
+<img width="30%" https://github.com/user-attachments/assets/ae9c3f4c-d8bf-4594-b310-b113eb237751">
+<img width="30%" https://github.com/user-attachments/assets/4b85438e-d0a2-47c0-8d86-4bbe202a0974">
+<img width="30%" https://github.com/user-attachments/assets/20dbb83b-6d43-48a3-a348-dd251675d68d">
+<img width="30%" https://github.com/user-attachments/assets/8ce727b5-c563-4fc1-ab28-fbea3dd0230e">
+<img width="30%" https://github.com/user-attachments/assets/fca3dd0b-b48b-4e10-8a0c-a91edd676f0e">
+<img width="30%" https://github.com/user-attachments/assets/40f3ddfd-4e12-41e6-a1a6-ca373602bdb8">
+<img width="30%" https://github.com/user-attachments/assets/f2f9f7e7-4bdc-4802-9d52-7877a9b7209c">
+<img width="30%" https://github.com/user-attachments/assets/8bb47a70-4378-4756-bfdb-97284c85d026">
 </div>
+
+
+# ✏주요기능
+
+### 메인페이지 
+- 각 기능(도메인)별 이동, 로그인, 회원가입, 게시글, 굿즈스토어, 이벤트페이지 이동 가능
+
+### 로그인, 회원가입 페이지 
+- Spring Security를 이용한 로그인 구현
+- Spring Security를 이용한 회원가입 구현
+- Naver SMTP서버를 활용한 메일로 비밀번호 찾기 구현
+
+### 결제페이지 
+- javascript를 사용하여 수량만큼 총 상품 금액이 변동하는 것을 동적으로 구현
+- PortOne API를 이용한 KG이니시스와 카카오페이 결제 기능 구현
+- 결제완료 시 결제된 상세주문내역을 Thymeleaf 구현
+
+### 게시판 페이지 
+- 각 영화마다 동적게시판 구현
+- 삭제 및 수정 기능 구현
+- 서칭/필터링/페이징 기능 구현 
+- Spring Security와 Thymeleaf 를 사용하여 현재 인증된 사용자의 정보로 글쓰기 구현
+- 수정/삭제도 Spring Security와 Thymeleaf를 사용해 글을 작성한 당사자만 수정/삭제가 가능하게 구현 
