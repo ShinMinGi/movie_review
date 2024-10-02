@@ -1,4 +1,4 @@
-![6](https://github.com/user-attachments/assets/f455a160-0577-4688-9fa5-a7a3ce88b6d0)![12](https://github.com/user-attachments/assets/488b34db-0c2e-4fad-ac94-f872e67bee48)<h1>🎞Movie Review</h1>
+<h1>🎞Movie Review</h1>
 <h2>📗<a href="https://blog.naver.com/shin_418" style="03C75A">개인 공부/개인 프로젝트 기록 </a></h2>
 <h1>프로젝트 소개 및 주요기능</h1>
 
@@ -47,7 +47,7 @@
 
 <h1>💻화면구성</h1>
 <div align="center">
-![1](https://github.com/user-attachments/assets/adcd5582-f1b2-411b-87d4-458c289f1dea)
+<img src="https://github.com/user-attachments/assets/adcd5582-f1b2-411b-87d4-458c289f1dea">
 ![2](https://github.com/user-attachments/assets/34dbfd10-9b8d-4479-9f47-b4e959b98142)
 ![3](https://github.com/user-attachments/assets/718c2f0e-7ff1-48cc-ac9c-99f5fa9a2a9b)
 ![4](https://github.com/user-attachments/assets/82f119e7-b597-449f-b07c-25df52b3ca3f)
