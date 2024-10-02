@@ -50,17 +50,17 @@
 <h1>💻화면구성</h1>
 <div align="center">
 <img width="30%" src="https://github.com/user-attachments/assets/adcd5582-f1b2-411b-87d4-458c289f1dea">
-<img width="30%" https://github.com/user-attachments/assets/34dbfd10-9b8d-4479-9f47-b4e959b98142">
-<img width="30%" https://github.com/user-attachments/assets/718c2f0e-7ff1-48cc-ac9c-99f5fa9a2a9b">
-<img width="30%" https://github.com/user-attachments/assets/82f119e7-b597-449f-b07c-25df52b3ca3f">
-<img width="30%" https://github.com/user-attachments/assets/ae9c3f4c-d8bf-4594-b310-b113eb237751">
-<img width="30%" https://github.com/user-attachments/assets/4b85438e-d0a2-47c0-8d86-4bbe202a0974">
-<img width="30%" https://github.com/user-attachments/assets/20dbb83b-6d43-48a3-a348-dd251675d68d">
-<img width="30%" https://github.com/user-attachments/assets/8ce727b5-c563-4fc1-ab28-fbea3dd0230e">
-<img width="30%" https://github.com/user-attachments/assets/fca3dd0b-b48b-4e10-8a0c-a91edd676f0e">
-<img width="30%" https://github.com/user-attachments/assets/40f3ddfd-4e12-41e6-a1a6-ca373602bdb8">
-<img width="30%" https://github.com/user-attachments/assets/f2f9f7e7-4bdc-4802-9d52-7877a9b7209c">
-<img width="30%" https://github.com/user-attachments/assets/8bb47a70-4378-4756-bfdb-97284c85d026">
+<img width="30%" src="https://github.com/user-attachments/assets/34dbfd10-9b8d-4479-9f47-b4e959b98142">
+<img width="30%" src="https://github.com/user-attachments/assets/718c2f0e-7ff1-48cc-ac9c-99f5fa9a2a9b">
+<img width="30%" src="https://github.com/user-attachments/assets/82f119e7-b597-449f-b07c-25df52b3ca3f">
+<img width="30%" src="https://github.com/user-attachments/assets/ae9c3f4c-d8bf-4594-b310-b113eb237751">
+<img width="30%" src="https://github.com/user-attachments/assets/4b85438e-d0a2-47c0-8d86-4bbe202a0974">
+<img width="30%" src="https://github.com/user-attachments/assets/20dbb83b-6d43-48a3-a348-dd251675d68d">
+<img width="30%" src="https://github.com/user-attachments/assets/8ce727b5-c563-4fc1-ab28-fbea3dd0230e">
+<img width="30%" src="https://github.com/user-attachments/assets/fca3dd0b-b48b-4e10-8a0c-a91edd676f0e">
+<img width="30%" src="https://github.com/user-attachments/assets/40f3ddfd-4e12-41e6-a1a6-ca373602bdb8">
+<img width="30%" src="https://github.com/user-attachments/assets/f2f9f7e7-4bdc-4802-9d52-7877a9b7209c">
+<img width="30%" src="https://github.com/user-attachments/assets/8bb47a70-4378-4756-bfdb-97284c85d026">
 </div>
 
 
