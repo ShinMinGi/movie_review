@@ -1,6 +1,17 @@
 <h1>🎞Movie Review</h1>
 <h2><a href="https://blog.naver.com/shin_418" style="03C75A">개인 공부/개인 프로젝트 기록 </a></h2>
-<h1>프로젝트 소개</h1>
+<h1>프로젝트 소개 및 주요기능</h1>
+
+
+- 'Movie Review'는 영화에 대한 리뷰를 작성하고, 인기 영화의 굿즈 상품 판매 및 다양한 이벤트 정보를 제공하는 웹사이트입니다.
+- PortOne API를 이용한 KG이니시스와 카카오페이 결제 기능 구현
+- 권한 제어기능 구현
+- Spring Security를 이용한 로그인 기능 구현
+- Spring Security를 이용한 회원가입 기능 구현
+- NAVER의 SMTP 서버를 이용한 메일로 비밀번호 찾기 기능 구현
+- CRUD 게시판,서칭,페이징 기능 구현 
+- 영화마다 동적 게시판 기능 구현
+
 
 
 
@@ -21,3 +32,4 @@
     <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat&logo=Spring Boot&logoColor=white"/>
     <img src="https://img.shields.io/badge/Thymeleaf-005F0F?style=flat&logo=Thymeleaf&logoColor=white"/>
   </div>
+</div>
