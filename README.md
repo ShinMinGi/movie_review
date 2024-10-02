@@ -1,5 +1,5 @@
 <h1>Movie Review</h1>
-<h2><a href="https://blog.naver.com/shin_418" style="#03C75A">개인 공부/개인 프로젝트 기록 </a></h2>
+<h2><a href="https://blog.naver.com/shin_418" style="03C75A">개인 공부/개인 프로젝트 기록 </a></h2>
 <h1>프로젝트 소개</h1>
 
 
