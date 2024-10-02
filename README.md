@@ -1,7 +1,8 @@
 <h1>🎞Movie Review</h1>
 <h2><a href="https://blog.naver.com/shin_418" style="03C75A">개인 공부/개인 프로젝트 기록 </a></h2>
 <h1>프로젝트 소개 및 주요기능</h1>
-<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Naver</title><path d="M16.273 12.845 7.376 0H0v24h7.726V11.156L16.624 24H24V0h-7.727v12.845Z"/></svg>
+
+ <img src="https://img.shields.io/badge/naver-03C75A?style=flat&logo=TypeScript&logoColor=white"/>
 
 - 'Movie Review'는 영화에 대한 리뷰를 작성하고, 인기 영화의 굿즈 상품 판매 및 다양한 이벤트 정보를 제공하는 웹사이트입니다.
 - PortOne API를 이용한 KG이니시스와 카카오페이 결제 기능 구현
