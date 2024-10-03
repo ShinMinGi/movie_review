@@ -12,8 +12,8 @@
           integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="/css/top_menu_bar.css" th:href="@{/css/top_menu_bar.css}">
-    <link rel="stylesheet" href="/css/mv_review.css" th:href="@{/css/mv_review.css}">
-<!--    <link rel="stylesheet" href="/js/review.js" th:href="@{/js/review.js}">-->
+    <link rel="stylesheet" href="/css/mv_review_board_detail.css" th:href="@{/css/mv_review_board_detail.css}">
+    <!--    <link rel="stylesheet" href="/js/review.js" th:href="@{/js/review.js}">-->
 </head>
 <body class="body">
 <header th:replace="fragment/header :: header"></header>
@@ -24,7 +24,8 @@
             <hr class="border-5 mt-5">
             <div class="fw-bold text fs-2" th:text="${review.title}">게시글 제목</div>
             <div class="text-black-50">
-                <p th:text="${review.writer} + ' ' + ${#temporals.format(review.inserted, 'yyyy-MM-dd HH:mm')}">작성자 이름 날짜</p>
+                <p th:text="${review.writer} + ' ' + ${#temporals.format(review.inserted, 'yyyy-MM-dd HH:mm')}">작성자 이름
+                    날짜</p>
             </div>
             <hr>
             <div class="abc pt-5">
@@ -43,12 +44,39 @@
                 <!-- 삭제 버튼: 게시글 삭제 요청을 전송 -->
                 <form th:if="${user != null && user.username == review.writer}"
                       th:action="@{/movie/{movieId}/remove/{id}(movieId=${movieId}, id=${review.id})}"
-                      method="post" style="display:inline;">
+                      method="post">
                     <button type="submit" class="btn btn-danger me-1">삭제</button>
                 </form>
 
                 <!-- 목록 버튼: 게시글 목록 페이지로 이동 -->
                 <a th:href="@{/movie/board/{movieId}(movieId=${movieId})}" class="btn btn-dark">목록</a>
+            </div>
+
+            <div class="container">
+
+                <hr class="border-2 mt-5">
+
+                <div id="comments-section ">
+                    <h3>...개의 댓글</h3>
+
+                    <div class="commentBorder border border-1">
+                        <!-- 댓글 입력 폼 -->
+                        <form id="commentForm">
+                            <textarea id="commentContent" placeholder="댓글을 입력해주세요"></textarea>
+                            <div class="">
+                                <button class="commentButton" type="button" onclick="submitComment()">댓글 쓰기</button>
+                            </div>
+                        </form>
+
+                    </div>
+                    <!-- 댓글 리스트 -->
+                    <ul id="commentList">
+                        <!-- 댓글이 여기에 추가됩니다 -->
+                    </ul>
+
+                    <hr>
+                </div>
+
             </div>
         </div>
     </div>

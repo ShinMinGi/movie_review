@@ -23,8 +23,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardController {
 
-    @Autowired
-    private ReviewBoardService reviewBoardService;
+
+    private final ReviewBoardService reviewBoardService;
 
 
     @GetMapping("/")

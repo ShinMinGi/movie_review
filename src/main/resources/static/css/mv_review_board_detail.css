@@ -1,0 +1,64 @@
+#comments-section {
+    margin-top: 20px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+}
+
+.commentBorder {
+    width: 100%;
+    height: 180px;
+    border-radius: 15px;
+}
+
+
+#commentForm {
+    width: 95%;
+    margin-top: 30px;
+    margin-left: 88px;
+    border-radius: 15px;
+
+}
+
+.commentButton {
+    margin-left: 977px;
+    height: 40px;
+    background-color: #007bff; /* 기본 배경색 (파란색) */
+    color: white;              /* 글자색 흰색 */
+    border: none;              /* 테두리 제거 */
+    padding: 10px 20px;        /* 여백 설정 */
+    border-radius: 5px;        /* 둥근 모서리 */
+    cursor: pointer;           /* 클릭 가능한 손가락 모양 커서 */
+    font-size: 16px;           /* 글자 크기 설정 */
+    transition: background-color 0.3s ease; /* 호버 시 부드러운 색상 전환 */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 약간의 그림자 */
+}
+
+.commentButton:hover {
+    background-color: #0056b3; /* 호버 시 배경색 어둡게 변경 */
+}
+
+
+#commentContent {
+    width: 90%;
+    height: 80px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: none;
+}
+
+#commentList {
+    list-style-type: none;
+    padding: 0;
+}
+
+#commentList li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+.button {
+
+}

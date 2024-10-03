@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
+
     private final UserService userService;
 
     @GetMapping("/signup")
