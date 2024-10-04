@@ -3,15 +3,17 @@ function submitComment(event) {
     event.preventDefault();
 
     const reviewId = document.querySelector('.container').getAttribute('data-review-id');
+
     console.log('Review ID:', reviewId); // 확인용 로그 추가
+
     const content = document.getElementById('commentContent').value;
 
     console.log('~~~~~~~~~~~~~~~~~@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Review ID:', reviewId);  // reviewId 값 확인
 
     // 서버로 전송할 댓글 데이터
     const commentData = {
-        reviewId: reviewId,           // 리뷰 ID
-        content: content              // 댓글 내용
+        reviewId: reviewId,
+        content: content
     };
     console.log('Comment Data:', commentData); // 로그로 commentData 확인
 

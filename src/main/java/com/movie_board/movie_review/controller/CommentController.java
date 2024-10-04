@@ -38,6 +38,7 @@ public class CommentController {
     }
 
 
+
     // 댓글 조회
     @GetMapping("/review/{reviewId}")
     public ResponseEntity<List<CommentDto>> getComments(@PathVariable int reviewId) {
