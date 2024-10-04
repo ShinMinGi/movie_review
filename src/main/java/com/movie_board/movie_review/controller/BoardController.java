@@ -1,6 +1,7 @@
 package com.movie_board.movie_review.controller;
 
 
+import com.movie_board.movie_review.dto.CommentDto;
 import com.movie_board.movie_review.dto.MovieDto;
 import com.movie_board.movie_review.dto.PageDto;
 import com.movie_board.movie_review.dto.ReviewBoardDto;
@@ -9,6 +10,8 @@ import com.movie_board.movie_review.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -188,12 +192,25 @@ public class BoardController {
         return "login"; // login.html 파일을 반환
     }
 
-
     @GetMapping("/logout")
     public String logout() {
         return "redirect:/login?logout"; // 로그아웃 후 로그인 페이지로 리다이렉트
     }
 
+
+
+
+    // -------------------------------------------------------댓글 기능
+
+    @GetMapping("/review/{Id}")
+    public String getReview(@PathVariable int id, Model model) {
+        log.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        log.info("id = {}"+ id );
+        ReviewBoardDto review = reviewBoardService.commentFindById(id); // 리뷰 조회
+        model.addAttribute("review", review);
+        return "mv_review_board_detail"; // 뷰 이름 반환
+    }
+    // 댓글 생성
 
 
 

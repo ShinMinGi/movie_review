@@ -4,21 +4,40 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- ReviewBoardMapper.xml -->
 <mapper namespace="com.movie_board.movie_review.repository.CommentMapper">
-    <!-- 댓글 삽입 -->
-    <insert id="insertComment">
-        INSERT INTO comments (userId, content)
-        VALUES (#{userId}, #{content})
+    <!-- 댓글 등록 -->
+    <insert id="commentRegister" parameterType="com.movie_board.movie_review.dto.CommentDto">
+        INSERT INTO comments (reviewId, userId, userName, content, parentId, createdAt, updatedAt)
+        VALUES (#{reviewId}, #{userId}, #{userName}, #{content}, #{parentId}, NOW(), NOW())
     </insert>
 
-    <!-- 모든 댓글 조회 -->
-    <select id="selectAllComments" resultType="com.movie_board.movie_review.dto.CommentDto">
-        SELECT * FROM comments
+    <!-- 특정 게시글의 댓글 조회 -->
+    <select id="commentRead" parameterType="Long" resultType="com.movie_board.movie_review.dto.CommentDto">
+        SELECT *
+        FROM comments
+        WHERE reviewId = #{reviewId}
         ORDER BY createdAt ASC
     </select>
 
-    <!-- 댓글 삭제 -->
-    <delete id="deleteComment">
-        DELETE FROM comments
+    <!-- 댓글 수정 -->
+    <update id="commentModify" parameterType="com.movie_board.movie_review.dto.CommentDto">
+        UPDATE comments
+        SET content = #{content}, updatedAt = NOW()
         WHERE id = #{id}
+    </update>
+
+    <!-- 댓글 삭제 -->
+    <delete id="commentRemove" parameterType="Long">
+        DELETE FROM comments WHERE id = #{id}
     </delete>
+
+
+    <!--댓글 구현 start-->
+    <select id="commentFindById" resultType="com.movie_board.movie_review.dto.CommentDto">
+        SELECT id, title, body, writer, inserted, movieId
+        FROM review
+        WHERE id = #{id}
+    </select>
+    <!--댓글 구현 end-->
+
+
 </mapper>

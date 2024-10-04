@@ -6,12 +6,14 @@ import java.time.LocalDateTime;
 
 @Data
 public class CommentDto {
-    private int id;
+    private Long id;
+    private int reviewId;
     private int userId;
-    private Integer parentId;
+    private String userName;
     private String content;
+    private Long parentId;
     private LocalDateTime createdAt;
-    private int depth;
-    private int orderInGroup;
+    private LocalDateTime updatedAt;
+    private boolean editable; // 추가된 필드
 
 }

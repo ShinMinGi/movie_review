@@ -52,23 +52,22 @@
                 <a th:href="@{/movie/board/{movieId}(movieId=${movieId})}" class="btn btn-dark">목록</a>
             </div>
 
-            <div class="container">
-
+            <div class="container" data-review-id="${review.id}"> <!-- 실제 리뷰 ID로 대체 -->
                 <hr class="border-2 mt-5">
 
-                <div id="comments-section ">
-                    <h3>...개의 댓글</h3>
+                <div id="comments-section">
+                    <h3 id="commentCount">댓글 0개</h3> <!-- 댓글 수를 표시할 요소 추가 -->
 
                     <div class="commentBorder border border-1">
                         <!-- 댓글 입력 폼 -->
-                        <form id="commentForm">
-                            <textarea id="commentContent" placeholder="댓글을 입력해주세요"></textarea>
+                        <form id="commentForm" onsubmit="submitComment(event)">
+                            <textarea id="commentContent" placeholder="댓글을 입력해주세요" required></textarea>
                             <div class="">
-                                <button class="commentButton" type="button" onclick="submitComment()">댓글 쓰기</button>
+                                <button class="commentButton" type="submit">댓글 쓰기</button>
                             </div>
                         </form>
-
                     </div>
+
                     <!-- 댓글 리스트 -->
                     <ul id="commentList">
                         <!-- 댓글이 여기에 추가됩니다 -->
@@ -76,8 +75,9 @@
 
                     <hr>
                 </div>
-
             </div>
+
+
         </div>
     </div>
 </main>
@@ -89,5 +89,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+<script src="/js/mv_review_board_detail.js" th:src="@{/js/mv_review_board_detail.js}"></script>
 </body>
 </html>

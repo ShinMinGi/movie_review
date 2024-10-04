@@ -1,5 +1,6 @@
 package com.movie_board.movie_review.service;
 
+import com.movie_board.movie_review.dto.CommentDto;
 import com.movie_board.movie_review.dto.MovieDto;
 import com.movie_board.movie_review.dto.ReviewBoardDto;
 import com.movie_board.movie_review.repository.ReviewBoardMapper;
@@ -77,4 +78,13 @@ public class ReviewBoardService {
         return reviewBoardMapper.selectAllMovies();
     }
 
+
+
+
+
+
+    // 댓글 구현을 하기위한 메서드
+    public ReviewBoardDto commentFindById(int id) {
+        return reviewBoardMapper.commentFindById(id); // 리뷰 조회 쿼리 실행
+    }
 }

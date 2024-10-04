@@ -1,20 +1,29 @@
 package com.movie_board.movie_review.repository;
 
-import com.movie_board.movie_review.controller.CommentController;
 import com.movie_board.movie_review.dto.CommentDto;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
+import com.movie_board.movie_review.dto.ReviewBoardDto;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
 @Mapper
 public interface CommentMapper {
 
-    void insertComment(CommentDto commentDto);  // 댓글 삽입
+    Long commentRegister(CommentDto commentDto);
 
-    List<CommentDto> selectAllComments();  // 모든 댓글 조회
+    List<CommentDto> commentRead(int reviewId);
 
-    void deleteComment(int id);  // 댓글 삭제
+    void commentModify(CommentDto commentDto);
+
+    void commentRemove(Long id); // 댓글 id로 삭제
+
+
+
+    //----------------------------------------댓글 구현 start-------------------------------------------
+
+    CommentDto commentFindById(int id);
+
+    //----------------------------------------댓글 구현 end-------------------------------------------
+
+
 }

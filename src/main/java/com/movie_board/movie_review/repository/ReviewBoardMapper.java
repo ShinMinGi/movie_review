@@ -1,5 +1,6 @@
 package com.movie_board.movie_review.repository;
 
+import com.movie_board.movie_review.dto.CommentDto;
 import com.movie_board.movie_review.dto.MovieDto;
 import com.movie_board.movie_review.dto.PageDto;
 import com.movie_board.movie_review.dto.ReviewBoardDto;
@@ -49,4 +50,9 @@ public interface ReviewBoardMapper {
 
     // 모든 영화 리스트 가져오기
     List<MovieDto> selectAllMovies();
+
+
+    // 댓글 구현을 하기위한 메서드
+
+    ReviewBoardDto commentFindById(@Param("id") int id);
 }

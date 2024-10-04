@@ -1,5 +1,6 @@
 package com.movie_board.movie_review.security;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -13,14 +14,11 @@ import com.movie_board.movie_review.repository.UserMapper;
 
 @Log4j2
 @Service
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserMapper userMapper;
 
-    @Autowired
-    public CustomUserDetailsService(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
