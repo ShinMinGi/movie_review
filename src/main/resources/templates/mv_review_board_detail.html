@@ -63,7 +63,8 @@
 
                     <div class="commentBorder border border-1">
                         <!-- 댓글 입력 폼 -->
-                        <form id="commentForm" onsubmit="submitComment(event)">
+                        <form id="commentForm">
+<!--                            <input type="hidden" id="reviewId" value="${review.id}"> &lt;!&ndash; 숨겨진 reviewId 입력 필드 추가 &ndash;&gt;-->
                             <textarea id="commentContent" placeholder="댓글을 입력해주세요" required></textarea>
                             <div class="">
                                 <button class="commentButton" type="submit">댓글 쓰기</button>

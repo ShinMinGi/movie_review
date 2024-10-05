@@ -200,17 +200,6 @@ public class BoardController {
 
 
 
-    // -------------------------------------------------------댓글 기능
-
-    @GetMapping("/review/{Id}")
-    public String getReview(@PathVariable int id, Model model) {
-        log.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        log.info("id = {}"+ id );
-        ReviewBoardDto review = reviewBoardService.commentFindById(id); // 리뷰 조회
-        model.addAttribute("review", review);
-        return "mv_review_board_detail"; // 뷰 이름 반환
-    }
-    // 댓글 생성
 
 
 

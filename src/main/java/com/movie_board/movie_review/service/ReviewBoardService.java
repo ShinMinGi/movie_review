@@ -79,12 +79,10 @@ public class ReviewBoardService {
     }
 
 
-
-
-
-
-    // 댓글 구현을 하기위한 메서드
-    public ReviewBoardDto commentFindById(int id) {
-        return reviewBoardMapper.commentFindById(id); // 리뷰 조회 쿼리 실행
+    // 댓글구현
+    public ReviewBoardDto getReviewById(Long id) {
+        return reviewBoardMapper.findByReviewId(id);
     }
+
+
 }

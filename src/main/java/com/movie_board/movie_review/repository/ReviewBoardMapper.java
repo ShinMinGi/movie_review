@@ -52,7 +52,6 @@ public interface ReviewBoardMapper {
     List<MovieDto> selectAllMovies();
 
 
-    // 댓글 구현을 하기위한 메서드
-
-    ReviewBoardDto commentFindById(@Param("id") int id);
+    // reviewId로 리뷰를 찾는 메서드 추가
+    ReviewBoardDto findByReviewId(@Param("reviewId") Long reviewId);
 }

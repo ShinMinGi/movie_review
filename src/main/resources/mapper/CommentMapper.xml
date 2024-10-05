@@ -5,39 +5,18 @@
 <!-- ReviewBoardMapper.xml -->
 <mapper namespace="com.movie_board.movie_review.repository.CommentMapper">
     <!-- 댓글 등록 -->
+
     <insert id="commentRegister" parameterType="com.movie_board.movie_review.dto.CommentDto">
-        INSERT INTO comments (reviewId, userId, userName, content, parentId, createdAt, updatedAt)
-        VALUES (#{reviewId}, #{userId}, #{userName}, #{content}, #{parentId}, NOW(), NOW())
+        INSERT INTO comments (reviewId, userId, userName, content, createdAt, updatedAt)
+        VALUES (#{reviewId}, #{userId}, #{userName}, #{content}, NOW(), NOW())
     </insert>
 
-    <!-- 특정 게시글의 댓글 조회 -->
-    <select id="commentRead" parameterType="Long" resultType="com.movie_board.movie_review.dto.CommentDto">
+
+    <!-- 특정 리뷰의 댓글 조회 쿼리 -->
+    <select id="getCommentsByReviewId" resultType="com.movie_board.movie_review.dto.CommentDto">
         SELECT *
         FROM comments
         WHERE reviewId = #{reviewId}
-        ORDER BY createdAt ASC
+        ORDER BY createdAt DESC
     </select>
-
-    <!-- 댓글 수정 -->
-    <update id="commentModify" parameterType="com.movie_board.movie_review.dto.CommentDto">
-        UPDATE comments
-        SET content = #{content}, updatedAt = NOW()
-        WHERE id = #{id}
-    </update>
-
-    <!-- 댓글 삭제 -->
-    <delete id="commentRemove" parameterType="Long">
-        DELETE FROM comments WHERE id = #{id}
-    </delete>
-
-
-    <!--댓글 구현 start-->
-    <select id="commentFindById" resultType="com.movie_board.movie_review.dto.CommentDto">
-        SELECT id, title, body, writer, inserted, movieId
-        FROM review
-        WHERE id = #{id}
-    </select>
-    <!--댓글 구현 end-->
-
-
 </mapper>

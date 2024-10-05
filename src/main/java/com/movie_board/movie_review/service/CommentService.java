@@ -13,36 +13,18 @@ import java.util.List;
 public class CommentService {
 
     private final CommentMapper commentMapper;
+    private final ReviewBoardService reviewBoardService;
+
+
 
     // 댓글 등록
     public Long registerComment(CommentDto commentDto) {
         commentMapper.commentRegister(commentDto);
-        return commentMapper.commentRegister(commentDto);
-    }// 등록된 댓글 ID 반환
-
-    // 특정 리뷰의 댓글 조회
-    public List<CommentDto> getCommentsByReviewId(int reviewId) {
-        return commentMapper.commentRead(reviewId);
+        return commentDto.getId(); // 댓글 등록 후 ID 반환
     }
 
-    // 댓글 수정
-    public void modifyComment(CommentDto commentDto) {
-        commentMapper.commentModify(commentDto);
+    // 리뷰 ID로 댓글 조회
+    public List<CommentDto> getCommentsByReviewId(Long reviewId) {
+        return commentMapper.getCommentsByReviewId(reviewId);
     }
-
-    // 댓글 삭제
-    public void removeComment(Long id) {
-        commentMapper.commentRemove(id);
-    }
-    //----------------------------------------댓글 구현 start-------------------------------------------
-
-    public CommentDto commentFindById(int id) {
-        return commentMapper.commentFindById(id);
-    }
-
-
-
-
-    //----------------------------------------댓글 구현 end-------------------------------------------
-
 }

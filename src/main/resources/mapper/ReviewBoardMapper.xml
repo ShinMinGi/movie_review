@@ -114,11 +114,8 @@
     </select>
 
 
-    <select id="commentFindById" resultType="com.movie_board.movie_review.dto.ReviewBoardDto">
+    <select id="findByReviewId" resultType="com.movie_board.movie_review.dto.ReviewBoardDto">
         SELECT * FROM review WHERE id = #{id}
     </select>
-
-
-
 
 </mapper>
