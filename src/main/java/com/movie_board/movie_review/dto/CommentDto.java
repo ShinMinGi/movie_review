@@ -7,8 +7,9 @@ import java.time.LocalDateTime;
 @Data
 public class CommentDto {
     private Long id;
-    private int reviewId;
-    private int userId;
+    private int reviewId;  // 리뷰게시판 Id 외래키
+    private int movieId; //영화 Id 외래키
+    private int userId; //사용자 Id 외래키
     private String userName;
     private String content;
     private Long parentId;

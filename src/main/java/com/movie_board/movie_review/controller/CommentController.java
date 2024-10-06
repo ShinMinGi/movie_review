@@ -30,19 +30,19 @@ public class CommentController {
     @PostMapping("/register")
     public ResponseEntity<?> registerComment(
             @RequestBody CommentDto commentDto,
-            @RequestParam Long reviewId, // reviewId를 요청 파라미터로 받아옵니다.
             Principal principal) {
+        log.info("댓글 등록 요청이 들어왔습니다: {}", commentDto); // 요청 로그 추가
         String loggedInUserName = principal.getName();
         commentDto.setUserName(loggedInUserName);
-
+//
+//        if (commentDto.getReviewId() == 0 || commentDto.getMovieId() == 0) {
+//            return new ResponseEntity<>("리뷰 ID 또는 영화 ID가 설정되지 않았습니다.", HttpStatus.BAD_REQUEST);
+//        }
         log.info("---------------------------------Received Comment DTO: {}", commentDto);
-        log.info("@@@@@@@@@@@@Review ID: {}", reviewId); // reviewId 사용
-
+        log.info("Received Review ID: {}, Movie ID: {}", commentDto.getReviewId(), commentDto.getMovieId());
         try {
-            // reviewId로 리뷰 정보를 가져오는 로직 추가
-//            ReviewBoardDto review = reviewBoardService.getReviewById(reviewId);
-            Long commentId = commentService.registerComment(commentDto);
-            return new ResponseEntity<>(commentId, HttpStatus.CREATED);
+            CommentDto savedComment = commentService.registerComment(commentDto);
+            return new ResponseEntity<>(savedComment, HttpStatus.CREATED);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -50,10 +50,11 @@ public class CommentController {
 
 
     // 댓글 조회
-    @GetMapping("/getComments/{reviewId}")
-    public ResponseEntity<List<CommentDto>> getComments(@PathVariable Long reviewId) {
-        log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@reviewId = {}" + reviewId);
-        List<CommentDto> comments = commentService.getCommentsByReviewId(reviewId);
+    @GetMapping("/getComments/{movieId}/{reviewId}")
+    public ResponseEntity<List<CommentDto>> getComments(@PathVariable int movieId, @PathVariable int reviewId) {
+        log.info("@@@@@@@@@@@@@@@@@@@@@@@@movieId: {}, reviewId: {}", movieId, reviewId);
+        List<CommentDto> comments = commentService.getCommentsByReviewId(movieId, reviewId);
+        log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@comments : {}", comments);
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
 
