@@ -4,6 +4,7 @@ import com.movie_board.movie_review.dto.FindPasswordDto;
 import com.movie_board.movie_review.dto.UserDto;
 import com.movie_board.movie_review.repository.UserMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,7 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 
 @Service
+@Log4j2
 @RequiredArgsConstructor
 public class UserService {
 
@@ -90,5 +92,17 @@ public class UserService {
     public UserDto findByUsername(String username) {
         return userMapper.findByUsername(username);
     }
+
+
+    // username을 통해 userId 가져오기
+    public Long getUserIdByUsername(String username) {
+        UserDto user = userMapper.fetchUserByUsername(username);
+        if (user == null) {
+            log.error("해당 username을 찾지 못했습니다: " + username);
+            throw new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + username);
+        }
+        return user.getId();
+    }
+
 
 }

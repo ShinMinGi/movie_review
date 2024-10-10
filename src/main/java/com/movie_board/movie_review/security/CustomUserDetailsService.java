@@ -37,5 +37,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .password(userDto.getPassword()) // 데이터베이스에서 가져온 암호화된 패스워드 사용
                 .authorities("ROLE_USER") // 권한 설정
                 .build();
+        
+
     }
+
 }

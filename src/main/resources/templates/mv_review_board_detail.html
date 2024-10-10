@@ -13,7 +13,16 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="/css/top_menu_bar.css" th:href="@{/css/top_menu_bar.css}">
     <link rel="stylesheet" href="/css/mv_review_board_detail.css" th:href="@{/css/mv_review_board_detail.css}">
-    <!--    <link rel="stylesheet" href="/js/review.js" th:href="@{/js/review.js}">-->
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script th:inline="javascript">
+        var reviewId = [[${reviewId}]];
+        var movieId = [[${review.movieId}]];
+
+    </script>
+
+
 </head>
 <body class="body">
 <header th:replace="fragment/header :: header"></header>
@@ -54,25 +63,26 @@
 
 
 
-                <!-- 댓글 구현 -->
-            <div class="container comment-container" th:attr="data-review-id=${review.id}, data-movie-id=${movieId}">
-                <p>Review ID: <span th:text="${review.id}"></span></p>
-                <p>Movie ID: <span th:text="${movieId}"></span></p>
-
+            <!-- 댓글 구현 -->
+            <div class="container comment-container">
                 <hr class="border-2 mt-5">
-                <div id="comments-section">
+                <div id="commentsTable">
                     <h3 id="commentCount">댓글 0개</h3>
                     <div class="commentBorder border border-1">
-                        <form id="commentForm" onsubmit="submitComment(event)"> <!-- onsubmit 이벤트 추가 -->
-                            <textarea id="commentContent" placeholder="댓글을 입력해주세요" required></textarea>
+                        <form id="commentForm">
+                            <input type="hidden" name="reviewId" th:value="${review.id}" />
+                            <input type="hidden" name="movieId" th:value="${review.movieId}" />
+                            <textarea id="commentContent" name="content" placeholder="댓글을 입력해주세요" required></textarea>
                             <div class="">
-                                <button class="commentButton" type="submit">댓글 쓰기</button>
+                                <button type="submit">댓글 쓰기</button>
                             </div>
                         </form>
                     </div>
+                    <div id="commentSection">
                     <ul id="commentList">
                         <!-- 댓글 리스트 -->
                     </ul>
+                        </div>
                     <hr>
                 </div>
             </div>

@@ -4,19 +4,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- ReviewBoardMapper.xml -->
 <mapper namespace="com.movie_board.movie_review.repository.CommentMapper">
-    <!-- 댓글 등록 -->
 
-    <insert id="commentRegister" parameterType="com.movie_board.movie_review.dto.CommentDto">
-        INSERT INTO comments (reviewId, movieId, userId, userName, content, createdAt, updatedAt)
-        VALUES (#{reviewId}, #{movieId}, #{userId}, #{userName}, #{content}, NOW(), NOW())
+    <!-- 댓글 삽입 -->
+    <insert id="insertComment">
+        INSERT INTO comments (reviewId, userId,movieId, userName, content, parentId, createdAt)
+        VALUES (#{reviewId}, #{userId}, #{movieId}, #{userName}, #{content}, #{parentId}, #{createdAt})
     </insert>
 
-
-    <!-- 특정 리뷰의 댓글 조회 쿼리 -->
-    <select id="getCommentsByReviewIdAndMovieId" resultType="com.movie_board.movie_review.dto.CommentDto">
-        SELECT *
-        FROM comments
-        WHERE reviewId = #{reviewId} AND movieId = #{movieId}
-        ORDER BY createdAt DESC
+    <select id="selectCommentsByReviewId" resultType="com.movie_board.movie_review.dto.CommentDto">
+        SELECT * FROM comments WHERE reviewId = #{reviewId} ORDER BY createdAt DESC
     </select>
+
 </mapper>

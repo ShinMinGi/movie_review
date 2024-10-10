@@ -1,67 +1,78 @@
-// 댓글을 제출하는 함수
-function submitComment() {
-    event.preventDefault(); // 기본 폼 제출 방지
+document.addEventListener('DOMContentLoaded', function () {
+    // 댓글 작성
+    document.getElementById('commentForm').addEventListener('submit', function (e) {
+        e.preventDefault();
 
-    console.log('submitComment 함수가 호출되었습니다.'); // 함수 호출 로그 추가
+        const formData = {
+            reviewId: document.querySelector('input[name="reviewId"]').value,
+            movieId: document.querySelector('input[name="movieId"]').value,
+            content: document.getElementById('commentContent').value,
+        };
 
+        console.log('Form Data:', formData); // 전송할 데이터 로그
 
-    // HTML에서 reviewId와 movieId 값을 가져옴
-    const commentContainer = document.querySelector('.comment-container');
-    const reviewId = commentContainer.getAttribute('data-review-id');
-    const movieId = commentContainer.getAttribute('data-movie-id');
-
-    // 사용자가 입력한 댓글 내용 가져오기
-    const content = document.getElementById('commentContent').value;
-
-    // 값 확인 (디버깅용)
-    console.log('Review ID:', reviewId);
-    console.log('Movie ID:', movieId);
-    console.log('Content:', content);
-
-    // 전송할 댓글 데이터 객체 생성
-    const commentData = {
-        reviewId: reviewId, // reviewId 값이 int이므로 변환
-        movieId: movieId,   // movieId 값도 int로 변환
-        content: content
-    };
-
-    // 댓글을 서버로 전송 (AJAX 사용)
-    fetch('/comments/register', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(commentData),
-    })
-        .then(response => {
-            if (!response.ok) {
-                const errorMsg = `Error: ${response.status} - ${response.statusText}`;
-                throw new Error(errorMsg);
-            }
-            return response.json();
+        fetch('/comment/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
         })
-        .then(data => {
-            console.log('Success:', data);
-            addCommentToUI(data);
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+            .then(response => {
+                console.log('Response Status:', response.status);
+                if (response.ok) {
+                    return response.text(); // JSON 대신 text로 응답을 처리
+                } else {
+                    throw new Error('응답 상태 코드: ' + response.status);
+                }
+            })
+            .then(data => {
+                console.log('Server Response:', data);
+                alert('댓글이 성공적으로 작성되었습니다.');
+                loadComments(formData.reviewId); // 댓글 목록 다시 로드
+                document.getElementById('commentContent').value = ''; // 입력 필드 초기화
+            })
+            .catch(error => {
+                console.error('Error:', error); // 에러 콘솔 출력
+                alert('댓글 작성 중 오류가 발생했습니다. 다시 시도해주세요.');
+            });
+    });
 
-}
+    // 댓글 목록 로드
+    function loadComments(reviewId) {
+        console.log('Fetching comments for reviewId:', reviewId);
+        fetch('/comment/list/' + reviewId)
+            .then(response => {
+                console.log('Response Status:', response.status);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json(); // JSON 데이터로 변환
+            })
+            .then(comments => {
+                if (!Array.isArray(comments)) {
+                    throw new Error('댓글 데이터 형식이 잘못되었습니다.');
+                }
+                console.log('Comments:', comments);
+                const commentList = document.getElementById('commentList');
+                commentList.innerHTML = ''; // 기존 목록 초기화
 
-// 서버에서 받은 댓글을 UI에 추가하는 함수
-function addCommentToUI(comment) {
-    const commentList = document.getElementById('commentList');
-    const newComment = document.createElement('li');
-    newComment.textContent = `${comment.userName}: ${comment.content}`; // 댓글 작성자와 내용을 리스트에 추가
-    commentList.appendChild(newComment);
+                // 댓글 목록을 렌더링
+                comments.forEach(function (comment) {
+                    const commentItem = `<li>${comment.userName}: ${comment.content} ${comment.updatedAt}</li>`;
+                    commentList.insertAdjacentHTML('beforeend', commentItem);
+                });
 
-    // 댓글 수 업데이트
-    const commentCount = document.getElementById('commentCount');
-    const currentCount = parseInt(commentCount.textContent.match(/\d+/)[0]);
-    commentCount.textContent = `댓글 ${currentCount + 1}개`;
+                // 댓글 개수 업데이트
+                document.getElementById('commentCount').textContent = `댓글 ${comments.length}개`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('댓글 목록을 불러오는 중 오류가 발생했습니다.');
+            });
+    }
 
-    // 댓글 작성 후 입력 폼 초기화
-    document.getElementById('commentContent').value = '';
-}
+    // 페이지 로드시 댓글 목록 로드
+    const reviewId = document.querySelector('input[name="reviewId"]').value;
+    loadComments(reviewId);
+});

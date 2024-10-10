@@ -10,8 +10,11 @@ import java.util.List;
 @Mapper
 public interface CommentMapper {
 
-    void commentRegister(CommentDto commentDto); // 댓글 등록
 
-    List<CommentDto> getCommentsByReviewIdAndMovieId(@Param("reviewId") int reviewId, @Param("movieId") int movieId); // 리뷰 ID로 댓글 조회
+    // 댓글 등록
+    void insertComment(CommentDto commentDto);
 
+
+    // 댓글 목록 ㄹ요청
+    List<CommentDto> selectCommentsByReviewId(Long reviewId);
 }

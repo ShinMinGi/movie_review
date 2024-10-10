@@ -26,4 +26,8 @@ public interface UserMapper {
 
     // 비밀번호를 업데이트 하는 메서드
     void updateUserPassword(@Param("email") String email, @Param("newPassword") String newPassword);
+
+    UserDto fetchUserByUsername(String userName);
+
+
 }

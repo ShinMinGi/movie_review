@@ -11,7 +11,7 @@
     </insert>
 
     <select id="findByUsername" resultType="com.movie_board.movie_review.dto.UserDto">
-        SELECT userName, password, emailId
+        SELECT id, userName, password, emailId
         FROM users
         WHERE emailId = #{emailId}
     </select>
@@ -40,6 +40,11 @@
         SET newPassword = #{newPassword}
         WHERE email = #{email}
     </update>
+
+
+    <select id="fetchUserByUsername" resultType="com.movie_board.movie_review.dto.UserDto">
+        SELECT * FROM users WHERE username = #{username}
+    </select>
 
 </mapper>
 
