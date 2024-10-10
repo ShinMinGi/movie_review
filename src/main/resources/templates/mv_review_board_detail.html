@@ -73,17 +73,15 @@
                             <input type="hidden" name="reviewId" th:value="${review.id}" />
                             <input type="hidden" name="movieId" th:value="${review.movieId}" />
                             <textarea id="commentContent" name="content" placeholder="댓글을 입력해주세요" required></textarea>
-                            <div class="">
-                                <button type="submit">댓글 쓰기</button>
-                            </div>
+                                <button class="commentButton" type="submit">댓글 쓰기</button>
                         </form>
                     </div>
                     <div id="commentSection">
-                    <ul id="commentList">
+                    <ul id="commentList" class="commentList mt-4">
                         <!-- 댓글 리스트 -->
                     </ul>
                         </div>
-                    <hr>
+
                 </div>
             </div>
 

@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .then(data => {
                 console.log('Server Response:', data);
-                alert('댓글이 성공적으로 작성되었습니다.');
+                alert('댓글이 작성되었습니다.');
                 loadComments(formData.reviewId); // 댓글 목록 다시 로드
                 document.getElementById('commentContent').value = ''; // 입력 필드 초기화
             })
@@ -59,7 +59,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // 댓글 목록을 렌더링
                 comments.forEach(function (comment) {
-                    const commentItem = `<li>${comment.userName}: ${comment.content} ${comment.updatedAt}</li>`;
+                    const formattedDate = formatDate(comment.updatedAt);
+                    const commentItem = `
+                    <ul style="list-style-type: none; ">
+                       <div style="font-weight: bold; margin-left: 10px;"> ${comment.userName}</div>
+                        <li>
+                            <div>${comment.content}</div>
+                            <div style="color: #999; font-size: 12px;">${formattedDate}</div>
+                        </li>
+                    </ul>`
                     commentList.insertAdjacentHTML('beforeend', commentItem);
                 });
 
@@ -70,6 +78,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Error:', error);
                 alert('댓글 목록을 불러오는 중 오류가 발생했습니다.');
             });
+    }
+
+// 날짜를 "YYYY.MM.DD. HH:MM" 형식으로 변환하는 함수
+    function formatDate(isoString) {
+        const date = new Date(isoString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // 월을 2자리로 맞추기
+        const day = String(date.getDate()).padStart(2, '0'); // 일을 2자리로 맞추기
+        const hours = String(date.getHours()).padStart(2, '0'); // 시간을 2자리로 맞추기
+        const minutes = String(date.getMinutes()).padStart(2, '0'); // 분을 2자리로 맞추기
+        return `${year}.${month}.${day}. ${hours}:${minutes}`;
     }
 
     // 페이지 로드시 댓글 목록 로드
