@@ -7,12 +7,30 @@
 
     <!-- 댓글 삽입 -->
     <insert id="insertComment">
-        INSERT INTO comments (reviewId, userId,movieId, userName, content, parentId, createdAt)
-        VALUES (#{reviewId}, #{userId}, #{movieId}, #{userName}, #{content}, #{parentId}, #{createdAt})
+        INSERT INTO comments (reviewId, userId,movieId, userName, content, parentId)
+        VALUES (#{reviewId}, #{userId}, #{movieId}, #{userName}, #{content}, #{parentId})
     </insert>
 
     <select id="selectCommentsByReviewId" resultType="com.movie_board.movie_review.dto.CommentDto">
         SELECT * FROM comments WHERE reviewId = #{reviewId} ORDER BY createdAt DESC
     </select>
 
+    <!--  댓글 수정  -->
+    <update id="updateComment">
+        UPDATE comments
+        SET content = #{content}, updatedAt =  NOW()
+        WHERE id = #{commentId}
+    </update>
+
+    <!--  댓글 삭제  -->
+    <delete id="deleteComment">
+        DELETE FROM comments WHERE id = #{commentId}
+    </delete>
+
+    <!-- 댓글 작성자 조회 -->
+    <select id="getCommentOwner" resultType="java.lang.Long">
+        SELECT userId
+        FROM comments
+        WHERE id = #{commentId}
+    </select>
 </mapper>

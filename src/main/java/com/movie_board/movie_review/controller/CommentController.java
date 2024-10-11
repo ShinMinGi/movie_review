@@ -61,15 +61,49 @@ public class CommentController {
         return ResponseEntity.ok("댓글이 성공적으로 추가되었습니다.");
     }
 
-
-
     // 댓글 목록 조회
     @GetMapping("/comment/list/{reviewId}")
     public ResponseEntity<List<CommentDto>> getCommentList(@PathVariable Long reviewId) {
-        log.info("GETMAPPING에서 의 reviewId가 들어오는지  = "+ reviewId);
+        log.info("getMapping 의 reviewId가 들어오는지  = "+ reviewId);
         List<CommentDto> comments = commentService.getCommentList(reviewId);
         return ResponseEntity.ok(comments);
     }
+
+    // 댓글 수정
+    @PostMapping("/comment/update/{commentId}")
+    public ResponseEntity<?> updateComment(
+            @PathVariable("commentId")Long commentId,
+            @RequestParam("content")String content) {
+
+        // 현재 사용자 ID 확인
+        String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        Long userId = userService.getUserIdByUsername(username);
+
+        // 댓글 작성자인지 확인
+        if (!commentService.isCommentOwner(commentId, userId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("댓글 작성자만 수정할 수 있습니다.");
+        }
+
+        commentService.updateComment(commentId, content);
+        return ResponseEntity.ok("댓글 수정이 완료되었습니다");
+    }
+
+    // 댓글 삭제
+    @PostMapping("/comment/delete/{commentId}")
+    public ResponseEntity<?> deleteComment(@PathVariable("commentId") Long commentId) {
+
+        // 현재 사용자 ID 확인
+        String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        Long userId = userService.getUserIdByUsername(username);
+
+        // 댓글 작성자인지 확인
+        if (!commentService.isCommentOwner(commentId, userId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("댓글 작성자만 수정할 수 있습니다.");
+        }
+        commentService.deleteComment(commentId);
+        return ResponseEntity.ok("댓글이 삭제되었습니다");
+    }
+
 
 
 }

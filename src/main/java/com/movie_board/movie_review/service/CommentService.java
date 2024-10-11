@@ -34,4 +34,21 @@ public class CommentService {
     public List<CommentDto> getCommentList(Long reviewId) {
         return commentMapper.selectCommentsByReviewId(reviewId);
     }
+
+    // 댓글 수정
+    public void updateComment(Long commentId, String content) {
+        commentMapper.updateComment(commentId, content);
+    }
+
+
+    // 댓글 삭제
+    public void deleteComment(Long commentId) {
+        commentMapper.deleteComment(commentId);
+    }
+
+    // 댓글 작성자 확인
+    public boolean isCommentOwner(Long commentId, Long userId) {
+        Long commentOwnerId = commentMapper.getCommentOwner(commentId);
+        return commentOwnerId != null && commentOwnerId.equals(userId);
+    }
 }

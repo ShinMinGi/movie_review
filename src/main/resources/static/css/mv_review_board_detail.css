@@ -4,6 +4,11 @@
     padding-top: 10px;
 }
 
+.commentList {
+    list-style-type: none; /* 리스트 스타일 제거 */
+    padding-left: 0;      /* 왼쪽 패딩 제거 */
+}
+
 .commentBorder {
     width: 100%;
     height: 180px;
@@ -59,6 +64,68 @@
     margin-bottom: 10px;
 }
 
-.button {
+/* 기본 스타일 */
+.commentList {
+    padding: 0;
+}
 
+/* 드롭다운 메뉴 스타일 */
+.dropdown {
+    position: relative;
+    display: inline-block;
+
+}
+
+/* 드롭다운 메뉴 스타일 */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 24px; /* 버튼 크기 조정 (기본보다 크게) */
+    padding: 5px;
+    color: black; /* 글자 색상을 검정색으로 설정 */
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    min-width: 100px; /* 드롭다운 메뉴의 최소 너비 */
+}
+
+.dropdown:hover .dropdown-content {
+    display: block; /* 마우스 호버 시 드롭다운 보이기 */
+}
+
+.dropdown-content button {
+    color: black;
+    padding: 10px;
+    text-align: left;
+    border: none;
+    background-color: transparent;
+    width: 100%;
+    cursor: pointer;
+}
+
+.dropdown-content button:hover {
+    background-color: #f1f1f1; /* 마우스 호버 시 배경 색상 변경 */
+}
+
+/* 댓글 스타일 */
+.commentList li {
+    border-bottom: 1px solid #eee;
+    padding: 10px;
+    margin-bottom: 10px;
+    position: relative; /* 자식 요소의 위치를 절대값으로 설정하기 위해 */
+}
+
+.commentList li:last-child {
+    border-bottom: none; /* 마지막 댓글 아래 경계선 제거 */
 }

@@ -15,6 +15,16 @@ public interface CommentMapper {
     void insertComment(CommentDto commentDto);
 
 
-    // 댓글 목록 ㄹ요청
+    // 댓글 목록 요청
     List<CommentDto> selectCommentsByReviewId(Long reviewId);
+
+
+    // 댓글 수정
+    void updateComment(Long commentId, String content);
+
+    // 댓글 삭제
+    void deleteComment(Long commentId);
+
+    // 댓글 작성자 조회
+    Long getCommentOwner(Long commentId);
 }

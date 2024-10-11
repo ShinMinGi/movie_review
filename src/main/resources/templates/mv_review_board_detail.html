@@ -16,11 +16,11 @@
     <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <script th:inline="javascript">
-        var reviewId = [[${reviewId}]];
-        var movieId = [[${review.movieId}]];
+    <!--    <script th:inline="javascript">-->
+    <!--        var reviewId = [[${reviewId}]];-->
+    <!--        var movieId = [[${review.movieId}]];-->
 
-    </script>
+    <!--    </script>-->
 
 
 </head>
@@ -62,30 +62,29 @@
             </div>
 
 
-
             <!-- 댓글 구현 -->
             <div class="container comment-container">
                 <hr class="border-2 mt-5">
                 <div id="commentsTable">
                     <h3 id="commentCount">댓글 0개</h3>
                     <div class="commentBorder border border-1">
+                        <input type="hidden" id="currentUserId" th:value="${currentUserId}"/> <!-- 현재 사용자 ID -->
                         <form id="commentForm">
-                            <input type="hidden" name="reviewId" th:value="${review.id}" />
-                            <input type="hidden" name="movieId" th:value="${review.movieId}" />
+                            <input type="hidden" name="reviewId" th:value="${review.id}"/>
+                            <input type="hidden" name="movieId" th:value="${review.movieId}"/>
                             <textarea id="commentContent" name="content" placeholder="댓글을 입력해주세요" required></textarea>
-                                <button class="commentButton" type="submit">댓글 쓰기</button>
+                            <button class="commentButton" type="submit">댓글 쓰기</button>
                         </form>
                     </div>
                     <div id="commentSection">
-                    <ul id="commentList" class="commentList mt-4">
-                        <!-- 댓글 리스트 -->
-                    </ul>
-                        </div>
+                        <!--  댓글 리스트  -->
+                        <ul id="commentList" class="commentList mt-4">
+
+                        </ul>
+                    </div>
 
                 </div>
             </div>
-
-
 
 
         </div>

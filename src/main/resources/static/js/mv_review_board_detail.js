@@ -38,6 +38,8 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     });
 
+});
+
     // 댓글 목록 로드
     function loadComments(reviewId) {
         console.log('Fetching comments for reviewId:', reviewId);
@@ -59,15 +61,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // 댓글 목록을 렌더링
                 comments.forEach(function (comment) {
-                    const formattedDate = formatDate(comment.updatedAt);
+                    const formattedDate = formatDate(comment.createdAt);
+                    const isOwner = comment.userId === currentUserId; // 댓글 작성자 여부 확인
                     const commentItem = `
-                    <ul style="list-style-type: none; ">
-                       <div style="font-weight: bold; margin-left: 10px;"> ${comment.userName}</div>
-                        <li>
-                            <div>${comment.content}</div>
-                            <div style="color: #999; font-size: 12px;">${formattedDate}</div>
-                        </li>
-                    </ul>`
+                     <li style="list-style-type: none;">
+                        <div style="font-weight: bold;">${comment.userName}</div>
+                        <div>${comment.content}</div>
+                        <div style="color: #999; font-size: 12px;">${formattedDate}</div>
+                        
+                       <div class="dropdown" style="position: absolute; right: 10px; top: 10px;">
+                            <button class="dropbtn">⋮</button>
+                            <div class="dropdown-content">
+                            
+                                <button onclick="updateComment(${comment.id})">수정</button>
+                                <button onclick="deleteComment(${comment.id})">삭제</button>
+                            </div>
+                        </div>
+                    </li>`;
+
                     commentList.insertAdjacentHTML('beforeend', commentItem);
                 });
 
@@ -79,6 +90,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert('댓글 목록을 불러오는 중 오류가 발생했습니다.');
             });
     }
+// 페이지 로드시 댓글 목록 로드
+const reviewId = document.querySelector('input[name="reviewId"]').value;
+loadComments(reviewId);
 
 // 날짜를 "YYYY.MM.DD. HH:MM" 형식으로 변환하는 함수
     function formatDate(isoString) {
@@ -91,7 +105,44 @@ document.addEventListener('DOMContentLoaded', function () {
         return `${year}.${month}.${day}. ${hours}:${minutes}`;
     }
 
-    // 페이지 로드시 댓글 목록 로드
-    const reviewId = document.querySelector('input[name="reviewId"]').value;
-    loadComments(reviewId);
-});
+
+
+// 댓글 수정
+function updateComment(commentId) {
+    const content = prompt("수정할 댓글 내용을 입력하세요:");
+
+    if (content) {
+        fetch(`/comment/update/${commentId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                content: content
+            })
+        })
+            .then(response => response.text())
+            .then(data => {
+                alert(data);
+                // 수정 후 페이지를 새로고침하여 변경 사항을 반영
+                location.reload();
+            })
+            .catch(error => console.error('Error:', error));
+    }
+}
+
+// 댓글 삭제
+function deleteComment(commentId) {
+    if (confirm("정말로 이 댓글을 삭제하시겠습니까?")) {
+        fetch(`/comment/delete/${commentId}`, {
+            method: 'POST'
+        })
+            .then(response => response.text())
+            .then(data => {
+                alert(data);
+                // 삭제 후 페이지를 새로고침하여 변경 사항을 반영
+                location.reload();
+            })
+            .catch(error => console.error('Error:', error));
+    }
+}
