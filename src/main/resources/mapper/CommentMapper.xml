@@ -12,8 +12,18 @@
     </insert>
 
     <select id="selectCommentsByReviewId" resultType="com.movie_board.movie_review.dto.CommentDto">
-        SELECT * FROM comments WHERE reviewId = #{reviewId} ORDER BY createdAt DESC
+        SELECT * FROM comments
+        WHERE reviewId = #{reviewId}
+        ORDER BY createdAt DESC
     </select>
+
+    <!-- 특정 댓글의 대댓글 조회 -->
+    <select id="selectRepliesByParentId" resultType="com.movie_board.movie_review.dto.CommentDto">
+        SELECT * FROM comments
+        WHERE parentId = #{parentId}
+        ORDER BY createdAt DESC
+    </select>
+
 
     <!--  댓글 수정  -->
     <update id="updateComment">

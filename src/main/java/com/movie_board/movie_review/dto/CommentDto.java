@@ -3,6 +3,7 @@ package com.movie_board.movie_review.dto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class CommentDto {
@@ -17,4 +18,6 @@ public class CommentDto {
     private LocalDateTime updatedAt;
     private boolean editable; // 추가된 필드
 
+    // 대댓글 리스트 추가
+    private List<CommentDto> replies;
 }

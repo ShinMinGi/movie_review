@@ -18,6 +18,8 @@ public interface CommentMapper {
     // 댓글 목록 요청
     List<CommentDto> selectCommentsByReviewId(Long reviewId);
 
+    // 특정 댓글의 대댓글 조회
+    List<CommentDto> selectRepliesByParentId(@Param("parentId") Long parentId);
 
     // 댓글 수정
     void updateComment(Long commentId, String content);
