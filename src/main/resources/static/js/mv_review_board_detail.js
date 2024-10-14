@@ -40,10 +40,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
+
 // 댓글 목록 로드
 function loadComments(reviewId) {
     console.log('Fetching comments for reviewId:', reviewId);
-    fetch('/comment/list/' + reviewId)
+    fetch(`/comment/list/${reviewId}`)
         .then(response => {
             console.log('Response Status:', response.status);
             if (!response.ok) {
@@ -51,7 +52,11 @@ function loadComments(reviewId) {
             }
             return response.json(); // JSON 데이터로 변환
         })
-        .then(comments => {
+        .then(data => {
+            // data에서 comments와 commentCount를 추출합니다.
+            const comments = data.comments; // CommentDto 리스트
+            const totalComments = data.total; // 전체 댓글 수
+
             if (!Array.isArray(comments)) {
                 throw new Error('댓글 데이터 형식이 잘못되었습니다.');
             }
@@ -62,7 +67,6 @@ function loadComments(reviewId) {
             // 댓글 목록을 렌더링
             comments.forEach(function (comment) {
                 const formattedDate = formatDate(comment.createdAt);
-
                 const isOwner = comment.showDropdown; // 드롭메뉴 표시 여부 확인
 
                 // isOwner 값 확인 로그
@@ -70,7 +74,7 @@ function loadComments(reviewId) {
                 console.log(`currentUserId: ${currentUserId}`); // 로그로 확인
 
                 const commentItem = `
-                     <li style="list-style-type: none;" data-id="${comment.id}">
+                    <li style="list-style-type: none;" data-id="${comment.id}">
                         <div style="font-weight: bold;">${comment.userName}</div>
                         <div>${comment.content}</div>
                         <div style="color: #999; font-size: 12px;">${formattedDate}</div>
@@ -102,13 +106,15 @@ function loadComments(reviewId) {
             });
 
             // 댓글 개수 업데이트
-            document.getElementById('commentCount').textContent = `댓글 ${comments.length}개`;
+            document.getElementById('commentCount').textContent = `댓글 ${totalComments}개`;
         })
         .catch(error => {
             console.error('Error:', error);
             alert('댓글 목록을 불러오는 중 오류가 발생했습니다.');
         });
 }
+
+
 
 
 // 대댓글 입력 폼을 표시하는 함수
@@ -142,6 +148,8 @@ function submitReply(parentId) {
     })
         .then(response => response.json())
         .then(data => {
+            console.log('Data:', data); // 전체 데이터 확인
+            console.log('CommentPageDto:', data.commentPageDto); // CommentPageDto 확인
             if (data.success) {
                 loadComments(reviewId); // 대댓글 작성 후 댓글 목록 다시 로드
             } else {

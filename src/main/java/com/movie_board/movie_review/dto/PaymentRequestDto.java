@@ -9,5 +9,4 @@ public class PaymentRequestDto {
     private double amount;
     private String orderId;
 
-    // Getters and Setters
 }

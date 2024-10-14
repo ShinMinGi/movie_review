@@ -1,6 +1,7 @@
 package com.movie_board.movie_review.service;
 
 import com.movie_board.movie_review.dto.CommentDto;
+import com.movie_board.movie_review.dto.CommentPageDto;
 import com.movie_board.movie_review.dto.ReviewBoardDto;
 import com.movie_board.movie_review.repository.CommentMapper;
 import lombok.RequiredArgsConstructor;
@@ -66,4 +67,16 @@ public class CommentService {
         Long commentOwnerId = commentMapper.getCommentOwner(commentId);
         return commentOwnerId != null && commentOwnerId.equals(userId);
     }
+
+
+    // 댓글 페이징 기능 구현
+    public List<CommentDto> getCommentListWithPaging(Long reviewId, int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        return commentMapper.getCommentsByReviewIdWithPaging(reviewId, offset, pageSize);
+    }
+
+    public int getCommentCountByReviewId(Long reviewId) {
+        return commentMapper.getCommentCountByReviewId(reviewId);
+    }
+
 }

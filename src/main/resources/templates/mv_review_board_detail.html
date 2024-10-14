@@ -73,13 +73,34 @@
                     <div id="commentSection">
                         <!--  댓글 리스트  -->
                         <ul id="commentList" class="commentList mt-4">
-
                         </ul>
                     </div>
-
                 </div>
             </div>
 
+            <!-- 페이지 네비게이션 -->
+            <div class="pagination">
+                <ul th:if="${commentPageDto != null}">
+                    <!-- 이전 페이지 버튼 -->
+                    <li th:if="${commentPageDto.hasPrevious}" class="page-item">
+                        <a class="page-link" th:href="@{/comment/list/{reviewId}(page=${commentPageDto.currentPage - 1}, pageSize=${commentPageDto.pageSize}, reviewId=${review.id})}">이전</a>
+                    </li>
+
+                    <!-- 페이지 번호 -->
+                    <li th:each="i : ${#numbers.sequence(commentPageDto.pageStart, commentPageDto.pageEnd)}" class="page-item" th:classappend="${commentPageDto.currentPage == i} ? 'active'">
+                        <a class="page-link" th:href="@{/comment/list/{reviewId}(page=${i}, pageSize=${commentPageDto.pageSize}, reviewId=${review.id})}">[[${i}]]</a>
+                    </li>
+
+                    <!-- 다음 페이지 버튼 -->
+                    <li th:if="${commentPageDto.hasNext}" class="page-item">
+                        <a class="page-link" th:href="@{/comment/list/{reviewId}(page=${commentPageDto.currentPage + 1}, pageSize=${commentPageDto.pageSize}, reviewId=${review.id})}">다음</a>
+                    </li>
+                </ul>
+            </div>
+
+
+
+        </div>
 
         </div>
     </div>

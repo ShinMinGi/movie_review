@@ -29,4 +29,10 @@ public interface CommentMapper {
 
     // 댓글 작성자 조회
     Long getCommentOwner(Long commentId);
+
+    //댓글 페이징 기능
+    List<CommentDto> getCommentsByReviewIdWithPaging(@Param("reviewId") Long reviewId, @Param("offset") int offset, @Param("pageSize") int pageSize);
+
+    int getCommentCountByReviewId(@Param("reviewId") Long reviewId);
+
 }

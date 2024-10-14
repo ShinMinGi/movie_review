@@ -1,6 +1,7 @@
 package com.movie_board.movie_review.controller;
 
 import com.movie_board.movie_review.dto.CommentDto;
+import com.movie_board.movie_review.dto.CommentPageDto;
 import com.movie_board.movie_review.dto.ReviewBoardDto;
 import com.movie_board.movie_review.service.CommentService;
 import com.movie_board.movie_review.service.ReviewBoardService;
@@ -63,13 +64,21 @@ public class CommentController {
 
     // 댓글 목록 조회
     @GetMapping("/comment/list/{reviewId}")
-    public ResponseEntity<List<CommentDto>> getCommentList(@PathVariable Long reviewId, Principal principal) {
+    public ResponseEntity<CommentPageDto> getCommentList(
+            @PathVariable Long reviewId,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "5") int pageSize,
+            Principal principal) {
         log.info("getMapping 의 reviewId가 들어오는지  = " + reviewId);
 
         // 현재 사용자 ID 확인
         Long currentUserId = userService.getUserIdByUsername(principal.getName());
 
-        List<CommentDto> comments = commentService.getCommentList(reviewId);
+        // 전체 댓글 수 가져오기
+        int total = commentService.getCommentCountByReviewId(reviewId);
+
+        // 페이지에 맞는 댓글 목록 가져오기
+        List<CommentDto> comments = commentService.getCommentListWithPaging(reviewId, page, pageSize);
 
         // 각 댓글에 대해 드롭메뉴 표시 여부 설정
         for (CommentDto comment : comments) {
@@ -80,8 +89,13 @@ public class CommentController {
             }
         }
 
-        return ResponseEntity.ok(comments);
+        // 페이징 정보를 포함한 CommentPageDTO 생성
+        CommentPageDto commentPageDto = new CommentPageDto(comments, total, page, pageSize);
+        log.info("CommentPageDto: " + commentPageDto); // 로그 추가
+        return ResponseEntity.ok(commentPageDto);
     }
+
+
 
 
     // 댓글 수정
