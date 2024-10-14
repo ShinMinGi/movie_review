@@ -63,11 +63,26 @@ public class CommentController {
 
     // 댓글 목록 조회
     @GetMapping("/comment/list/{reviewId}")
-    public ResponseEntity<List<CommentDto>> getCommentList(@PathVariable Long reviewId) {
-        log.info("getMapping 의 reviewId가 들어오는지  = "+ reviewId);
+    public ResponseEntity<List<CommentDto>> getCommentList(@PathVariable Long reviewId, Principal principal) {
+        log.info("getMapping 의 reviewId가 들어오는지  = " + reviewId);
+
+        // 현재 사용자 ID 확인
+        Long currentUserId = userService.getUserIdByUsername(principal.getName());
+
         List<CommentDto> comments = commentService.getCommentList(reviewId);
+
+        // 각 댓글에 대해 드롭메뉴 표시 여부 설정
+        for (CommentDto comment : comments) {
+            if (comment.getUserId().equals(currentUserId)) {
+                comment.setShowDropdown(true);
+            } else {
+                comment.setShowDropdown(false);
+            }
+        }
+
         return ResponseEntity.ok(comments);
     }
+
 
     // 댓글 수정
     @PostMapping("/comment/update/{commentId}")
@@ -84,7 +99,7 @@ public class CommentController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("댓글 작성자만 수정할 수 있습니다.");
         }
 
-        commentService.updateComment(commentId, content);
+        commentService.updateComment(commentId, content, userId);
         return ResponseEntity.ok("댓글 수정이 완료되었습니다");
     }
 

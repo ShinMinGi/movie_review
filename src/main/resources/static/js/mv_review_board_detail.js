@@ -62,27 +62,34 @@ function loadComments(reviewId) {
             // 댓글 목록을 렌더링
             comments.forEach(function (comment) {
                 const formattedDate = formatDate(comment.createdAt);
-                const isOwner = comment.userId === currentUserId; // 댓글 작성자 여부 확인
+
+                const isOwner = comment.showDropdown; // 드롭메뉴 표시 여부 확인
+
+                // isOwner 값 확인 로그
+                console.log(`isOwner: ${isOwner}, comment.userId: ${comment.userId}`);
+                console.log(`currentUserId: ${currentUserId}`); // 로그로 확인
+
                 const commentItem = `
                      <li style="list-style-type: none;" data-id="${comment.id}">
                         <div style="font-weight: bold;">${comment.userName}</div>
                         <div>${comment.content}</div>
                         <div style="color: #999; font-size: 12px;">${formattedDate}</div>
                         
-                       <div class="dropdown" style="position: absolute; right: 10px; top: 10px;">
+                        ${isOwner ? `
+                        <div class="dropdown" style="position: absolute; right: 10px; top: 10px;">
                             <button class="dropbtn">⋮</button>
                             <div class="dropdown-content">
-                            
                                 <button onclick="updateComment(${comment.id})">수정</button>
                                 <button onclick="deleteComment(${comment.id})">삭제</button>
                             </div>
                         </div>
+                        ` : ''}
                         
                         <!-- 답글 버튼 -->
                         <button class="replyButton" onclick="showReplyForm(${comment.id})">답글</button>
 
-                            <!-- 대댓글 입력 폼 (처음엔 숨김 처리) -->
-                         <div class="replyForm" style="display: none;">
+                        <!-- 대댓글 입력 폼 (처음엔 숨김 처리) -->
+                        <div class="replyForm" style="display: none;">
                             <textarea placeholder="대댓글을 입력해주세요" class="replyContent"></textarea>
                             <button type="button" onclick="submitReply(${comment.id})">대댓글 작성</button>
                         </div>
@@ -102,6 +109,7 @@ function loadComments(reviewId) {
             alert('댓글 목록을 불러오는 중 오류가 발생했습니다.');
         });
 }
+
 
 // 대댓글 입력 폼을 표시하는 함수
 function showReplyForm(commentId) {

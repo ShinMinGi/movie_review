@@ -28,7 +28,7 @@
     <!--  댓글 수정  -->
     <update id="updateComment">
         UPDATE comments
-        SET content = #{content}, updatedAt =  NOW()
+        SET content = #{content}, updatedAt =  NOW(), currentUserId = #{userId}
         WHERE id = #{commentId}
     </update>
 

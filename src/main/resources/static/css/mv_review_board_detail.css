@@ -129,3 +129,12 @@
 .commentList li:last-child {
     border-bottom: none; /* 마지막 댓글 아래 경계선 제거 */
 }
+
+
+.replyButton {
+    margin-top: 10px;
+    color: black;             /* 글자색 검정색 */
+    border: 1px solid lightgray;   /* 회색 테두리 */
+    background-color: white;  /* 배경 흰색 */
+    border-radius: 5px;       /* 둥근 모서리 */
+}

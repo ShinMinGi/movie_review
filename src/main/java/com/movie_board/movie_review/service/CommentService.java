@@ -51,8 +51,8 @@ public class CommentService {
 
 
     // 댓글 수정
-    public void updateComment(Long commentId, String content) {
-        commentMapper.updateComment(commentId, content);
+    public void updateComment(Long commentId, String content, Long userId) {
+        commentMapper.updateComment(commentId, content, userId);
     }
 
 

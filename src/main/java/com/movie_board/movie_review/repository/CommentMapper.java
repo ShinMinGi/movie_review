@@ -22,7 +22,7 @@ public interface CommentMapper {
     List<CommentDto> selectRepliesByParentId(@Param("parentId") Long parentId);
 
     // 댓글 수정
-    void updateComment(Long commentId, String content);
+    void updateComment(Long commentId, String content, Long userId);
 
     // 댓글 삭제
     void deleteComment(Long commentId);
