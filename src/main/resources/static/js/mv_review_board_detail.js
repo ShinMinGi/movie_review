@@ -42,9 +42,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 // 댓글 목록 로드
-function loadComments(reviewId) {
+function loadComments(reviewId, page = 1, pageSize = 5) {
     console.log('Fetching comments for reviewId:', reviewId);
-    fetch(`/comment/list/${reviewId}`)
+    fetch(`/comment/list/${reviewId}?page=${page}&pageSize=${pageSize}`)
         .then(response => {
             console.log('Response Status:', response.status);
             if (!response.ok) {
@@ -53,9 +53,10 @@ function loadComments(reviewId) {
             return response.json(); // JSON 데이터로 변환
         })
         .then(data => {
-            // data에서 comments와 commentCount를 추출합니다.
             const comments = data.comments; // CommentDto 리스트
             const totalComments = data.total; // 전체 댓글 수
+            const currentPage = data.currentPage; // 현재 페이지
+            const totalPages = Math.ceil(totalComments / pageSize); // 전체 페이지 수
 
             if (!Array.isArray(comments)) {
                 throw new Error('댓글 데이터 형식이 잘못되었습니다.');
@@ -67,18 +68,13 @@ function loadComments(reviewId) {
             // 댓글 목록을 렌더링
             comments.forEach(function (comment) {
                 const formattedDate = formatDate(comment.createdAt);
-                const isOwner = comment.showDropdown; // 드롭메뉴 표시 여부 확인
-
-                // isOwner 값 확인 로그
-                console.log(`isOwner: ${isOwner}, comment.userId: ${comment.userId}`);
-                console.log(`currentUserId: ${currentUserId}`); // 로그로 확인
+                const isOwner = comment.showDropdown;
 
                 const commentItem = `
                     <li style="list-style-type: none;" data-id="${comment.id}">
                         <div style="font-weight: bold;">${comment.userName}</div>
                         <div>${comment.content}</div>
                         <div style="color: #999; font-size: 12px;">${formattedDate}</div>
-                        
                         ${isOwner ? `
                         <div class="dropdown" style="position: absolute; right: 10px; top: 10px;">
                             <button class="dropbtn">⋮</button>
@@ -88,31 +84,53 @@ function loadComments(reviewId) {
                             </div>
                         </div>
                         ` : ''}
-                        
-                        <!-- 답글 버튼 -->
                         <button class="replyButton" onclick="showReplyForm(${comment.id})">답글</button>
-
-                        <!-- 대댓글 입력 폼 (처음엔 숨김 처리) -->
                         <div class="replyForm" style="display: none;">
                             <textarea placeholder="대댓글을 입력해주세요" class="replyContent"></textarea>
                             <button type="button" onclick="submitReply(${comment.id})">대댓글 작성</button>
                         </div>
-
-                        <!-- 대댓글 목록 표시할 공간 -->
                         <ul class="replyList"></ul>
                     </li>`;
-
                 commentList.insertAdjacentHTML('beforeend', commentItem);
             });
 
             // 댓글 개수 업데이트
             document.getElementById('commentCount').textContent = `댓글 ${totalComments}개`;
+
+            // 페이지네이션 버튼 생성
+            const pagination = document.querySelector('.pagination');
+            pagination.innerHTML = ''; // 기존 페이지네이션 초기화
+
+            // 이전 페이지 버튼
+            if (currentPage > 1) {
+                pagination.innerHTML += `
+                    <li class="page-item">
+                        <a class="page-link" href="#" onclick="loadComments(${reviewId}, ${currentPage - 1}, ${pageSize})">이전</a>
+                    </li>`;
+            }
+
+            // 페이지 번호 버튼
+            for (let i = 1; i <= totalPages; i++) {
+                pagination.innerHTML += `
+                    <li class="page-item ${currentPage === i ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="loadComments(${reviewId}, ${i}, ${pageSize})">${i}</a>
+                    </li>`;
+            }
+
+            // 다음 페이지 버튼
+            if (currentPage < totalPages) {
+                pagination.innerHTML += `
+                    <li class="page-item">
+                        <a class="page-link" href="#" onclick="loadComments(${reviewId}, ${currentPage + 1}, ${pageSize})">다음</a>
+                    </li>`;
+            }
         })
         .catch(error => {
             console.error('Error:', error);
             alert('댓글 목록을 불러오는 중 오류가 발생했습니다.');
         });
 }
+
 
 
 
