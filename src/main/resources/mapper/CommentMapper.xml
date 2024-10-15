@@ -36,8 +36,8 @@
     <!--  댓글 수정  -->
     <update id="updateComment">
         UPDATE comments
-        SET content = #{content}, updatedAt =  NOW(), currentUserId = #{userId}
-        WHERE id = #{commentId}
+        SET content = #{content}, updatedAt = NOW()
+        WHERE id = #{commentId} AND userId = #{userId}
     </update>
 
     <!--  댓글 삭제  -->
@@ -53,11 +53,16 @@
     </select>
 
 
-    <!-- 특정 댓글의 대댓글 조회 -->
+    <!-- 특정 댓글의 대댓글 -->
     <select id="selectRepliesByParentId" resultType="com.movie_board.movie_review.dto.CommentDto">
         SELECT * FROM comments
         WHERE parentId = #{parentId}
         ORDER BY createdAt DESC
     </select>
 
+    <!-- 대댓글 추가 -->
+    <insert id="insertReply" parameterType="com.movie_board.movie_review.dto.CommentDto">
+        INSERT INTO comments (reviewId, movieId, userId, userName, content, parentId, createdAt)
+        VALUES (#{reviewId}, #{movieId}, #{userId}, #{userName}, #{content}, #{parentId}, NOW())
+    </insert>
 </mapper>

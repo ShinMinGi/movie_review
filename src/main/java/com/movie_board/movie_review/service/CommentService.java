@@ -48,6 +48,10 @@ public class CommentService {
         return comments;
     }
 
+    // 대댓글 저장 로직
+    public void addReply(CommentDto commentDto) {
+        commentMapper.insertReply(commentDto);
+    }
 
 
 
@@ -55,6 +59,7 @@ public class CommentService {
     public void updateComment(Long commentId, String content, Long userId) {
         commentMapper.updateComment(commentId, content, userId);
     }
+
 
 
     // 댓글 삭제

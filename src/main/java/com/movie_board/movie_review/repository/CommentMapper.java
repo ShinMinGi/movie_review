@@ -35,4 +35,5 @@ public interface CommentMapper {
 
     int getCommentCountByReviewId(@Param("reviewId") Long reviewId);
 
+    void insertReply(CommentDto commentDto);
 }

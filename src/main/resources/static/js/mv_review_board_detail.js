@@ -84,12 +84,16 @@ function loadComments(reviewId, page = 1, pageSize = 5) {
                             </div>
                         </div>
                         ` : ''}
-                        <button class="replyButton" onclick="showReplyForm(${comment.id})">답글</button>
-                        <div class="replyForm" style="display: none;">
-                            <textarea placeholder="대댓글을 입력해주세요" class="replyContent"></textarea>
-                            <button type="button" onclick="submitReply(${comment.id})">대댓글 작성</button>
+                        <div>
+                            <button class="replyButton" onclick="showReplyForm(${comment.id})">답글</button>
+                                <div class="replyForm" style="display: none;">
+                                    <textarea placeholder="댓글을 입력해주세요" class="replyContent"></textarea>
+                                    <button type="button" onclick="submitReply(${comment.id})">댓글 작성</button>
+                                </div>
+                                <ul class="replyList">
+                               
+                                </ul>
                         </div>
-                        <ul class="replyList"></ul>
                     </li>`;
                 commentList.insertAdjacentHTML('beforeend', commentItem);
             });
@@ -166,10 +170,11 @@ function submitReply(parentId) {
     })
         .then(response => response.json())
         .then(data => {
-            console.log('Data:', data); // 전체 데이터 확인
-            console.log('CommentPageDto:', data.commentPageDto); // CommentPageDto 확인
             if (data.success) {
-                loadComments(reviewId); // 대댓글 작성 후 댓글 목록 다시 로드
+                // 대댓글을 추가한 후 댓글 목록 다시 로드
+                loadComments(reviewId);
+                // 추가: 대댓글이 추가된 댓글의 대댓글 목록을 새로 로드하여 화면에 반영
+                loadReplies(parentId);
             } else {
                 alert('대댓글 등록에 실패했습니다.');
             }
@@ -218,12 +223,11 @@ function updateComment(commentId) {
         fetch(`/comment/update/${commentId}`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/json'
             },
-            body: new URLSearchParams({
-                content: updatedContent
+            body: JSON.stringify({ content: updatedContent }) // JSON 형식으로 수정된 내용 전송
             })
-        })
+
             .then(response => response.text())
             .then(data => {
                 // 댓글 내용 업데이트

@@ -55,9 +55,9 @@ public class CommentController {
         log.info("User ID set in CommentDto: " + userId);
         log.info("User Name set in CommentDto: " + username);
 
-        // 댓글 저장 로직
-        commentService.addComment(commentDto); // 실제 댓글을 추가하는 서비스 호출
-        log.info("Comment successfully added.");
+
+        // 대댓글 저장 로직
+        commentService.addReply(commentDto);
 
         return ResponseEntity.ok("댓글이 성공적으로 추가되었습니다.");
     }
@@ -101,8 +101,9 @@ public class CommentController {
     // 댓글 수정
     @PostMapping("/comment/update/{commentId}")
     public ResponseEntity<?> updateComment(
-            @PathVariable("commentId")Long commentId,
-            @RequestParam("content")String content) {
+            @PathVariable("commentId") Long commentId,
+            @RequestBody Map<String, String> body) { // JSON 요청을 받을 수 있도록 수정
+        String content = body.get("content"); // content를 가져옵니다.
 
         // 현재 사용자 ID 확인
         String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
@@ -113,9 +114,12 @@ public class CommentController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("댓글 작성자만 수정할 수 있습니다.");
         }
 
-        commentService.updateComment(commentId, content, userId);
+        // 댓글 수정 처리
+        commentService.updateComment(commentId, content, userId); // 이 부분이 데이터베이스에 업데이트가 이루어져야 합니다.
         return ResponseEntity.ok("댓글 수정이 완료되었습니다");
     }
+
+
 
     // 댓글 삭제
     @PostMapping("/comment/delete/{commentId}")
