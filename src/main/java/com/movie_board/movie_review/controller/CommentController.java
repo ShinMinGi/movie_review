@@ -55,16 +55,17 @@ public class CommentController {
         log.info("User ID set in CommentDto: " + userId);
         log.info("User Name set in CommentDto: " + username);
 
-        // 대댓글 저장 로직
-        boolean isSuccess = commentService.addReply(commentDto); // 대댓글 추가 성공 여부
+        // 댓글 저장 로직
+        boolean isSuccess = commentService.addComment(commentDto); // 댓글 추가 성공 여부
 
         // 응답 생성
         Map<String, Object> response = new HashMap<>();
         response.put("success", isSuccess);
-        response.put("message", isSuccess ? "댓글이 성공적으로 추가되었습니다." : "대댓글 등록에 실패했습니다.");
+        response.put("message", isSuccess ? "댓글이 성공적으로 추가되었습니다." : "댓글 등록에 실패했습니다.");
 
         return ResponseEntity.ok(response); // JSON 형식으로 응답
     }
+
 
 
     // 댓글 목록 조회
@@ -85,19 +86,59 @@ public class CommentController {
         // 페이지에 맞는 댓글 목록 가져오기
         List<CommentDto> comments = commentService.getCommentListWithPaging(reviewId, page, pageSize);
 
-        // 각 댓글에 대해 드롭메뉴 표시 여부 설정
+        // 각 댓글에 대한 대댓글을 로드하여 설정
         for (CommentDto comment : comments) {
-            if (comment.getUserId().equals(currentUserId)) {
-                comment.setShowDropdown(true);
-            } else {
-                comment.setShowDropdown(false);
-            }
+            // 대댓글 목록을 불러와서 댓글에 추가
+            List<CommentDto> replies = commentService.getRepliesByParentId(comment.getId());
+            comment.setReplies(replies);
+
+            // 드롭메뉴 표시 여부 설정
+            comment.setShowDropdown(comment.getUserId().equals(currentUserId));
         }
 
         // 페이징 정보를 포함한 CommentPageDTO 생성
         CommentPageDto commentPageDto = new CommentPageDto(comments, total, page, pageSize);
         log.info("CommentPageDto: " + commentPageDto); // 로그 추가
         return ResponseEntity.ok(commentPageDto);
+    }
+
+
+
+
+    // 대댓글 등록
+    @PostMapping("/comment/reply/add")
+    public ResponseEntity<Map<String, Object>> addReply(@RequestBody CommentDto commentDto) {
+        // SecurityContext에서 username 가져오기
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username;
+
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+
+        // username을 통해 userId 조회 (UserService에서 처리)
+        Long userId = userService.getUserIdByUsername(username);
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("success", false, "message", "유효하지 않은 사용자입니다."));
+        }
+
+        // 대댓글 작성자 userId 설정
+        commentDto.setUserId(userId);
+        commentDto.setUserName(username);
+        log.info("User ID set in CommentDto: " + userId);
+        log.info("User Name set in CommentDto: " + username);
+
+        // 대댓글 저장 로직
+        boolean isSuccess = commentService.addReply(commentDto);
+
+        // 응답 생성
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", isSuccess);
+        response.put("message", isSuccess ? "대댓글이 성공적으로 추가되었습니다." : "대댓글 등록에 실패했습니다.");
+
+        return ResponseEntity.ok(response); // JSON 형식으로 응답
     }
 
     // 대댓글 조회 로직 확인

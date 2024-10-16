@@ -43,7 +43,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // 댓글 목록 로드
 function loadComments(reviewId, page = 1, pageSize = 5) {
-    console.log('Fetching comments for reviewId:', reviewId);
     fetch(`/comment/list/${reviewId}?page=${page}&pageSize=${pageSize}`)
         .then(response => {
             console.log('Response Status:', response.status);
@@ -117,6 +116,9 @@ function loadComments(reviewId, page = 1, pageSize = 5) {
 
                 // 댓글 항목 추가
                 commentList.insertAdjacentHTML('beforeend', commentItem);
+
+                // 댓글 로드 후 해당 댓글의 대댓글도 로드
+                loadReplies(comment.id);
             });
 
             // 댓글 개수 업데이트
@@ -188,11 +190,10 @@ function submitReply(parentId) {
             if (!response.ok) {
                 throw new Error('대댓글 등록에 실패했습니다. 상태 코드: ' + response.status);
             }
-            return response.json();  // JSON 데이터로 변환
+            return response.json();
         })
         .then(data => {
             if (data.success) {
-                // 대댓글 추가 후 대댓글 목록을 다시 로드
                 loadReplies(parentId);  // 부모 댓글 아래 대댓글을 로드
                 const replyForm = document.querySelector(`li[data-id='${parentId}'] .replyForm`);
                 replyForm.style.display = 'none'; // 대댓글 입력폼 숨기기
@@ -208,33 +209,29 @@ function submitReply(parentId) {
 }
 
 // 대댓글 로드 함수
-function loadReplies(parentId) {
-    const replyList = document.querySelector(`li[data-id='${parentId}'] .replyList`);
-    fetch(`/comment/replies/${parentId}`)  // 대댓글을 조회하는 API 엔드포인트
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('대댓글을 불러오는 중 오류가 발생했습니다. 상태 코드: ' + response.status);
-            }
-            return response.json();
-        })
-        .then(data => {
-            replyList.innerHTML = ''; // 기존 대댓글 목록 초기화
-            data.forEach(reply => {
-                const formattedDate = formatDate(reply.createdAt);
-                const replyItem = `
-                    <li style="list-style-type: none;">
-                        <div style="font-weight: bold;">${reply.userName}</div>
-                        <div>${reply.content}</div>
-                        <div style="color: #999; font-size: 12px;">${formattedDate}</div>
-                    </li>`;
-                replyList.insertAdjacentHTML('beforeend', replyItem); // 대댓글 항목 추가
-            });
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('대댓글 목록을 불러오는 중 오류가 발생했습니다: ' + error.message);
-        });
+function loadReplies(commentId) {
+    const replyList = document.querySelector(`li[data-id="${commentId}"] .replyList`);
+
+    // 만약 replyList가 비어있다면 대댓글을 로드
+    if (replyList.childElementCount === 0) {
+        fetch(`/comment/replies/${commentId}`)
+            .then(response => response.json())
+            .then(replies => {
+                replies.forEach(reply => {
+                    const replyItem = `
+                        <li style="list-style-type: none;" data-id="${reply.id}">
+                            <div style="font-weight: bold;">${reply.userName}</div>
+                            <div>${reply.content}</div>
+                            <div style="color: #999; font-size: 12px;">${formatDate(reply.createdAt)}</div>
+                        </li>`;
+                    replyList.insertAdjacentHTML('beforeend', replyItem);
+                });
+            })
+            .catch(error => console.error('Error loading replies:', error));
+    }
 }
+
+
 
 
 

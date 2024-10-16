@@ -21,6 +21,9 @@ public interface CommentMapper {
     // 특정 댓글의 대댓글 조회
     List<CommentDto> selectRepliesByParentId(@Param("parentId") Long parentId);
 
+    // 대댓글 등록
+    void insertReply(CommentDto commentDto);
+
     // 댓글 수정
     void updateComment(Long commentId, String content, Long userId);
 
@@ -34,7 +37,5 @@ public interface CommentMapper {
     List<CommentDto> getCommentsByReviewIdWithPaging(@Param("reviewId") Long reviewId, @Param("offset") int offset, @Param("pageSize") int pageSize);
 
     int getCommentCountByReviewId(@Param("reviewId") Long reviewId);
-
-    void insertReply(CommentDto commentDto);
 
 }
