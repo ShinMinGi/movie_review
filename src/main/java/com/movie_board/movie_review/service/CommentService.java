@@ -49,11 +49,14 @@ public class CommentService {
     }
 
     // 대댓글 저장 로직
-    public void addReply(CommentDto commentDto) {
+    public boolean addReply(CommentDto commentDto) {
         commentMapper.insertReply(commentDto);
+        return true;
     }
-
-
+    // DB에서 대댓글 목록 조회 로직 구현
+    public List<CommentDto> getRepliesByParentId(Long parentId) {
+        return commentMapper.selectRepliesByParentId(parentId);
+    }
 
     // 댓글 수정
     public void updateComment(Long commentId, String content, Long userId) {

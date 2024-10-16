@@ -32,7 +32,7 @@ public class CommentController {
 
     // 댓글 등록
     @PostMapping("/comment/add")
-    public ResponseEntity<?> addComment(@RequestBody CommentDto commentDto) {
+    public ResponseEntity<Map<String, Object>> addComment(@RequestBody CommentDto commentDto) {
         // SecurityContext에서 username 가져오기
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
@@ -46,7 +46,7 @@ public class CommentController {
         // username을 통해 userId 조회 (UserService에서 처리)
         Long userId = userService.getUserIdByUsername(username);
         if (userId == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유효하지 않은 사용자입니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("success", false, "message", "유효하지 않은 사용자입니다."));
         }
 
         // 댓글 작성자 userId 설정
@@ -55,12 +55,17 @@ public class CommentController {
         log.info("User ID set in CommentDto: " + userId);
         log.info("User Name set in CommentDto: " + username);
 
-
         // 대댓글 저장 로직
-        commentService.addReply(commentDto);
+        boolean isSuccess = commentService.addReply(commentDto); // 대댓글 추가 성공 여부
 
-        return ResponseEntity.ok("댓글이 성공적으로 추가되었습니다.");
+        // 응답 생성
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", isSuccess);
+        response.put("message", isSuccess ? "댓글이 성공적으로 추가되었습니다." : "대댓글 등록에 실패했습니다.");
+
+        return ResponseEntity.ok(response); // JSON 형식으로 응답
     }
+
 
     // 댓글 목록 조회
     @GetMapping("/comment/list/{reviewId}")
@@ -95,6 +100,12 @@ public class CommentController {
         return ResponseEntity.ok(commentPageDto);
     }
 
+    // 대댓글 조회 로직 확인
+    @GetMapping("/comment/replies/{parentId}")
+    public ResponseEntity<List<CommentDto>> getReplies(@PathVariable Long parentId) {
+        List<CommentDto> replies = commentService.getRepliesByParentId(parentId);
+        return ResponseEntity.ok(replies);
+    }
 
 
 

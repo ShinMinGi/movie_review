@@ -62,7 +62,7 @@
 
     <!-- 대댓글 추가 -->
     <insert id="insertReply" parameterType="com.movie_board.movie_review.dto.CommentDto">
-        INSERT INTO comments (reviewId, movieId, userId, userName, content, parentId, createdAt)
-        VALUES (#{reviewId}, #{movieId}, #{userId}, #{userName}, #{content}, #{parentId}, NOW())
+        INSERT INTO comments (reviewId, movieId, userId, userName, content, parentId, createdAt, updatedAt)
+        VALUES (#{reviewId}, #{movieId}, #{userId}, #{userName}, #{content}, #{parentId}, NOW(), NOW())
     </insert>
 </mapper>

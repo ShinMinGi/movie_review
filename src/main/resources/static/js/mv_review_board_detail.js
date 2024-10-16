@@ -76,7 +76,7 @@ function loadComments(reviewId, page = 1, pageSize = 5) {
                         <div>${comment.content}</div>
                         <div style="color: #999; font-size: 12px;">${formattedDate}</div>
                         ${isOwner ? `
-                        <div class="dropdown" style="position: absolute; right: 10px; top: 10px;">
+                        <div class="dropdown" style="position: absolute; right: 10px; top: 10px; ">
                             <button class="dropbtn">⋮</button>
                             <div class="dropdown-content">
                                 <button onclick="updateComment(${comment.id})">수정</button>
@@ -84,17 +84,38 @@ function loadComments(reviewId, page = 1, pageSize = 5) {
                             </div>
                         </div>
                         ` : ''}
-                        <div>
-                            <button class="replyButton" onclick="showReplyForm(${comment.id})">답글</button>
-                                <div class="replyForm" style="display: none;">
-                                    <textarea placeholder="댓글을 입력해주세요" class="replyContent"></textarea>
-                                    <button type="button" onclick="submitReply(${comment.id})">댓글 작성</button>
+                    <div>
+                        <button class="replyButton" onclick="showReplyForm(${comment.id})">답글</button>
+                        
+                      <div class="replyForm" style="display: none; margin-top: 10px;">
+                          
+                            <hr style="border: none; border-top: 1px solid rgba(0,0,0,0.6); margin-bottom: 15px;">
+                        
+                            <div style="display: flex; align-items: flex-start;">
+                                <!-- 프로필 이미지 -->
+                                <div style="margin-right: 10px;">
+                                    <img src="https://via.placeholder.com/50" alt="user profile" style="border-radius: 50%;">
                                 </div>
-                                <ul class="replyList">
-                               
-                                </ul>
+                                
+                                <!-- 대댓글 입력란 -->
+                                <div style="flex-grow: 1;">
+                                    <textarea placeholder="댓글을 입력해주세요" class="replyContent" style="width: 100%; height: 60px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; resize: none;"></textarea>
+                                    
+                                    <!-- 등록 버튼을 오른쪽에 배치 -->
+                                    <div style="margin-top: 10px; display: flex; justify-content: flex-end;">
+                                        <button type="button" onclick="submitReply(${comment.id})" style="background-color: #4CAF50; color: white; padding: 8px 16px; border: none; border-radius: 4px;">
+                                            등록
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                        
+                        <ul class="replyList" style="list-style-type: none; padding-left: 20px;"></ul>
+
                     </li>`;
+
+                // 댓글 항목 추가
                 commentList.insertAdjacentHTML('beforeend', commentItem);
             });
 
@@ -136,15 +157,10 @@ function loadComments(reviewId, page = 1, pageSize = 5) {
 }
 
 
-
-
-
 // 대댓글 입력 폼을 표시하는 함수
 function showReplyForm(commentId) {
     const replyForm = document.querySelector(`li[data-id='${commentId}'] .replyForm`);
-    if (replyForm) {
-        replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
-    }
+    replyForm.style.display = replyForm.style.display === 'none' || replyForm.style.display === '' ? 'block' : 'none'; // 답글 입력 폼 표시/숨기기
 }
 
 // 대댓글 작성 후 서버에 전송하는 함수
@@ -160,7 +176,7 @@ function submitReply(parentId) {
 
     fetch('/comment/add', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             reviewId: reviewId,
             movieId: movieId,
@@ -168,22 +184,59 @@ function submitReply(parentId) {
             content: replyContent
         })
     })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('대댓글 등록에 실패했습니다. 상태 코드: ' + response.status);
+            }
+            return response.json();  // JSON 데이터로 변환
+        })
         .then(data => {
             if (data.success) {
-                // 대댓글을 추가한 후 댓글 목록 다시 로드
-                loadComments(reviewId);
-                // 추가: 대댓글이 추가된 댓글의 대댓글 목록을 새로 로드하여 화면에 반영
-                loadReplies(parentId);
+                // 대댓글 추가 후 대댓글 목록을 다시 로드
+                loadReplies(parentId);  // 부모 댓글 아래 대댓글을 로드
+                const replyForm = document.querySelector(`li[data-id='${parentId}'] .replyForm`);
+                replyForm.style.display = 'none'; // 대댓글 입력폼 숨기기
+                document.querySelector(`li[data-id='${parentId}'] .replyContent`).value = ''; // 입력 필드 초기화
             } else {
-                alert('대댓글 등록에 실패했습니다.');
+                alert('대댓글 등록에 실패했습니다. 다시 시도해주세요.');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('대댓글 등록 중 오류가 발생했습니다.');
+            alert('대댓글 등록 중 오류가 발생했습니다: ' + error.message);
         });
-};
+}
+
+// 대댓글 로드 함수
+function loadReplies(parentId) {
+    const replyList = document.querySelector(`li[data-id='${parentId}'] .replyList`);
+    fetch(`/comment/replies/${parentId}`)  // 대댓글을 조회하는 API 엔드포인트
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('대댓글을 불러오는 중 오류가 발생했습니다. 상태 코드: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            replyList.innerHTML = ''; // 기존 대댓글 목록 초기화
+            data.forEach(reply => {
+                const formattedDate = formatDate(reply.createdAt);
+                const replyItem = `
+                    <li style="list-style-type: none;">
+                        <div style="font-weight: bold;">${reply.userName}</div>
+                        <div>${reply.content}</div>
+                        <div style="color: #999; font-size: 12px;">${formattedDate}</div>
+                    </li>`;
+                replyList.insertAdjacentHTML('beforeend', replyItem); // 대댓글 항목 추가
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('대댓글 목록을 불러오는 중 오류가 발생했습니다: ' + error.message);
+        });
+}
+
+
 
 
 // 페이지 로드시 댓글 목록 로드
@@ -200,7 +253,6 @@ function formatDate(isoString) {
     const minutes = String(date.getMinutes()).padStart(2, '0'); // 분을 2자리로 맞추기
     return `${year}.${month}.${day}. ${hours}:${minutes}`;
 }
-
 
 
 // 댓글 수정
@@ -225,8 +277,8 @@ function updateComment(commentId) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ content: updatedContent }) // JSON 형식으로 수정된 내용 전송
-            })
+            body: JSON.stringify({content: updatedContent}) // JSON 형식으로 수정된 내용 전송
+        })
 
             .then(response => response.text())
             .then(data => {
