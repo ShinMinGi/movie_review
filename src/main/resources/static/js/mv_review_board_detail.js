@@ -9,6 +9,11 @@ document.addEventListener('DOMContentLoaded', function () {
             content: document.getElementById('commentContent').value,
         };
 
+        if (!formData.content.trim()) {
+            alert('댓글 내용을 입력해주세요.');
+            return;
+        }
+
         console.log('Form Data:', formData); // 전송할 데이터 로그
 
         fetch('/comment/add', {
@@ -18,14 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify(formData),
         })
-            .then(response => {
-                console.log('Response Status:', response.status);
-                if (response.ok) {
-                    return response.text(); // JSON 대신 text로 응답을 처리
-                } else {
-                    throw new Error('응답 상태 코드: ' + response.status);
-                }
-            })
+            .then(response => response.ok ? response.text() : Promise.reject(response.statusText))
             .then(data => {
                 console.log('Server Response:', data);
                 alert('댓글이 작성되었습니다.');
@@ -33,11 +31,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.getElementById('commentContent').value = ''; // 입력 필드 초기화
             })
             .catch(error => {
-                console.error('Error:', error); // 에러 콘솔 출력
+                console.error('Error:', error);
                 alert('댓글 작성 중 오류가 발생했습니다. 다시 시도해주세요.');
             });
     });
-
 });
 
 
@@ -160,11 +157,11 @@ function loadComments(reviewId, page = 1, pageSize = 5) {
 
 
 // 대댓글 입력 폼을 표시하는 함수
+// 대댓글 입력 폼을 표시하는 함수
 function showReplyForm(commentId) {
     const replyForm = document.querySelector(`li[data-id='${commentId}'] .replyForm`);
-    replyForm.style.display = replyForm.style.display === 'none' || replyForm.style.display === '' ? 'block' : 'none'; // 답글 입력 폼 표시/숨기기
+    replyForm.style.display = replyForm.style.display === 'none' || replyForm.style.display === '' ? 'block' : 'none';
 }
-
 // 대댓글 작성 후 서버에 전송하는 함수
 function submitReply(parentId) {
     const replyContent = document.querySelector(`li[data-id='${parentId}'] .replyContent`).value;
@@ -186,49 +183,37 @@ function submitReply(parentId) {
             content: replyContent
         })
     })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('대댓글 등록에 실패했습니다. 상태 코드: ' + response.status);
-            }
-            return response.json();
-        })
+        .then(response => response.ok ? response.json() : Promise.reject('대댓글 등록에 실패했습니다.'))
         .then(data => {
-            if (data.success) {
-                loadReplies(parentId);  // 부모 댓글 아래 대댓글을 로드
-                const replyForm = document.querySelector(`li[data-id='${parentId}'] .replyForm`);
-                replyForm.style.display = 'none'; // 대댓글 입력폼 숨기기
-                document.querySelector(`li[data-id='${parentId}'] .replyContent`).value = ''; // 입력 필드 초기화
-            } else {
-                alert('대댓글 등록에 실패했습니다. 다시 시도해주세요.');
-            }
+            loadReplies(parentId); // 부모 댓글 아래 대댓글을 로드
+            document.querySelector(`li[data-id='${parentId}'] .replyForm`).style.display = 'none'; // 대댓글 입력폼 숨기기
+            document.querySelector(`li[data-id='${parentId}'] .replyContent`).value = ''; // 입력 필드 초기화
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('대댓글 등록 중 오류가 발생했습니다: ' + error.message);
+            alert('대댓글 등록 중 오류가 발생했습니다: ' + error);
         });
 }
 
 // 대댓글 로드 함수
 function loadReplies(commentId) {
     const replyList = document.querySelector(`li[data-id="${commentId}"] .replyList`);
+    replyList.innerHTML = ''; // 기존 대댓글 초기화
 
-    // 만약 replyList가 비어있다면 대댓글을 로드
-    if (replyList.childElementCount === 0) {
-        fetch(`/comment/replies/${commentId}`)
-            .then(response => response.json())
-            .then(replies => {
-                replies.forEach(reply => {
-                    const replyItem = `
-                        <li style="list-style-type: none;" data-id="${reply.id}">
-                            <div style="font-weight: bold;">${reply.userName}</div>
-                            <div>${reply.content}</div>
-                            <div style="color: #999; font-size: 12px;">${formatDate(reply.createdAt)}</div>
-                        </li>`;
-                    replyList.insertAdjacentHTML('beforeend', replyItem);
-                });
-            })
-            .catch(error => console.error('Error loading replies:', error));
-    }
+    fetch(`/comment/replies/${commentId}`)
+        .then(response => response.json())
+        .then(replies => {
+            replies.forEach(reply => {
+                const replyItem = `
+                    <li style="list-style-type: none;" data-id="${reply.id}">
+                        <div style="font-weight: bold;">${reply.userName}</div>
+                        <div>${reply.content}</div>
+                        <div style="color: #999; font-size: 12px;">${formatDate(reply.createdAt)}</div>
+                    </li>`;
+                replyList.insertAdjacentHTML('beforeend', replyItem);
+            });
+        })
+        .catch(error => console.error('Error loading replies:', error));
 }
 
 
