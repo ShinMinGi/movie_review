@@ -38,4 +38,15 @@ public interface CommentMapper {
 
     int getCommentCountByReviewId(@Param("reviewId") Long reviewId);
 
+
+    // 대댓글 수정
+    void updateReply(@Param("replyId") Long replyId, @Param("content") String content, @Param("userId") Long userId);
+
+    // 대댓글 삭제
+    void deleteReply(@Param("replyId") Long replyId, @Param("userId") Long userId);
+
+    // 대댓글 작성자 조회
+    Long getOwnerIdByCommentId(@Param("commentId") Long commentId);
+
+
 }

@@ -66,4 +66,25 @@
         INSERT INTO comments (reviewId, movieId, userId, userName, content, parentId, createdAt, updatedAt)
         VALUES (#{reviewId}, #{movieId}, #{userId}, #{userName}, #{content}, #{parentId}, NOW(), NOW())
     </insert>
+
+    <!-- 대댓글 수정 쿼리 -->
+    <update id="updateReply">
+        UPDATE comments
+        SET content = #{content}, updatedAt = NOW()  <!-- 수정 시간 갱신 -->
+        WHERE id = #{replyId} AND userId = #{userId}  <!-- 작성자와 일치하는 경우만 수정 -->
+    </update>
+
+    <!-- 대댓글 삭제 쿼리 -->
+    <delete id="deleteReply">
+        DELETE FROM comments
+        WHERE id = #{replyId} AND userId = #{userId}  <!-- 작성자와 일치하는 경우만 삭제 -->
+    </delete>
+
+    <!-- 대댓글 작성자의 ID 가져오기 쿼리 -->
+    <select id="getOwnerIdByCommentId" resultType="Long">
+        SELECT userId
+        FROM comments
+        WHERE id = #{commentId}
+    </select>
+
 </mapper>

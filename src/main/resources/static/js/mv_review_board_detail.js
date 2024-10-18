@@ -100,6 +100,7 @@ function loadComments(reviewId, page = 1, pageSize = 5) {
                                                 등록
                                             </button>
                                         </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -197,21 +198,40 @@ function loadReplies(commentId) {
     const replyList = document.querySelector(`li[data-id="${commentId}"] .replyList`);
     replyList.innerHTML = ''; // 기존 대댓글 초기화
 
+    // currentUserId를 HTML에서 가져오기
+    const currentUserId = document.getElementById('currentUserId').value;
+
     fetch(`/comment/replies/${commentId}`)
         .then(response => response.json())
         .then(replies => {
             replies.forEach(reply => {
+                // 로그를 통해 userId 값 확인
+                console.log('Reply User ID:', reply.userId);
+                console.log('Current User ID:', currentUserId);
+                const isOwner = reply.userId === currentUserId; // 현재 사용자 ID와 비교하여 대댓글 작성자 여부 확인
+                console.log('Is Owner:', isOwner); // isOwner 값 확인
+
                 const replyItem = `
                     <li style="list-style-type: none;" data-id="${reply.id}">
                         <div style="font-weight: bold;">${reply.userName}</div>
                         <div>${reply.content}</div>
                         <div style="color: #999; font-size: 12px;">${formatDate(reply.createdAt)}</div>
+                        ${isOwner ? `
+                        <div class="dropdown" style="position: absolute; right: 10px; top: 10px; ">
+                            <button class="dropbtn">⋮</button>
+                            <div class="dropdown-content">
+                                <button onclick="updateReply(${reply.id})">수정</button>
+                                <button onclick="deleteReply(${reply.id})">삭제</button>
+                            </div>
+                        </div>
+                        ` : ''}
                     </li>`;
                 replyList.insertAdjacentHTML('beforeend', replyItem);
             });
         })
         .catch(error => console.error('Error loading replies:', error));
 }
+
 
 
 
@@ -291,4 +311,64 @@ function deleteComment(commentId) {
             })
             .catch(error => console.error('Error:', error));
     }
+
+    // 대댓글 수정
+    function updateReply(replyId) {
+        const replyItem = document.querySelector(`li[data-id="${replyId}"]`);
+        const currentContent = replyItem.querySelector('div:nth-child(2)').textContent; // 현재 대댓글 내용
+
+        // 사용자가 수정할 내용을 입력하도록 프롬프트
+        const newContent = prompt('수정할 내용을 입력하세요:', currentContent);
+        if (newContent !== null && newContent.trim() !== '') { // 입력이 있을 경우
+            fetch(`/comment/replyUpdate/${replyId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ content: newContent }),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('대댓글 수정에 실패했습니다.');
+                    }
+                    return response.json();
+                })
+                .then(updatedReply => {
+                    // 수정된 대댓글 내용으로 UI 업데이트
+                    replyItem.querySelector('div:nth-child(2)').textContent = updatedReply.content;
+                    alert('대댓글이 수정되었습니다.');
+                })
+                .catch(error => {
+                    console.error('Error updating reply:', error);
+                    alert('대댓글 수정 중 오류가 발생했습니다.'); // 사용자에게 오류 메시지 표시
+                });
+        }
+    }
+
+    // 대댓글 삭제
+    function deleteReply(replyId) {
+        if (confirm('이 대댓글을 삭제하시겠습니까?')) { // 삭제 확인
+            fetch(`/comment/replyDelete/${replyId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('대댓글 삭제에 실패했습니다.');
+                    }
+                    // 삭제된 대댓글을 UI에서 제거
+                    const replyItem = document.querySelector(`li[data-id="${replyId}"]`);
+                    replyItem.remove();
+                    alert('대댓글이 삭제되었습니다.');
+                })
+                .catch(error => {
+                    console.error('Error deleting reply:', error);
+                    alert('대댓글 삭제 중 오류가 발생했습니다.'); // 사용자에게 오류 메시지 표시
+                });
+        }
+    }
+
+
 }

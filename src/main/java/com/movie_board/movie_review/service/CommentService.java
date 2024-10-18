@@ -92,4 +92,24 @@ public class CommentService {
         return commentMapper.getCommentCountByReviewId(reviewId);
     }
 
+    // 대댓글 수정
+    public void updateReply(Long replyId, String content, Long userId) {
+        // 대댓글 수정 로직 (SQL 쿼리를 사용하여 대댓글의 내용을 업데이트)
+        commentMapper.updateReply(replyId, content, userId);
+    }
+
+    // 대댓글 삭제
+    public void deleteReply(Long replyId, Long userId) {
+        // 대댓글 삭제 로직 (SQL 쿼리를 사용하여 대댓글 삭제)
+        commentMapper.deleteReply(replyId, userId);
+    }
+
+    // 대댓글 작성자인지 확인
+    public boolean isReplyOwner(Long commentId, Long userId) {
+        Long ownerId = commentMapper.getOwnerIdByCommentId(commentId);
+        log.info("Owner ID for comment {}: {}", commentId, ownerId);
+        log.info("Current User ID: {}", userId);
+        return ownerId != null && ownerId.equals(userId);
+    }
+
 }

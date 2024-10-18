@@ -193,3 +193,38 @@
     border-color: #dee2e6;
     pointer-events: none; /* 클릭 불가 */
 }
+
+
+/* 드롭다운 메뉴 스타일 */
+/* 드롭다운 기본 스타일 */
+.dropdown2 {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content2 {
+    display: none; /* 기본적으로 숨김 */
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown2:hover .dropdown-content2 {
+    display: block; /* 마우스를 올렸을 때 표시 */
+}
+
+.dropdown-content2 button {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    border: none;
+    background: none; /* 배경 제거 */
+    text-align: left; /* 왼쪽 정렬 */
+}
+
+.dropdown-content2 button:hover {
+    background-color: #f1f1f1; /* 호버 시 배경색 변경 */
+}
