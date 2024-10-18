@@ -86,6 +86,8 @@ public class CommentService {
         return commentMapper.getCommentsByReviewIdWithPaging(reviewId, offset, pageSize);
     }
 
+
+    // 댓글 수 가져오기
     public int getCommentCountByReviewId(Long reviewId) {
         return commentMapper.getCommentCountByReviewId(reviewId);
     }

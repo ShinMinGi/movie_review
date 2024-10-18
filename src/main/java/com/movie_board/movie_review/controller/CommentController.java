@@ -20,6 +20,7 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -75,6 +76,7 @@ public class CommentController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "5") int pageSize,
             Principal principal) {
+
         log.info("getMapping 의 reviewId가 들어오는지  = " + reviewId);
 
         // 현재 사용자 ID 확인
@@ -83,17 +85,14 @@ public class CommentController {
         // 전체 댓글 수 가져오기
         int total = commentService.getCommentCountByReviewId(reviewId);
 
-        // 페이지에 맞는 댓글 목록 가져오기
+        // 페이지에 맞는 댓글 목록 가져오기 (대댓글 없이 댓글만 조회)
         List<CommentDto> comments = commentService.getCommentListWithPaging(reviewId, page, pageSize);
 
-        // 각 댓글에 대한 대댓글을 로드하여 설정
+        // 각 댓글에 대해 드롭메뉴 표시 여부만 설정 (대댓글 로드 로직 제거)
         for (CommentDto comment : comments) {
-            // 대댓글 목록을 불러와서 댓글에 추가
-            List<CommentDto> replies = commentService.getRepliesByParentId(comment.getId());
-            comment.setReplies(replies);
-
-            // 드롭메뉴 표시 여부 설정
+            // 드롭메뉴 표시 여부 설정 (댓글 작성자만 표시)
             comment.setShowDropdown(comment.getUserId().equals(currentUserId));
+
         }
 
         // 페이징 정보를 포함한 CommentPageDTO 생성
@@ -101,6 +100,9 @@ public class CommentController {
         log.info("CommentPageDto: " + commentPageDto); // 로그 추가
         return ResponseEntity.ok(commentPageDto);
     }
+
+
+
 
 
 
@@ -140,6 +142,7 @@ public class CommentController {
 
         return ResponseEntity.ok(response); // JSON 형식으로 응답
     }
+
 
     // 대댓글 조회 로직 확인
     @GetMapping("/comment/replies/{parentId}")

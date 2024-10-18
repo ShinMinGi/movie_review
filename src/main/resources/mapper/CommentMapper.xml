@@ -22,6 +22,7 @@
         SELECT *
         FROM comments
         WHERE reviewId = #{reviewId}
+        AND parentId IS NULL  <!-- 대댓글 제외 -->
         ORDER BY createdAt DESC
             LIMIT #{pageSize} OFFSET #{offset}
     </select>

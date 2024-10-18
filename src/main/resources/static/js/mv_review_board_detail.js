@@ -46,18 +46,14 @@ function loadComments(reviewId, page = 1, pageSize = 5) {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            return response.json(); // JSON 데이터로 변환
+            return response.json();
         })
         .then(data => {
             const comments = data.comments; // CommentDto 리스트
-            const totalComments = data.total; // 전체 댓글 수
-            const currentPage = data.currentPage; // 현재 페이지
-            const totalPages = Math.ceil(totalComments / pageSize); // 전체 페이지 수
+            const totalComments = data.total;
+            const currentPage = data.currentPage;
+            const totalPages = Math.ceil(totalComments / pageSize);
 
-            if (!Array.isArray(comments)) {
-                throw new Error('댓글 데이터 형식이 잘못되었습니다.');
-            }
-            console.log('Comments:', comments);
             const commentList = document.getElementById('commentList');
             commentList.innerHTML = ''; // 기존 목록 초기화
 
@@ -66,6 +62,7 @@ function loadComments(reviewId, page = 1, pageSize = 5) {
                 const formattedDate = formatDate(comment.createdAt);
                 const isOwner = comment.showDropdown;
 
+                // 댓글 항목 생성
                 const commentItem = `
                     <li style="list-style-type: none;" data-id="${comment.id}">
                         <div style="font-weight: bold;">${comment.userName}</div>
@@ -80,73 +77,72 @@ function loadComments(reviewId, page = 1, pageSize = 5) {
                             </div>
                         </div>
                         ` : ''}
-                    <div>
-                        <button class="replyButton" onclick="showReplyForm(${comment.id})">답글</button>
-                        
-                      <div class="replyForm" style="display: none; margin-top: 10px;">
-                          
-                            <hr style="border: none; border-top: 1px solid rgba(0,0,0,0.6); margin-bottom: 15px;">
-                        
-                            <div style="display: flex; align-items: flex-start;">
-                                <!-- 프로필 이미지 -->
-                                <div style="margin-right: 10px;">
-                                    <img src="https://via.placeholder.com/50" alt="user profile" style="border-radius: 50%;">
-                                </div>
-                                
-                                <!-- 대댓글 입력란 -->
-                                <div style="flex-grow: 1;">
-                                    <textarea placeholder="댓글을 입력해주세요" class="replyContent" style="width: 100%; height: 60px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; resize: none;"></textarea>
+                        <div>
+                            <button class="replyButton" onclick="showReplyForm(${comment.id})">답글</button>
+                            
+                          <div class="replyForm" style="display: none; margin-top: 10px;">
+                              
+                                <hr style="border: none; border-top: 1px solid rgba(0,0,0,0.6); margin-bottom: 15px;">
+                            
+                                <div style="display: flex; align-items: flex-start;">
+                                    <!-- 프로필 이미지 -->
+                                    <div style="margin-right: 10px;">
+                                        <img src="https://via.placeholder.com/50" alt="user profile" style="border-radius: 50%;">
+                                    </div>
                                     
-                                    <!-- 등록 버튼을 오른쪽에 배치 -->
-                                    <div style="margin-top: 10px; display: flex; justify-content: flex-end;">
-                                        <button type="button" onclick="submitReply(${comment.id})" style="background-color: #4CAF50; color: white; padding: 8px 16px; border: none; border-radius: 4px;">
-                                            등록
-                                        </button>
+                                    <!-- 대댓글 입력란 -->
+                                    <div style="flex-grow: 1;">
+                                        <textarea placeholder="댓글을 입력해주세요" class="replyContent" style="width: 100%; height: 60px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; resize: none;"></textarea>
+                                        
+                                        <!-- 등록 버튼을 오른쪽에 배치 -->
+                                        <div style="margin-top: 10px; display: flex; justify-content: flex-end;">
+                                            <button type="button" onclick="submitReply(${comment.id})" style="background-color: #4CAF50; color: white; padding: 8px 16px; border: none; border-radius: 4px;">
+                                                등록
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            
+                            <ul class="replyList" style="list-style-type: none; padding-left: 20px;"></ul>
                         </div>
-                        
-                        <ul class="replyList" style="list-style-type: none; padding-left: 20px;"></ul>
-
                     </li>`;
 
                 // 댓글 항목 추가
                 commentList.insertAdjacentHTML('beforeend', commentItem);
 
-                // 댓글 로드 후 해당 댓글의 대댓글도 로드
-                loadReplies(comment.id);
+                // 이미 대댓글이 포함되어 있는 경우에는 추가 로드를 하지 않도록 처리
+                if (!comment.replies || comment.replies.length === 0) {
+                    loadReplies(comment.id); // 대댓글 로드
+                } else {
+                    // 대댓글을 바로 렌더링
+                    const replyList = commentList.querySelector(`li[data-id="${comment.id}"] .replyList`);
+                    comment.replies.forEach(reply => {
+                        const replyItem = `
+                            <li style="list-style-type: none;" data-id="${reply.id}">
+                                <div style="font-weight: bold;">${reply.userName}</div>
+                                <div>${reply.content}</div>
+                                <div style="color: #999; font-size: 12px;">${formatDate(reply.createdAt)}</div>
+                            </li>`;
+                        replyList.insertAdjacentHTML('beforeend', replyItem);
+                    });
+                }
             });
 
             // 댓글 개수 업데이트
             document.getElementById('commentCount').textContent = `댓글 ${totalComments}개`;
 
-            // 페이지네이션 버튼 생성
+            // 페이지네이션 처리
             const pagination = document.querySelector('.pagination');
             pagination.innerHTML = ''; // 기존 페이지네이션 초기화
-
-            // 이전 페이지 버튼
             if (currentPage > 1) {
-                pagination.innerHTML += `
-                    <li class="page-item">
-                        <a class="page-link" href="#" onclick="loadComments(${reviewId}, ${currentPage - 1}, ${pageSize})">이전</a>
-                    </li>`;
+                pagination.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="loadComments(${reviewId}, ${currentPage - 1}, ${pageSize})">이전</a></li>`;
             }
-
-            // 페이지 번호 버튼
             for (let i = 1; i <= totalPages; i++) {
-                pagination.innerHTML += `
-                    <li class="page-item ${currentPage === i ? 'active' : ''}">
-                        <a class="page-link" href="#" onclick="loadComments(${reviewId}, ${i}, ${pageSize})">${i}</a>
-                    </li>`;
+                pagination.innerHTML += `<li class="page-item ${currentPage === i ? 'active' : ''}"><a class="page-link" href="#" onclick="loadComments(${reviewId}, ${i}, ${pageSize})">${i}</a></li>`;
             }
-
-            // 다음 페이지 버튼
             if (currentPage < totalPages) {
-                pagination.innerHTML += `
-                    <li class="page-item">
-                        <a class="page-link" href="#" onclick="loadComments(${reviewId}, ${currentPage + 1}, ${pageSize})">다음</a>
-                    </li>`;
+                pagination.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="loadComments(${reviewId}, ${currentPage + 1}, ${pageSize})">다음</a></li>`;
             }
         })
         .catch(error => {
@@ -156,7 +152,8 @@ function loadComments(reviewId, page = 1, pageSize = 5) {
 }
 
 
-// 대댓글 입력 폼을 표시하는 함수
+
+
 // 대댓글 입력 폼을 표시하는 함수
 function showReplyForm(commentId) {
     const replyForm = document.querySelector(`li[data-id='${commentId}'] .replyForm`);
@@ -173,7 +170,7 @@ function submitReply(parentId) {
         return;
     }
 
-    fetch('/comment/add', {
+    fetch('/comment/reply/add', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
