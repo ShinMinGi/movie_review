@@ -46,7 +46,7 @@ public interface CommentMapper {
     void deleteReply(@Param("replyId") Long replyId, @Param("userId") Long userId);
 
     // 대댓글 작성자 조회
-    Long getOwnerIdByCommentId(@Param("commentId") Long commentId);
+    Long getOwnerIdByCommentId(@Param("replyId") Long replyId);
 
 
 }

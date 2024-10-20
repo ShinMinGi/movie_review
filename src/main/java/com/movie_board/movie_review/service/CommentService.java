@@ -104,12 +104,12 @@ public class CommentService {
         commentMapper.deleteReply(replyId, userId);
     }
 
-    // 대댓글 작성자인지 확인
-    public boolean isReplyOwner(Long commentId, Long userId) {
-        Long ownerId = commentMapper.getOwnerIdByCommentId(commentId);
-        log.info("Owner ID for comment {}: {}", commentId, ownerId);
-        log.info("Current User ID: {}", userId);
-        return ownerId != null && ownerId.equals(userId);
+    // 대댓글 작성자 확인
+    public boolean isReplyOwner(Long replyId, Long currentUserId) {
+        Long replyOwnerId = commentMapper.getOwnerIdByCommentId(replyId);
+        if (replyOwnerId == null) {
+            throw new IllegalArgumentException("대댓글을 찾을 수 없습니다: " + replyId);
+        }
+        return replyOwnerId.equals(currentUserId); // 작성자 여부 확인
     }
-
 }

@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+
     // 댓글 작성
     document.getElementById('commentForm').addEventListener('submit', function (e) {
         e.preventDefault();
@@ -96,7 +97,8 @@ function loadComments(reviewId, page = 1, pageSize = 5) {
                                         
                                         <!-- 등록 버튼을 오른쪽에 배치 -->
                                         <div style="margin-top: 10px; display: flex; justify-content: flex-end;">
-                                            <button type="button" onclick="submitReply(${comment.id})" style="background-color: #4CAF50; color: white; padding: 8px 16px; border: none; border-radius: 4px;">
+                                      
+                                           <button type="button" onclick="submitReply(${comment.id})" style="background-color: #4CAF50; color: white; padding: 8px 16px; border: none; border-radius: 4px;">
                                                 등록
                                             </button>
                                         </div>
@@ -165,7 +167,6 @@ function submitReply(parentId) {
     const replyContent = document.querySelector(`li[data-id='${parentId}'] .replyContent`).value;
     const reviewId = document.querySelector('input[name="reviewId"]').value;
     const movieId = document.querySelector('input[name="movieId"]').value;
-
     if (!replyContent.trim()) {
         alert('대댓글 내용을 입력해주세요.');
         return;
@@ -200,7 +201,7 @@ function loadReplies(commentId) {
 
     // currentUserId를 HTML에서 가져오기
     const currentUserId = document.getElementById('currentUserId').value;
-
+    console.log('Current User ID:', currentUserId);  // 현재 사용자 ID 출력
     fetch(`/comment/replies/${commentId}`)
         .then(response => response.json())
         .then(replies => {
@@ -208,16 +209,15 @@ function loadReplies(commentId) {
                 // 로그를 통해 userId 값 확인
                 console.log('Reply User ID:', reply.userId);
                 console.log('Current User ID:', currentUserId);
-                const isOwner = reply.userId === currentUserId; // 현재 사용자 ID와 비교하여 대댓글 작성자 여부 확인
-                console.log('Is Owner:', isOwner); // isOwner 값 확인
-
+                const showDropdown = reply.showDropdown; // 서버에서 설정된 드롭다운 표시 여부
+                console.log('Is Owner:', showDropdown); // isOwner 값 확인
                 const replyItem = `
                     <li style="list-style-type: none;" data-id="${reply.id}">
                         <div style="font-weight: bold;">${reply.userName}</div>
                         <div>${reply.content}</div>
                         <div style="color: #999; font-size: 12px;">${formatDate(reply.createdAt)}</div>
-                        ${isOwner ? `
-                        <div class="dropdown" style="position: absolute; right: 10px; top: 10px; ">
+                        ${showDropdown ? `
+                        <div class="dropdown" style="position: absolute; right: 10px; top: 10px;">
                             <button class="dropbtn">⋮</button>
                             <div class="dropdown-content">
                                 <button onclick="updateReply(${reply.id})">수정</button>
@@ -231,6 +231,51 @@ function loadReplies(commentId) {
         })
         .catch(error => console.error('Error loading replies:', error));
 }
+// 대댓글 수정 함수
+function updateReply(replyId) {
+    const replyItem = document.querySelector(`li[data-id="${replyId}"]`);
+    const contentDiv = replyItem.querySelector('div:nth-child(2)');
+    const currentContent = contentDiv.textContent;
+
+    const newContent = prompt('수정할 내용을 입력하세요:', currentContent);
+    if (newContent !== null) {
+        fetch(`/comment/replyUpdate/${replyId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ content: newContent })
+        })
+            .then(response => {
+                if (response.ok) {
+                    contentDiv.textContent = newContent; // 수정된 내용으로 업데이트
+                } else {
+                    console.error('수정 실패:', response.statusText);
+                }
+            })
+            .catch(error => console.error('Error updating reply:', error));
+    }
+}
+
+
+// 대댓글 삭제 함수
+function deleteReply(replyId) {
+    if (confirm('정말로 이 대댓글을 삭제하시겠습니까?')) {
+        fetch(`/comment/replyDelete/${replyId}`, {
+            method: 'POST'
+        })
+            .then(response => {
+                if (response.ok) {
+                    const replyItem = document.querySelector(`li[data-id="${replyId}"]`);
+                    replyItem.remove(); // 대댓글 목록에서 삭제
+                } else {
+                    console.error('삭제 실패:', response.statusText);
+                }
+            })
+            .catch(error => console.error('Error deleting reply:', error));
+    }
+}
+
 
 
 
@@ -312,63 +357,7 @@ function deleteComment(commentId) {
             .catch(error => console.error('Error:', error));
     }
 
-    // 대댓글 수정
-    function updateReply(replyId) {
-        const replyItem = document.querySelector(`li[data-id="${replyId}"]`);
-        const currentContent = replyItem.querySelector('div:nth-child(2)').textContent; // 현재 대댓글 내용
 
-        // 사용자가 수정할 내용을 입력하도록 프롬프트
-        const newContent = prompt('수정할 내용을 입력하세요:', currentContent);
-        if (newContent !== null && newContent.trim() !== '') { // 입력이 있을 경우
-            fetch(`/comment/replyUpdate/${replyId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ content: newContent }),
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('대댓글 수정에 실패했습니다.');
-                    }
-                    return response.json();
-                })
-                .then(updatedReply => {
-                    // 수정된 대댓글 내용으로 UI 업데이트
-                    replyItem.querySelector('div:nth-child(2)').textContent = updatedReply.content;
-                    alert('대댓글이 수정되었습니다.');
-                })
-                .catch(error => {
-                    console.error('Error updating reply:', error);
-                    alert('대댓글 수정 중 오류가 발생했습니다.'); // 사용자에게 오류 메시지 표시
-                });
-        }
-    }
-
-    // 대댓글 삭제
-    function deleteReply(replyId) {
-        if (confirm('이 대댓글을 삭제하시겠습니까?')) { // 삭제 확인
-            fetch(`/comment/replyDelete/${replyId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('대댓글 삭제에 실패했습니다.');
-                    }
-                    // 삭제된 대댓글을 UI에서 제거
-                    const replyItem = document.querySelector(`li[data-id="${replyId}"]`);
-                    replyItem.remove();
-                    alert('대댓글이 삭제되었습니다.');
-                })
-                .catch(error => {
-                    console.error('Error deleting reply:', error);
-                    alert('대댓글 삭제 중 오류가 발생했습니다.'); // 사용자에게 오류 메시지 표시
-                });
-        }
-    }
 
 
 }

@@ -84,7 +84,7 @@
     <select id="getOwnerIdByCommentId" resultType="Long">
         SELECT userId
         FROM comments
-        WHERE id = #{commentId}
+        WHERE id = #{replyId}
     </select>
 
 </mapper>
