@@ -228,3 +228,80 @@
 .dropdown-content2 button:hover {
     background-color: #f1f1f1; /* 호버 시 배경색 변경 */
 }
+
+
+
+/*댓글 수정란 css*/
+/* 댓글 수정 텍스트 영역 스타일 */
+
+.comment-item {
+    position: relative; /* 위치를 기준으로 설정 */
+}
+
+.edit-textarea {
+    width: calc(100% - 80px); /* 버튼의 너비를 고려하여 폭 조정 */
+    width: 94%; /* 전체 폭을 사용 */
+    height: 80px; /* 높이 설정 */
+    padding: 5px; /* 여백 설정 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    border: 1px solid #ccc; /* 테두리 설정 */
+    resize: none; /* 크기 조정 금지 */
+}
+
+/* 댓글 수정 버튼 스타일 */
+.edit-save-button {
+    position: relative; /* 상대 위치로 설정 */
+    float: right; /* 오른쪽 정렬 */
+    top: 39px; /* 하단에서 10px 위치 */
+    right: 9px; /* 오른쪽에서 10px 위치 */
+    background-color: #007bff; /* 버튼 배경색 */
+    color: white; /* 글자 색상 */
+    border: none; /* 기본 테두리 없애기 */
+    padding: 10px 15px; /* 내부 여백 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    cursor: pointer; /* 커서 변경 */
+    font-size: 14px; /* 글자 크기 */
+}
+/* 버튼 호버 스타일 */
+.edit-save-button:hover {
+    background-color: #0048ff; /* 호버 시 버튼 배경색 변경 */
+}
+
+
+
+
+
+
+
+/*대댓글 수정 란 css*/
+/* 대댓글 수정용 텍스트 영역 스타일 */
+.reply-textarea {
+    position: relative; /* 상대 위치 설정 */
+    margin-top: 10px; /* 상단 여백 */
+    width: 94%; /* 가로 폭을 100%로 설정 */
+    height: 80px; /* 적절한 높이 설정 */
+    padding: 10px; /* 내부 여백 */
+    border: 1px solid #ccc; /* 테두리 스타일 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    resize: none; /* 크기 조절 불가 */
+    font-size: 14px; /* 글자 크기 */
+}
+
+/* 저장 버튼 스타일 */
+.save-button {
+    position: absolute; /* 절대 위치 설정 */
+    bottom: 33px; /* 하단에서 10px 위치 */
+    right: 18px; /* 오른쪽에서 10px 위치 */
+    background-color: #4CAF50; /* 버튼 배경색 */
+    color: white; /* 글자 색상 */
+    border: none; /* 기본 테두리 없애기 */
+    padding: 10px 15px; /* 내부 여백 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    cursor: pointer; /* 커서 변경 */
+    font-size: 14px; /* 글자 크기 */
+}
+
+/* 버튼 호버 스타일 */
+.save-button:hover {
+    background-color: #218838; /* 호버 시 버튼 배경색 변경 */
+}

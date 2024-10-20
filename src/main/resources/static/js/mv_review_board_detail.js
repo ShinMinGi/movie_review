@@ -88,7 +88,7 @@ function loadComments(reviewId, page = 1, pageSize = 5) {
                                 <div style="display: flex; align-items: flex-start;">
                                     <!-- 프로필 이미지 -->
                                     <div style="margin-right: 10px;">
-                                        <img src="https://via.placeholder.com/50" alt="user profile" style="border-radius: 50%;">
+                                       <i style="color: #d3d3d3" class="fa-solid fa-l"></i>
                                     </div>
                                     
                                     <!-- 대댓글 입력란 -->
@@ -201,14 +201,14 @@ function loadReplies(commentId) {
 
     // currentUserId를 HTML에서 가져오기
     const currentUserId = document.getElementById('currentUserId').value;
-    console.log('Current User ID:', currentUserId);  // 현재 사용자 ID 출력
+    // console.log('Current User ID:', currentUserId);  // 현재 사용자 ID 출력
     fetch(`/comment/replies/${commentId}`)
         .then(response => response.json())
         .then(replies => {
             replies.forEach(reply => {
                 // 로그를 통해 userId 값 확인
                 console.log('Reply User ID:', reply.userId);
-                console.log('Current User ID:', currentUserId);
+                // console.log('Current User ID:', currentUserId);
                 const showDropdown = reply.showDropdown; // 서버에서 설정된 드롭다운 표시 여부
                 console.log('Is Owner:', showDropdown); // isOwner 값 확인
                 const replyItem = `
@@ -233,29 +233,61 @@ function loadReplies(commentId) {
 }
 // 대댓글 수정 함수
 function updateReply(replyId) {
-    const replyItem = document.querySelector(`li[data-id="${replyId}"]`);
-    const contentDiv = replyItem.querySelector('div:nth-child(2)');
-    const currentContent = contentDiv.textContent;
+    const replyItem = document.querySelector(`li[data-id='${replyId}']`); // 대댓글 항목 선택
+    const contentDiv = replyItem.querySelector('div:nth-of-type(2)'); // 대댓글 내용이 있는 div
+    const currentContent = contentDiv.textContent; // 현재 대댓글 내용을 가져옵니다.
 
-    const newContent = prompt('수정할 내용을 입력하세요:', currentContent);
-    if (newContent !== null) {
+    // 수정할 내용을 입력받기 위한 텍스트 영역 생성
+    const input = document.createElement('textarea');
+    input.className = 'reply-textarea'; // CSS 클래스 추가
+    input.value = currentContent; // 기존 대댓글 내용을 초기값으로 설정
+
+    const saveButton = document.createElement('button');
+    saveButton.textContent = '저장';
+    saveButton.className = 'save-button'; // CSS 클래스 추가
+
+    // 버튼 클릭 시 처리
+    saveButton.addEventListener('click', function () {
+        const updatedContent = input.value; // 입력된 수정 내용 가져오기
+
+        // 서버에 수정된 내용 전송
         fetch(`/comment/replyUpdate/${replyId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ content: newContent })
+            body: JSON.stringify({ content: updatedContent }) // JSON 형식으로 수정된 내용 전송
         })
             .then(response => {
-                if (response.ok) {
-                    contentDiv.textContent = newContent; // 수정된 내용으로 업데이트
-                } else {
-                    console.error('수정 실패:', response.statusText);
+                if (!response.ok) {
+                    throw new Error('수정 실패: ' + response.statusText);
                 }
+                return response.text();
             })
-            .catch(error => console.error('Error updating reply:', error));
-    }
+            .then(data => {
+                // 대댓글 내용 업데이트
+                contentDiv.textContent = updatedContent; // 수정된 내용으로 업데이트
+                // 입력 영역과 버튼 제거
+                input.remove();
+                saveButton.remove();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('수정 중 오류가 발생했습니다. 다시 시도해주세요.'); // 오류 메시지
+            });
+    });
+
+    // 대댓글 내용 대신 텍스트 영역과 저장 버튼 추가
+    const replyContainer = document.createElement('div');
+    replyContainer.className = 'reply-container'; // CSS 클래스 추가
+    replyContainer.appendChild(input); // 텍스트 영역 추가
+    replyContainer.appendChild(saveButton); // 저장 버튼 추가
+
+    contentDiv.innerHTML = ''; // 대댓글 내용을 지우고
+    contentDiv.appendChild(replyContainer); // 컨테이너 추가
 }
+
+
 
 
 // 대댓글 삭제 함수
@@ -306,10 +338,14 @@ function updateComment(commentId) {
     const currentContent = contentDiv.textContent; // 현재 댓글 내용을 가져옵니다.
 
     // 수정할 내용을 입력받기 위한 텍스트 영역 생성
+    const inputContainer = document.createElement('div'); // 새로운 div 생성
     const input = document.createElement('textarea');
+    input.classList.add('edit-textarea'); // 클래스 추가
     input.value = currentContent; // 기존 댓글 내용을 초기값으로 설정
+
     const saveButton = document.createElement('button');
     saveButton.textContent = '저장';
+    saveButton.classList.add('edit-save-button'); // 클래스 추가
 
     // 저장 버튼 클릭 시 처리
     saveButton.addEventListener('click', function () {
@@ -323,23 +359,25 @@ function updateComment(commentId) {
             },
             body: JSON.stringify({content: updatedContent}) // JSON 형식으로 수정된 내용 전송
         })
-
             .then(response => response.text())
             .then(data => {
                 // 댓글 내용 업데이트
                 contentDiv.textContent = updatedContent; // 수정된 내용으로 업데이트
                 // 입력 영역과 버튼 제거
-                input.remove();
-                saveButton.remove();
+                inputContainer.remove(); // 입력 영역과 버튼을 포함하는 div 제거
             })
             .catch(error => console.error('Error:', error));
     });
 
-    // 댓글 내용 대신 텍스트 영역과 저장 버튼 추가
+    // 입력 영역과 버튼을 담는 div에 추가
+    inputContainer.appendChild(input); // 텍스트 영역 추가
+    inputContainer.appendChild(saveButton); // 저장 버튼 추가
     contentDiv.innerHTML = ''; // 댓글 내용을 지우고
-    contentDiv.appendChild(input); // 텍스트 영역 추가
-    contentDiv.appendChild(saveButton); // 저장 버튼 추가
+    contentDiv.appendChild(inputContainer); // 새로운 div 추가
 }
+
+
+
 
 
 // 댓글 삭제
